@@ -47,7 +47,7 @@ module.exports.run = async (bot, message, args) => {
             client.quit(true);
         }
 
-        var data = await getAsync(message.author.id, function(err, val) {});
+        var data = await getAsync(message.author.id);
         console.log(data)
         if(data) alreadyRegistered(data);
         else register();
