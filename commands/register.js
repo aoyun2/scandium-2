@@ -17,12 +17,41 @@ module.exports.run = async (bot, message, args) => {
     try {
         const client = redis.createClient(process.env.REDIS_URL || "redis://:p4ddbbfa3213866833993a412cecf086db781eac1558af21fd0ef5f3d8ee2f335@ec2-184-72-229-210.compute-1.amazonaws.com:19029");
 
-        client.unref();
-
-        client.get(message.author.id, function(err, value) {
-            if (err) throw err;
-            console.log(value);
+        client.get(message.author.id, (err, data) => {
+            console.log(data)
+            if (data) {
+                alreadyRegistered(data);
+            } else {
+                register();
+            }
+            client.quit(true);
         });
+
+        function alreadyRegistered(data) {
+            const exampleEmbed2 = new Discord.MessageEmbed()
+                    .setColor('#ff0000')
+                    .setTitle("Already registered")
+                    .setDescription(`You can login [here](https://scandium-2.herokuapp.com/) with the credentials:\n\n
+            UserID: \`${message.author.id}\`\n
+            Password: ||\`${data}\`||`);
+    
+            if(message.guild) message.reply("Check your DMs :mailbox_with_mail:")
+            message.author.send(exampleEmbed2);
+        }
+        
+        function register() {
+            const pass = uuidv4();
+
+            client.set(message.author.id, pass);
+            const exampleEmbed2 = new Discord.MessageEmbed()
+                .setColor('#00ff00')
+                .setTitle("Success!")
+                .setDescription(`You can login [here](https://scandium-2.herokuapp.com/) with the credentials:\n\n
+                UserID: \`${message.author.id}\`\n
+                Password: ||\`${pass}\`||`);
+            if(message.guild) message.reply("Check your DMs :mailbox_with_mail:")
+            message.author.send(exampleEmbed2);
+        }
         
 
         // const newObj = usersObj;
