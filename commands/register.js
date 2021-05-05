@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
         UserID: \`${message.author.id}\`\n
         Password: ||\`${usersObj[message.author.id]}\`||`);
 
-        if(!message.channel.type === 'dm') await message.reply("Check your DMs :mailbox_with_mail:")
+        if(message.guild) await message.reply("Check your DMs :mailbox_with_mail:")
         return await message.author.send(exampleEmbed2);
     }
 
@@ -38,7 +38,7 @@ module.exports.run = async (bot, message, args) => {
         .setDescription(`You can login [here](https://scandium-2.herokuapp.com/) with the credentials:\n\n
         UserID: \`${message.author.id}\`\n
         Password: ||\`${pass}\`||`);
-    if(!message.channel.type === 'dm') await message.reply("Check your DMs :mailbox_with_mail:")
+    if(message.guild) await message.reply("Check your DMs :mailbox_with_mail:")
     await message.author.send(exampleEmbed2);
 }
 
