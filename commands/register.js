@@ -18,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
             .setColor('#ff0000')
             .setTitle("Already registered")
             .setDescription(`You can login [here](https://localhost:3001/) with the credentials:\n\n
-        Username: \`${message.author.username}\`\n
+        UserID: \`${message.author.id}\`\n
         Password: ||\`${usersObj[message.author.id]}\`||`);
 
         await message.reply("Check your DMs :mailbox_with_mail:")
@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
         .setColor('#00ff00')
         .setTitle("Success!")
         .setDescription(`You can login [here](https://localhost:3001/) with the credentials:\n\n
-        Username: \`${message.author.username}\`\n
+        UserID: \`${message.author.id}\`\n
         Password: ||\`${pass}\`||`);
     await message.reply("Check your DMs :mailbox_with_mail:")
     await message.author.send(exampleEmbed2);
