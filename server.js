@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const fs = require("fs");
 
 const app = express();
-const serverhttp = require('http').createServer(app).listen(/*3001, "localhost",*/ process.env.PORT, () => {
-    console.log(`server is listening on port ${process.env.PORT}`);
+const serverhttp = require('http').createServer(app).listen(3001, "localhost", () => {
+    console.log(`server is listening on port 3001`);
 })
 
 const io = require('socket.io')(serverhttp);

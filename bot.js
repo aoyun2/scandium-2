@@ -279,7 +279,7 @@ module.exports.sendMessage = async (s, c, u, data) => {
 	let webhooks = await channel.fetchWebhooks();
 	if (Array.from(webhooks).length === 0) {
 		//console.log("empty");
-		await channel.createWebhook("Scandium", "https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2Fsc-213674.webp?v=1605487166515");
+		await channel.createWebhook("Scandium 2");
 		webhooks = await channel.fetchWebhooks();
 	}
 
@@ -291,9 +291,10 @@ module.exports.sendMessage = async (s, c, u, data) => {
 	var channels = message.match(/#([a-zA-Z0-9_]*)/g) || [];
 	var mentions = message.match(/@([^ ]*)/g) || [];
 
-	//console.log(emojis, channels, mentions)
+	console.log(emojis, channels, mentions)
 
 	for (var e of emojis) {
+		console.log(e)
 		var emoji = server.emojis.cache.find(em => { return `:${em.name}:` == e })
 		
 		if (emoji) {
@@ -303,7 +304,7 @@ module.exports.sendMessage = async (s, c, u, data) => {
 	}
 
 	for (var c of channels) {
-		
+		console.log(c)
 		var mentioned_channel = server.channels.cache.find(cn => `#${cn.name}` == c);
 		console.log(c, mentioned_channel);
 
@@ -314,7 +315,8 @@ module.exports.sendMessage = async (s, c, u, data) => {
 	}
 
 	for (var m of mentions) {
-		var mention = server.members.cache.find(mb => `@${mb.username}` == m || `@${mb.displayname}`) || server.roles.cache.find(r => `@${r.name}` == m);
+		console.log(m)
+		var mention = server.members.cache.find(mb => `@${mb.displayName}`.replace(' ', '_') == m) || server.roles.cache.find(r => `@${r.name}` == m);
 		console.log(m, mention);
 
 		if (mention) {
