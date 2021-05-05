@@ -4,7 +4,7 @@ haha ok
 Scandium 2 is a lightweight, browser-based discord client. 
 
 ## Installation: 
-1] [Invite](https://heroku link uhh) the bot to a discord server.
+1] [Invite](https://heroku.com) the bot to a discord server.
 
 2] Use the command `<>register`.
 
