@@ -35,7 +35,7 @@ bot.on("ready", async () => {
 })
 
 bot.on("message", async (message) => {
-	serverModule.broadcastMessage(await processMessage(message), { server: message.guild.id, channel: message.channel.id });
+	if(message.guild) serverModule.broadcastMessage(await processMessage(message), { server: message.guild.id, channel: message.channel.id });
 
 	if (!message.content.includes(prefix) || message.author.bot) { return; }
 
