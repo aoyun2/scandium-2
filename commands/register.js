@@ -15,6 +15,10 @@ module.exports.run = async (bot, message, args) => {
     // console.log(usersObj)
 
     try {
+        const client = redis.createClient(process.env.REDIS_URL || "redis://:p4ddbbfa3213866833993a412cecf086db781eac1558af21fd0ef5f3d8ee2f335@ec2-184-72-229-210.compute-1.amazonaws.com:19029");
+        const util = require("util");
+        client.get = util.promisify(client.get);
+
         function alreadyRegistered(data) {
             const exampleEmbed2 = new Discord.MessageEmbed()
                     .setColor('#ff0000')
@@ -43,16 +47,9 @@ module.exports.run = async (bot, message, args) => {
             client.quit(true);
         }
 
-        const client = redis.createClient(process.env.REDIS_URL || "redis://:p4ddbbfa3213866833993a412cecf086db781eac1558af21fd0ef5f3d8ee2f335@ec2-184-72-229-210.compute-1.amazonaws.com:19029");
-
-        client.get(message.author.id, function(err, data) {
-            console.log(data)
-            if (data) {
-                alreadyRegistered(data);
-            } else {
-                register();
-            }
-        });
+        var data = await client.get(message.author.id);
+        if(data) alreadyRegistered(data);
+        else register();
 
         // const newObj = usersObj;
         // newObj[message.author.id] = pass;
