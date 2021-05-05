@@ -1,0 +1,59 @@
+doctype html
+
+html
+    head
+        style(type="text/css").
+            * {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            
+            #container {
+                display: flex;
+
+                align-items: center;
+                justify-content: center;
+
+                height: 100vh;
+            }
+        script(src="/socket.io/socket.io.js")
+    body
+        div(id="container")
+            form(action="/connect", method="POST")
+              label(for = "username") User ID 
+              br
+              input(type='text', name='userID', id='userinput')
+              br
+              label(for = "server") Server 
+              small (Fill in the "User ID" field, and your servers will show up here) 
+              br
+              select(name='server', id="serverselect")
+              br
+              label(for = "password") Password 
+              br
+              input(type='password', name='password')
+              br
+              button(type="submit") Login
+
+        script.
+            const socket = io();
+            const userinput = document.querySelector("#userinput");
+            const serverinput = document.querySelector("#serverselect");
+            
+            userinput.addEventListener('change', (event) => {
+                try {
+                    socket.emit("populate_server_dropdown", userinput.value);
+                } catch(e) {console.log(e)};
+            });
+
+            socket.on("servers", servers => {
+                serverinput.innerHTML = '';
+
+                for (var s of servers) {
+                    var server = document.createElement("option");
+                    server.value = s[1];
+                    server.innerText = s[0]; 
+                    serverinput.appendChild(server);
+                }
+            });
+
+
