@@ -43,7 +43,7 @@ app.post('/connect', async (request, response) => {
         const util = require("util");
         client.get = util.promisify(client.get);
                 
-        var data = await client.get(message.author.id, false);
+        var data = await client.get(message.author.id, function(err, val) {});
 
         if(data && data === password) return true;
         else return false;
