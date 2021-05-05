@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
     const newObj = usersObj;
     newObj[message.author.id] = pass;
 
-    fs.writeFileSync('users.json', JSON.stringify(newObj));
+    fs.writeFileSync('../users.json', JSON.stringify(newObj));
 
     const exampleEmbed2 = new Discord.MessageEmbed()
         .setColor('#00ff00')
