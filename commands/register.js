@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
         } else {
             const pass = uuidv4();
 
-            client.set(message.author.id, pass, redis.print);
+            client.set(message.author.id, pass);
             const exampleEmbed2 = new Discord.MessageEmbed()
                 .setColor('#00ff00')
                 .setTitle("Success!")
