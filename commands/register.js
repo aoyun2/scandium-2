@@ -18,8 +18,10 @@ module.exports.run = async (bot, message, args) => {
         const client = redis.createClient(process.env.REDIS_URL || "redis://:p4ddbbfa3213866833993a412cecf086db781eac1558af21fd0ef5f3d8ee2f335@ec2-184-72-229-210.compute-1.amazonaws.com:19029");
         const util = require("util");
         var getAsync = util.promisify(client.get).bind(client);
-                
-        function alreadyRegistered(data) {
+        
+        var data = await getAsync(message.author.id);
+        console.log(data)
+        if(data) {
             const exampleEmbed2 = new Discord.MessageEmbed()
                     .setColor('#ff0000')
                     .setTitle("Already registered")
@@ -29,10 +31,9 @@ module.exports.run = async (bot, message, args) => {
     
             if(message.guild) message.reply("Check your DMs :mailbox_with_mail:")
             message.author.send(exampleEmbed2);
-            client.quit(true);
+            client.quit();
         }
-        
-        function register() {
+        else {
             const pass = uuidv4();
 
             client.set(message.author.id, pass);
@@ -44,13 +45,8 @@ module.exports.run = async (bot, message, args) => {
                 Password: ||\`${pass}\`||`);
             if(message.guild) message.reply("Check your DMs :mailbox_with_mail:")
             message.author.send(exampleEmbed2);
-            client.quit(true);
-        }
-
-        var data = await getAsync(message.author.id);
-        console.log(data)
-        if(data) alreadyRegistered(data);
-        else register();
+            client.quit();
+        };
 
         // const newObj = usersObj;
         // newObj[message.author.id] = pass;

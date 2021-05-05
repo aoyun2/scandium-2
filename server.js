@@ -45,6 +45,8 @@ app.post('/connect', async (request, response) => {
                 
         var data = await getAsync(message.author.id);
 
+        client.quit();
+
         if(data && data === password) return true;
         else return false;
     }
