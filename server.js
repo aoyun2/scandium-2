@@ -2,6 +2,7 @@ const botModule = require("./bot.js");
 const express = require("express");
 const bodyParser = require('body-parser');
 const fs = require("fs");
+const redis = require("redis");
 
 const app = express();
 const serverhttp = require('http').createServer(app).listen(/*3001, "localhost",*/ process.env.PORT, () => {
@@ -30,17 +31,25 @@ app.post('/connect', async (request, response) => {
     const userID = request.body.userID;
     const pass = request.body.password;
 
-    getUser = (ID, password) => {
-        const rawdata = fs.readFileSync('users.json');
-        const usersObj = JSON.parse(rawdata);
-        const userPass = Object.values(usersObj).find(v => v === password);
-        const uID = Object.keys(usersObj).find(k => k === ID);
+    getUser = async (ID, password) => {
+        // const rawdata = fs.readFileSync('users.json');
+        // const usersObj = JSON.parse(rawdata);
+        // const userPass = Object.values(usersObj).find(v => v === password);
+        // const uID = Object.keys(usersObj).find(k => k === ID);
 
-        if (userPass === undefined || uID === undefined) return false;
-        else return true;
+        // if (userPass === undefined || uID === undefined) return false;
+        // else return true;
+        const client = redis.createClient(process.env.REDIS_URL || "redis://:p4ddbbfa3213866833993a412cecf086db781eac1558af21fd0ef5f3d8ee2f335@ec2-184-72-229-210.compute-1.amazonaws.com:19029");
+        const { promisify } = require("util");
+        const getAsync = promisify(client.get).bind(client);
+        
+        var data = await getAsync(ID);
+
+        if(data && data === password) return true;
+        else return false;
     }
 
-    if (getUser(userID, pass)) {
+    if (await getUser(userID, pass)) {
         response.render('connected', {
             welcome: `Welcome, ${botModule.userName(userID)}!`,
             server: server,

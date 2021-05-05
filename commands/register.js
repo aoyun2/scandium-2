@@ -28,6 +28,9 @@ module.exports.run = async (bot, message, args) => {
             if(message.guild) await message.reply("Check your DMs :mailbox_with_mail:")
             return await message.author.send(exampleEmbed2);
         } else {
+            const pass = uuidv4();
+
+            client.set(message.author.id, pass, redis.print);
             const exampleEmbed2 = new Discord.MessageEmbed()
                 .setColor('#00ff00')
                 .setTitle("Success!")
@@ -37,9 +40,9 @@ module.exports.run = async (bot, message, args) => {
             if(message.guild) await message.reply("Check your DMs :mailbox_with_mail:")
             await message.author.send(exampleEmbed2);
         }
+        client.quit(true);
     });
-
-    const pass = uuidv4();
+    
 
     // const newObj = usersObj;
     // newObj[message.author.id] = pass;
