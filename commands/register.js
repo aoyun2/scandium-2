@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args) => {
     //await message.channel.send("Not implemented.");
     //return;
 
-    const data = fs.readFileSync('users.json');
+    const data = fs.readFileSync('../users.json');
     const usersObj = JSON.parse(data);
     //console.log(usersObj)
 
@@ -29,6 +29,7 @@ module.exports.run = async (bot, message, args) => {
 
     const newObj = usersObj;
     newObj[message.author.id] = pass;
+    console.log(newObj)
 
     fs.writeFileSync('../users.json', JSON.stringify(newObj));
 
