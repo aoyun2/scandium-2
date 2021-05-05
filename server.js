@@ -41,7 +41,7 @@ app.post('/connect', async (request, response) => {
         // else return true;
         const client = redis.createClient(process.env.REDIS_URL || "redis://:p4ddbbfa3213866833993a412cecf086db781eac1558af21fd0ef5f3d8ee2f335@ec2-184-72-229-210.compute-1.amazonaws.com:19029");
         const util = require("util");
-        var getAsync = util.promisify(client.get);
+        var getAsync = util.promisify(client.get).bind(client);
                 
         var data = await getAsync(message.author.id, function(err, val) {});
 
