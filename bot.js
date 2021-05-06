@@ -288,7 +288,7 @@ module.exports.sendMessage = async (s, c, u, data) => {
 	var message = data;
 
 	var emojis = message.match(/:[^:\s]*(?:::[^:\s]*)*:/g) || [];
-	var channels = message.match(/#([a-zA-Z0-9_]*)/g) || [];
+	var channels = message.match(/#([a-zA-Z0-9_-]*)/g) || [];
 	var mentions = message.match(/@([^ ]*)/g) || [];
 
 	console.log(emojis, channels, mentions)
