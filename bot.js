@@ -316,7 +316,7 @@ module.exports.sendMessage = async (s, c, u, data) => {
 
 	for (var m of mentions) {
 		console.log(m)
-		var mention = server.members.cache.find(mb => `@${mb.displayName}`.replace(' ', '_') == m || `@${mb.username}`.replace(' ', '_') == m) || server.roles.cache.find(r => `@${r.name}` == m);
+		var mention = server.members.cache.find(mb => `@${mb.displayName}`.replace(' ', '_') == m || `@${mb.user.username}`.replace(' ', '_') == m) || server.roles.cache.find(r => `@${r.name}` == m);
 		console.log(m, mention);
 
 		if (mention) {
