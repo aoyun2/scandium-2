@@ -11,6 +11,27 @@ html
                 overflow: hidden;
             }
 
+            .error {
+                padding: 20px;
+                background-color: #f44336;
+                color: white;
+            }
+
+            .errorclose {
+                margin-left: 15px;
+                color: white;
+                font-weight: bold;
+                float: right;
+                font-size: 22px;
+                line-height: 20px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            .errorclose:hover {
+                color: black;
+            }
+
             #container {
                 top: 5px;
                 display: flex;
@@ -34,6 +55,8 @@ html
                 border-radius: 6px;
                 padding: 5px;
                 padding-left: 2px;
+                max-height: 500px;
+                overflow-y: scroll;
 
                 /* Position the tooltip */
                 position: absolute;
@@ -770,7 +793,7 @@ html
                 addMessage(data, false);
             });
 
-            socket.on("message_edit", (data) => {
+            socket.on("message_edit", data => {
                 // console.log(data);
                 var oldMessage = document.getElementById(data.id);
                 if(!oldMessage) return;
@@ -780,17 +803,27 @@ html
                 oldMessage.innerHTML = newMessage.innerHTML;
             });
 
-            socket.on("message_delete", (id) => {
+            socket.on("message_delete", id => {
                 var message = document.getElementById(id);
                 if(!message) return;
 
                 message.remove();
             });
 
-            socket.on("reply_success", (mid) => {
+            socket.on("reply_success", mid => {
                 replying = false;
                 var message = document.getElementById(mid);
                 if(!message) return;
 
-                message.querySelector("div:nth-child(1) > button:nth-child(2)").innerText = "Reply";
+                message.children[2].children[1].innerText = "Reply";
+            });
+
+            socket.on("error", m => {
+                var error = document.createElement("div");
+                var close = document.createElement("span");
+
+                error.appendChild(close);
+                error.innerHTML = `<strong>${m}</strong>`;
+
+                document.prepend(error);
             });

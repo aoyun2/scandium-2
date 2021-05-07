@@ -5,7 +5,7 @@ const fs = require("fs");
 const redis = require("redis");
 
 const app = express();
-const serverhttp = require('http').createServer(app).listen(process.env.PORT, /*3001, "localhost",*/ () => {
+const serverhttp = require('http').createServer(app).listen(3001, "localhost", () => {
     console.log(`server is listening on port ${process.env.PORT}`);
 })
 
@@ -116,6 +116,7 @@ io.on('connection', (socket) => {
         if (!clients[clientID].info.channel.permissions.includes("READ_MESSAGE_HISTORY")) {
             // error
             // console.log(clients[clientID].info.channel.permissions, "can't read")
+            socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
             return;
         }
 
@@ -168,6 +169,7 @@ io.on('connection', (socket) => {
     socket.on('reply_message', async data => {
         if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
             // error
+            socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
             return;
         }
 
@@ -182,6 +184,7 @@ io.on('connection', (socket) => {
     socket.on('delete_message', async data => {
         if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
             // error
+            socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
             return;
         }
 
