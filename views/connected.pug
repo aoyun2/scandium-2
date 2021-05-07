@@ -24,27 +24,32 @@ html
             }
 
             #input .tooltiptext {
-                  visibility: hidden;
-                  border: 2px solid black;
-                  background: white;
-                  color: black;
-                  white-space: nowrap;
-                  width: auto;
-                  text-align: left;
-                  border-radius: 6px;
-                  padding: 5px;
-  
-                  /* Position the tooltip */
-                  position: absolute;
-                  z-index: 1;
-                  bottom: 100%;
-                  left: 10%;
-                  margin-left: -60px;
+                visibility: hidden;
+                border: 2px solid black;
+                background: white;
+                color: black;
+                white-space: nowrap;
+                width: auto;
+                text-align: left;
+                border-radius: 6px;
+                padding: 5px;
+                padding-left: 2px;
+
+                /* Position the tooltip */
+                position: absolute;
+                z-index: 1;
+                bottom: 100%;
+                left: 5%;
+                margin-left: -60px;
             }
 
-            #input:hover .tooltiptext {
-                visibility: visible;
+            #input .tooltiptext ul li:hover {
+                text-decoration: underline;
             }
+
+            /* #input:hover .tooltiptext {
+                visibility: visible;
+            } */
 
             #input_messages {
                 resize: none;
@@ -119,7 +124,7 @@ html
                   position: absolute;
                   z-index: 1;
                   bottom: 100%;
-                  left: 50%;
+                  left: 70%;
                   margin-left: -60px;
             }
 
@@ -170,8 +175,8 @@ html
                 font-family: consolas, monospace; !important
             }
         meta(content="Scandium" property="og:title")
-        meta(content="Discord, unblocked; Simplicity over CSS." property="og:description")
-        meta(content="https://embed.com/this-is-the-site-url" property="og:url")
+        meta(content="Discord, unblocked | Lightweight | horrible code | still works." property="og:description")
+        meta(content="https://embed.com/scandium-2.herokuapp.com" property="og:url")
         meta(content="#A3A6E8" data-react-helmet="true" name="theme-color")
 
         script(src="/socket.io/socket.io.js")
@@ -192,23 +197,35 @@ html
             div(id="messages")
 
         div(id="input")
-            textarea(id="input_messages" onkeydown="handleMessageSending(event)" placeholder="Add to the discussion!")
+            textarea(id="input_messages" onkeyup="handleMessageSending(event)" placeholder="Add to the discussion!")
             span(class="tooltiptext")
-                em(style='color:purple') Emojis:
-                    ul
-                        each e in emojis
-                            li #{e}
-                    
         script.
             const socket = io();
             const channelinput = document.querySelector("#channelselect");
             const messageinput = document.querySelector("#input_messages");
             const userID = "#{userID}";
             const serverID = "#{server}";
+
+            var e = document.createElement("div"); 
+            e.innerHTML = "#{emojis}";
+            const emojis = JSON.parse(e.innerText);
+
+            var u = document.createElement("div"); 
+            u.innerHTML = "#{users}";
+            const users = JSON.parse(u.innerText);
+
+            var r = document.createElement("div"); 
+            r.innerHTML = "#{roles}";
+            const roles = JSON.parse(r.innerText);
+
+            e.remove(); u.remove(); r.remove();
+            console.log(emojis, users);
+
             const messagediv = document.querySelector("#messages");
 
             var requestDebounce = false;
             var channelEnd = false;
+            var replying = false;
 
             window.addEventListener('resize', () => {
                 try {
@@ -237,9 +254,162 @@ html
             function handleMessageSending(event) {
                 try {
                     if (event.keyCode === 13 && !event.shiftKey && (messageinput.value && !messageinput.value.match(/^ *$/))) {
-                        socket.emit("client_message", messageinput.value);
-                        messageinput.value = '';
-                        event.preventDefault();
+                        if(!replying) {
+                            socket.emit("client_message", messageinput.value);
+                            messageinput.value = '';
+                        } else {
+                            socket.emit("reply_message", { messageID: replying, data: messageinput.value });
+                            messageinput.value = '';
+                        }
+                    } else {
+                        // Autocomplete
+                        var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
+                        
+                        if (lastWord.charAt(0) === ":") {
+                            var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
+                            //- console.log(matchingEmojis)
+
+                            if (matchingEmojis.length > 0) {
+                                var suggestions = document.createElement("ul");
+
+                                var emojisHeader = document.createElement("em");
+                                emojisHeader.innerText = "Emojis:";
+                                emojisHeader.style.color = "purple";
+
+                                suggestions.appendChild(emojisHeader);
+
+                                for (var e of matchingEmojis) {
+                                    var li = document.createElement('li');
+                                    li.textContent = e.name;
+                                    li.id = e.string;
+                                    li.style.userSelect = "none";
+
+                                    li.addEventListener("mouseover", e_1 => {
+                                        e_1.target.style.textDecoration = "underline overline";
+                                    });
+
+                                    li.addEventListener("mouseout", e_1 => {
+                                        e_1.target.style.textDecoration = "none";
+                                    });
+
+                                    li.addEventListener("click", e_1 => {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, '');
+
+                                        messageinput.value += e_1.target.id;
+                                    });
+
+                                    suggestions.appendChild(li);
+                                }
+
+                                document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                document.querySelector("#input > .tooltiptext").appendChild(suggestions);
+                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                            } else {
+                                document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                document.querySelector("#input > .tooltiptext").innerHTML = '';
+                            }
+                        } else if (lastWord.charAt(0) === "@") {
+                            var matchingUsers = users.filter(u => `@${u.name}`.toLowerCase().startsWith(lastWord) || `@${u.displayname}`.startsWith(lastWord));
+                            var matchingRoles = roles.filter(r => `@${r.name}`.toLowerCase().startsWith(lastWord));
+                            //- console.log(matchingUsers)
+
+                            if (matchingUsers.length > 0 || matchingRoles.length > 0) {
+                                var suggestions = document.createElement("ul");
+
+                                var usersHeader = document.createElement("em");
+                                usersHeader.innerText = "Users:";
+                                usersHeader.style.color = "purple";
+
+                                var rolesHeader = document.createElement("em");
+                                rolesHeader.innerText = "Roles:";
+                                rolesHeader.style.color = "purple";
+
+                                suggestions.appendChild(usersHeader);
+
+                                for (var u of matchingUsers) {
+                                    var li = document.createElement('li');
+                                    li.textContent = u.displayname;
+                                    li.id = u.string;
+                                    li.style.userSelect = "none";
+
+                                    li.addEventListener("click", e => {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, '');
+
+                                        messageinput.value += e.target.id;
+                                    });
+
+                                    suggestions.appendChild(li);
+                                }
+
+                                suggestions.appendChild(document.createElement("br"));
+
+                                suggestions.appendChild(rolesHeader);
+
+                                for (var r of matchingRoles) {
+                                    var li = document.createElement('li');
+                                    li.textContent = r.name;
+                                    li.id = r.string;
+                                    li.style.userSelect = "none";
+
+                                    li.addEventListener("click", e => {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, '');
+
+                                        messageinput.value += e.target.id;
+                                    });
+
+                                    suggestions.appendChild(li);
+                                }
+
+                                document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                document.querySelector("#input > .tooltiptext").appendChild(suggestions);
+                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                            } else {
+                                document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                document.querySelector("#input > .tooltiptext").innerHTML = '';
+                            }
+                        } else if (lastWord.charAt(0) === "#") {
+                            var matchingChannels = Array.prototype.filter.call(channelinput.children, ({ textContent }) => `#${textContent}`.toLowerCase().startsWith(lastWord));
+                            //- console.log(matchingChannels);
+
+                            if(matchingChannels.length > 0) {
+                                var suggestions = document.createElement("ul");
+
+                                var channelsHeader = document.createElement("em");
+                                channelsHeader.innerText = "Channels:";
+                                channelsHeader.style.color = "purple";
+
+                                suggestions.appendChild(channelsHeader);
+
+                                for (var c of matchingChannels) {
+                                    var li = document.createElement('li');
+                                    li.textContent = c.textContent;
+                                    li.id = `<#${c.value}>`;
+                                    li.style.userSelect = "none";
+
+                                    li.addEventListener("click", e => {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, '');
+
+                                        messageinput.value += e.target.id;
+                                    });
+
+                                    suggestions.appendChild(li);
+                                }
+
+                                document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                document.querySelector("#input > .tooltiptext").appendChild(suggestions);
+                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                            } else {
+                                document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                document.querySelector("#input > .tooltiptext").innerHTML = '';
+                            }
+                        } else {
+                            document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                            document.querySelector("#input > .tooltiptext").innerHTML = '';
+                        }
                     }
                 } catch(e) {console.log(e)};
             }
@@ -248,8 +418,9 @@ html
                 readjustSizeOfMessageBox();
             });
 
-            messageinput.addEventListener('blur', () => {
+            messageinput.addEventListener('blur', (e) => {
                 readjustSizeOfMessageBox();
+                handleMessageSending(e);
             });
 
             channelinput.addEventListener('change', () => {
@@ -316,7 +487,7 @@ html
             }
 
             function createEmbed(e) {
-                console.log(e);
+                // console.log(e);
                 var embed = document.createElement('div');
                 embed.style.borderLeft = `thick solid ${e.color}`;
 
@@ -383,7 +554,7 @@ html
 
                 embed.classList.add("d-embed");
 
-                console.log(embed);
+                //console.log(embed);
                 return embed;
             }
 
@@ -440,6 +611,36 @@ html
                 if (messageObject.edited) message.appendChild(edited);
 
                 if (messageObject.reference) message.appendChild(reply);
+
+                var messageactions = document.createElement("div");
+                messageactions.style.display = "inline-block";
+                messageactions.style.marginLeft = "3px";
+
+                var del = document.createElement("button");
+                del.innerText = "Delete";
+                var reply = document.createElement("button");
+                reply.innerText = "Reply";
+
+                reply.addEventListener("click", e => {
+                    if (!replying) {
+                        replying = e.target.parentNode.parentNode.id;
+                        e.target.innerText = "Cancel";
+                    } else if (e.target.parentNode.parentNode.id === replying) {
+                        replying = false;
+                        e.target.innerText = "Reply";
+                    }
+                });
+
+                del.addEventListener("click", e => {
+                    socket.emit("delete_message", e.target.parentNode.parentNode.id);
+                });
+
+                if (messageObject.id === userID) messageactions.appendChild(edit);
+                messageactions.appendChild(del);
+                messageactions.appendChild(reply);
+
+                message.appendChild(messageactions);
+
                 message.appendChild(content);
                 message.appendChild(attachments);
                 messageObject.embeds.forEach(e => {
@@ -448,6 +649,7 @@ html
                 message.appendChild(document.createElement('p'));
                 message.classList.add('message');
                 message.id = messageObject.id;
+
                 return message;
             }
 
@@ -505,7 +707,7 @@ html
                     loading.innerText = "Loading messages. . .";
                     loading.style.color = "purple";
                     messagediv.prepend(loading);
-                    console.log("loading more messages");
+                    console.log("Loading more messages");
                 } /*else if (!isInViewport(messagediv.firstChild)) console.log("bug detected")*/
 
                 const mentions = document.querySelectorAll('.d-mention');
@@ -527,7 +729,7 @@ html
             }
 
             function endOfChannel() {
-                console.log("end of channel");
+                console.log("End of channel");
                 if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
                 channelEnd = true;
                 var notice = document.createElement('em');
@@ -583,4 +785,12 @@ html
                 if(!message) return;
 
                 message.remove();
+            });
+
+            socket.on("reply_success", (mid) => {
+                replying = false;
+                var message = document.getElementById(mid);
+                if(!message) return;
+
+                message.querySelector("div:nth-child(1) > button:nth-child(2)").innerText = "Reply";
             });

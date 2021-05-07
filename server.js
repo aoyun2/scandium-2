@@ -5,7 +5,7 @@ const fs = require("fs");
 const redis = require("redis");
 
 const app = express();
-const serverhttp = require('http').createServer(app).listen(/*3001, "localhost",*/ process.env.PORT, () => {
+const serverhttp = require('http').createServer(app).listen(3001, "localhost", () => {
     console.log(`server is listening on port ${process.env.PORT}`);
 })
 
@@ -51,13 +51,15 @@ app.post('/connect', async (request, response) => {
         else return false;
     }
 
-    if (await getUser(userID, pass)) {
+    if (await getUser(userID, pass) && server) {
         response.render('connected', {
             welcome: `Welcome, ${botModule.userName(userID)}!`,
             server: server,
             userID: userID,
             channels: botModule.fetchChannels(server, userID),
-            emojis: botModule.fetchEmojis(server)
+            emojis: JSON.stringify(botModule.fetchEmojis(userID)),
+            users: JSON.stringify(botModule.fetchUsers(server)),
+            roles: JSON.stringify(botModule.fetchRoles(server))
         });
     }
     else {
@@ -163,6 +165,31 @@ io.on('connection', (socket) => {
         await botModule.sendMessage(s, c, u, data);
     });
 
+    socket.on('reply_message', async data => {
+        if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+            // error
+            return;
+        }
+
+        var s = clients[clientID].info.server;
+        var c = clients[clientID].info.channel.id;
+        var u = clients[clientID].info.userID;
+
+        await botModule.replyToMessage(s, c, data.messageID, u, data.data);
+        socket.emit("reply_success", data.messageID);
+    });
+
+    socket.on('delete_message', async data => {
+        if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
+            // error
+            return;
+        }
+
+        var s = clients[clientID].info.server;
+        var c = clients[clientID].info.channel.id;
+
+        await botModule.deleteMessage(s, c, data);
+    });
 
     // home.pug
 

@@ -355,7 +355,7 @@ function toHTML(source, options, customParser, customHtmlOutput) {
 
 	const state = {
 		inline: true,
-		inQuote: false,
+		inQuote: true,
 		inEmphasis: false,
 		escapeHTML: options.escapeHTML,
 		cssModuleNames: options.cssModuleNames || null,

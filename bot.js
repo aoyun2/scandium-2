@@ -9,6 +9,65 @@ const prefix = botSettings.prefix;
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
+// inline reply code ------------------------------ //
+const { APIMessage, Webhook, Structures } = require("discord.js");
+
+class ExtAPIMessage extends APIMessage {
+    resolveData() {
+        if (this.data) return this;
+        super.resolveData();
+        if ((this.options.allowedMentions || {}).repliedUser !== undefined) {
+            if (this.data.allowed_mentions === undefined) this.data.allowed_mentions = {};
+            Object.assign(this.data.allowed_mentions, { replied_user: this.options.allowedMentions.repliedUser });
+            delete this.options.allowedMentions.repliedUser;
+        }
+        if (this.options.replyTo !== undefined) {
+            Object.assign(this.data, { message_reference: { message_id: this.options.replyTo.id } });
+        }
+        return this;
+    }
+}
+
+async function inlineReply(message, content, options) {
+	var apiMessage = APIMessage.create(this, content, options).resolveData();
+
+	const { data, files } = await apiMessage.resolveFiles();
+	Object.assign(data, { message_reference: { message_id: message.id } });
+
+	if (Array.isArray(apiMessage.data.content)) {
+        return Promise.all(apiMessage.split().map(this.send.bind(this)));
+	}
+
+	console.log(data, files);
+	
+	return this.client.api.webhooks(this.id, this.token).post({
+			data,
+			files,
+			query: { wait: true },
+			auth: false
+		}).then(d => {
+			const channel = this.client.channels ? this.client.channels.cache.get(d.channel_id) : undefined;
+			if (!channel) return d;
+			return channel.messages.add(d, false);
+		});
+}
+
+class Message extends Structures.get("Message") {
+    inlineReply(content, options) {
+		return this.channel.send(ExtAPIMessage.create(this, content, options, { replyTo: this }).resolveData());
+    }
+
+    edit(content, options) {
+        return super.edit(ExtAPIMessage.create(this, content, options).resolveData());
+    }
+}
+// ------------------------------------------------ //
+
+Structures.extend("Message", () => Message);
+
+// Webhook replies sadly do not work
+// Webhook.prototype.inlineReply = inlineReply;
+
 fs.readdir("./commands/", (err, files) => {
 
 	if (err) {
@@ -35,6 +94,7 @@ bot.on("ready", async () => {
 })
 
 bot.on("message", async (message) => {
+	// console.log(message)
 	if(message.guild) serverModule.broadcastMessage(await processMessage(message), { server: message.guild.id, channel: message.channel.id });
 
 	if (!message.content.includes(prefix) || message.author.bot) { return; }
@@ -70,20 +130,53 @@ module.exports.channelName = (id) => {
 module.exports.userName = (id) => {
 	try {
 		return bot.users.cache.get(id).username;
-	} catch (e) { return "non-existing user"; console.log(e) };
+	} catch (e) { console.log(e); return "non-existing user"};
 }
 
 module.exports.roleName = (sid, rid) => {
 	try {
 		return bot.guilds.cache.get(sid).roles.cache.get(rid).name;
-	} catch (e) { return "non-existing role"; console.log(e) };
+	} catch (e) { console.log(e); return "non-existing role"};
 }
 
-module.exports.fetchEmojis = (sid) => {
+module.exports.fetchEmojis = (id) => {
 	try {
-		return bot.guilds.cache.get(sid).emojis.cache.map(e => e.name);
-	} catch (e) { return "non-existing role"; console.log(e) };
+		return bot.emojis.cache.filter(e => e.guild.members.cache.get(id) !== undefined).map(e => {
+			var eobj = {
+				name: `:${e.name}:`, 
+				guild: e.guild.name,
+				string: e.toString()
+			}
+			return eobj;
+		});
+	} catch (e) { console.log(e); return []; };
 }
+
+module.exports.fetchUsers = (sid) => {
+	try {
+		return bot.guilds.cache.get(sid).members.cache.map(m => {
+			var mobj = {
+				name: m.user.username,
+				displayname: m.displayName,
+				string: m.toString()
+			}
+			return mobj;
+		});
+	} catch (e) { console.log(e); return []; };
+}
+
+module.exports.fetchRoles = (sid) => {
+	try {
+		return bot.guilds.cache.get(sid).roles.cache.map(r => {
+			var robj = {
+				name: r.name,
+				string: r.toString()
+			}
+			return robj;
+		});
+	} catch (e) { console.log(e); return []; };
+}
+
 
 async function processMessage(m) {
 	// process emojis on the client-side
@@ -163,17 +256,24 @@ async function processMessage(m) {
 			b64_thumbnail = url;
 		}
 
+		var embedRules = {
+			embed: true,
+			escapeHTML: true,
+			discordOnly: false,
+			discordCallback: {}
+		}
+
 		var embed = {
 			color: e.hexColor,
-			title: toHTML(e.title ? e.title : ''),
+			title: toHTML(e.title ? e.title : '', embedRules),
 			fields: fields,
-			description: toHTML(e.description ? e.description : ''),
+			description: toHTML(e.description ? e.description : '', embedRules),
 			files: efiles,
 			image: b64_image,
 			thumbnail: b64_thumbnail,
 			video: b64_video,
 			yt_video: yt_video,
-			footer: e.footer ? toHTML(e.footer.text) : null
+			footer: e.footer ? toHTML(e.footer.text, embedRules) : null
 		}
 
 		for (var i of Object.keys(embed)) {
@@ -223,6 +323,19 @@ module.exports.fetchMessage = async (server, channel, id) => {
 		var message = await c.messages.fetch(id);
 
 		// console.log(s, c);
+		if (!message) return {
+			id: null,
+			author: null,
+			color: null,
+			sentAt: null,
+			edited: null,
+			canEdit: null,
+			text: "Message either was deleted or could not be loaded.",
+			attachments: null,
+			embeds: null,
+			reference: null,
+			system: null
+		}
 		
 		return await processMessage(message);
 	} catch (e) { console.log(e); return undefined; }
@@ -285,50 +398,95 @@ module.exports.sendMessage = async (s, c, u, data) => {
 
 	const webhook = webhooks.first();
 
-	var message = data;
+	// var message = data;
 
-	var emojis = message.match(/:[^:\s]*(?:::[^:\s]*)*:/g) || [];
-	var channels = message.match(/#([a-zA-Z0-9_-]*)/g) || [];
-	var mentions = message.match(/@([^ ]*)/g) || [];
+	// var emojis = message.match(/:[^:\s]*(?:::[^:\s]*)*:/g) || [];
+	// var channels = message.match(/#([a-zA-Z0-9_-]*)/g) || [];
+	// var mentions = message.match(/@([^ ]*)/g) || [];
 
-	console.log(emojis, channels, mentions)
+	// console.log(emojis, channels, mentions)
 
-	for (var e of emojis) {
-		console.log(e)
-		var emoji = server.emojis.cache.find(em => { return `:${em.name}:` == e })
+	// for (var e of emojis) {
+	// 	console.log(e)
+	// 	var emoji = server.emojis.cache.find(em => { return `:${em.name}:` == e })
 		
-		if (emoji) {
-			var emoji_text = emoji.toString();
-			message = message.replace(e, emoji_text);
-		}
-	}
+	// 	if (emoji) {
+	// 		var emoji_text = emoji.toString();
+	// 		message = message.replace(e, emoji_text);
+	// 	}
+	// }
 
-	for (var c of channels) {
-		console.log(c)
-		var mentioned_channel = server.channels.cache.find(cn => `#${cn.name}` == c);
-		console.log(c, mentioned_channel);
+	// for (var c of channels) {
+	// 	console.log(c)
+	// 	var mentioned_channel = server.channels.cache.find(cn => `#${cn.name}` == c);
+	// 	console.log(c, mentioned_channel);
 
-		if (mentioned_channel) {
-			var channel_text = mentioned_channel.toString();
-			message = message.replace(c, channel_text);
-		}
-	}
+	// 	if (mentioned_channel) {
+	// 		var channel_text = mentioned_channel.toString();
+	// 		message = message.replace(c, channel_text);
+	// 	}
+	// }
 
-	for (var m of mentions) {
-		console.log(m)
-		var mention = server.members.cache.find(mb => `@${mb.displayName}`.replace(' ', '_') == m || `@${mb.user.username}`.replace(' ', '_') == m) || server.roles.cache.find(r => `@${r.name}` == m);
-		console.log(m, mention);
+	// for (var m of mentions) {
+	// 	console.log(m)
+	// 	var mention = server.members.cache.find(mb => `@${mb.displayName}`.replace(' ', '_') === m || `@${mb.user.username}`.replace(' ', '_') === m) || server.roles.cache.find(r => `@${r.name}` === m);
+	// 	console.log(m, mention);
 
-		if (mention) {
-			var mention_text = mention.toString();
-			message = message.replace(m, mention_text);
-		}
-	}
+	// 	if (mention) {
+	// 		var mention_text = mention.toString();
+	// 		message = message.replace(m, mention_text);
+	// 	}
+	// }
 
-	//console.log(message)
+	// console.log(message)
 
-	await webhook.send(message, {
+	await webhook.send(data, {
 		username: user.user.username,
 		avatarURL: user.user.avatarURL({ dynamic: true })
 	});
+}
+
+module.exports.replyToMessage = async (s, c, mid, u, data) => {
+	try {
+		const server = bot.guilds.cache.get(s);
+		const channel = server.channels.cache.get(c);
+		const user = server.members.cache.get(u);
+
+		var message = await channel.messages.fetch(mid)
+
+		let webhooks = await channel.fetchWebhooks();
+		if (Array.from(webhooks).length === 0) {
+			//console.log("empty");
+			await channel.createWebhook("Scandium 2");
+			webhooks = await channel.fetchWebhooks();
+		}
+
+		const webhook = webhooks.first();
+
+		// webhook.inlineReply(message, data, {
+		// 	username: user.user.username,
+		// 	avatarURL: user.user.avatarURL({ dynamic: true })
+		// });
+
+		var replyEmbed = new Discord.MessageEmbed()
+			.setColor('#A3A6E8')
+			.setDescription(`**Replying to [message](${message.url})**\n\n> ${message.content.length > 100 ? message.content.substring(0, 100) + "..." : message.content}`);
+
+		webhook.send(data, {
+			embeds: [replyEmbed],
+			username: user.user.username,
+			avatarURL: user.user.avatarURL({ dynamic: true })
+		});
+	} catch (e) {console.log(e);}
+}
+
+module.exports.deleteMessage = async (s, c, mid) => {
+	try {
+		const server = bot.guilds.cache.get(s);
+		const channel = server.channels.cache.get(c);
+
+		var message = await channel.messages.fetch(mid)
+
+		message.delete();
+	} catch (e) {console.log(e);}
 }
