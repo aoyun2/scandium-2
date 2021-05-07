@@ -5,7 +5,7 @@ const fs = require("fs");
 const redis = require("redis");
 
 const app = express();
-const serverhttp = require('http').createServer(app).listen(process.env.PORT, /*3001, "localhost",*/ () => {
+const serverhttp = require('http').createServer(app).listen(process.env.PORT || 3001, () => {
     console.log(`server is listening on port ${process.env.PORT}`);
 })
 
