@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+app.use(express.static('./'))
 
 app.get("/", (request, response) => {
     response.render('home');
