@@ -11,6 +11,12 @@ html
                 overflow: hidden;
             }
 
+            .error-container {
+                position: fixed;
+                top: 15px;
+                margin: 0 auto;
+            }
+
             .error {
                 padding: 20px;
                 background-color: #f44336;
@@ -206,6 +212,7 @@ html
         link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css")
         script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js")
     body
+        div(class="error-container")
         div(id="container")
             h1 #{welcome}
             
@@ -818,12 +825,38 @@ html
                 message.children[2].children[1].innerText = "Reply";
             });
 
-            socket.on("error", m => {
+            function displayError(m) {
                 var error = document.createElement("div");
                 var close = document.createElement("span");
 
                 error.appendChild(close);
                 error.innerHTML = `<strong>${m}</strong>`;
 
-                document.prepend(error);
+                error.classList.add("error");
+                close.classList.add("errorclose");
+
+                close.innerText = "×";
+
+                close.addEventListener("click", e => {
+                    e.target.parentNode.remove();
+                });
+
+                error.appendChild(close);
+
+                document.querySelector("body > .error-container").appendChild(error);
+            }
+
+            
+            socket.on("disconnect", () => {
+                displayError("WebSocket is disconnected. As a result, you cannot send or recieve messages. Please refresh the page to reconnect.")
+            });
+
+            // displayError("hi")
+
+            socket.on("error", m => {
+                displayError(m);
+            });
+
+            window.addEventListener('error', (event) => {
+                displayError(event.message);
             });
