@@ -266,7 +266,8 @@ const rulesDiscord = {
 			var image =  htmlTag('img', '', {
 				class: `d-emoji${node.animated ? ' d-emoji-animated' : ''}`,
 				src: url, 
-				alt: `:${node.name}:`
+				alt: `:${node.name}:`,
+				style: "vertical-align: middle;"
 			}, false, state);
 
 			return htmlTag('div', image + toolTip, {class: `d-emoji-container`});

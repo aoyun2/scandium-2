@@ -315,6 +315,12 @@ html
                                     li.id = e.string;
                                     li.style.userSelect = "none";
 
+                                    var image = document.createElement("img");
+                                    image.src = e.url;
+                                    image.style.verticalAlign = "middle";
+                                    image.style.maxWidth = "50px";
+                                    li.appendChild(image);
+
                                     li.addEventListener("mouseover", e_1 => {
                                         e_1.target.style.textDecoration = "underline overline";
                                     });

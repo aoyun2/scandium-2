@@ -139,16 +139,21 @@ module.exports.roleName = (sid, rid) => {
 	} catch (e) { console.log(e); return "non-existing role"};
 }
 
-module.exports.fetchEmojis = (id) => {
+module.exports.fetchEmojis = async (id) => {
 	try {
-		return bot.emojis.cache.filter(e => e.guild.members.cache.get(id) !== undefined).map(e => {
+		return await Promise.all(bot.emojis.cache.filter(e => e.guild.members.cache.get(id) !== undefined).map(async e => {
+			var res = await fetch(e.url);
+			var b64 = (await (res).buffer()).toString('base64');
+			var url = `data:image/jpeg;base64,${b64}`;
+
 			var eobj = {
 				name: `:${e.name}:`, 
 				guild: e.guild.name,
-				string: e.toString()
+				string: e.toString(),
+				url: url 
 			}
 			return eobj;
-		});
+		}));
 	} catch (e) { console.log(e); return []; };
 }
 

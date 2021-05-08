@@ -57,7 +57,7 @@ app.post('/connect', async (request, response) => {
             server: server,
             userID: userID,
             channels: botModule.fetchChannels(server, userID),
-            emojis: JSON.stringify(botModule.fetchEmojis(userID)),
+            emojis: JSON.stringify(await botModule.fetchEmojis(userID)),
             users: JSON.stringify(botModule.fetchUsers(server)),
             roles: JSON.stringify(botModule.fetchRoles(server))
         });
