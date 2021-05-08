@@ -301,14 +301,14 @@ async function processMessage(m) {
 	return JSON.stringify(mObj);
 }
 
-module.exports.fetchMessages = async (userID, server, channel, before) => {
+module.exports.fetchMessages = async (userID, server, channel, before, clientID) => {
 	try {
 		const s = bot.guilds.cache.get(server);
 		const c = s.channels.cache.get(channel);
 		const u = s.members.cache.get(userID);
 
 		if(!c.permissionsFor(u).toArray().includes("VIEW_CHANNEL")) {
-			serverModule.error("Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
+			serverModule.error("Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.", clientID);
 			return undefined;
 		}
 
@@ -390,13 +390,13 @@ module.exports.fetchPermissions = (server, channel, id) => {
 	} catch (e) { console.log(e); return []; }
 }
 
-module.exports.sendMessage = async (s, c, u, data) => {
+module.exports.sendMessage = async (s, c, u, data, clientID) => {
 	const server = bot.guilds.cache.get(s);
 	const channel = server.channels.cache.get(c);
 	const user = server.members.cache.get(u);
 
 	if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
-		serverModule.error("Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+		serverModule.error("Error sending message. You may not have the permission SEND_MESSAGES in this channel.", clientID);
 		return;
 	}
 
@@ -457,14 +457,14 @@ module.exports.sendMessage = async (s, c, u, data) => {
 	});
 }
 
-module.exports.replyToMessage = async (s, c, mid, u, data) => {
+module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 	try {
 		const server = bot.guilds.cache.get(s);
 		const channel = server.channels.cache.get(c);
 		const user = server.members.cache.get(u);
 
 		if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
-			serverModule.error("Error replying to message. You may not have the permission SEND_MESSAGES in this channel.");
+			serverModule.error("Error replying to message. You may not have the permission SEND_MESSAGES in this channel.", clientID);
 			return;
 		}
 
@@ -496,13 +496,13 @@ module.exports.replyToMessage = async (s, c, mid, u, data) => {
 	} catch (e) {console.log(e);}
 }
 
-module.exports.deleteMessage = async (s, c, u, mid) => {
+module.exports.deleteMessage = async (s, c, u, mid, clientID) => {
 	try {
 		const server = bot.guilds.cache.get(s);
 		const channel = server.channels.cache.get(c);
 
 		if(!channel.permissionsFor(u).toArray().includes("MANAGE_MESSAGES")) {
-			serverModule.error("Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
+			serverModule.error("Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.", clientID);
 			return;
 		}
 

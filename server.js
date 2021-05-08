@@ -124,7 +124,7 @@ io.on('connection', (socket) => {
         var s = client.info.server;
         var c = client.info.channel.id;
 
-        botModule.fetchMessages(clients[clientID].info.userID, s, c, data.before).then(dat => {
+        botModule.fetchMessages(clients[clientID].info.userID, s, c, data.before, clientID).then(dat => {
             if(dat) socket.emit("channel_history", dat);
         });
     });
@@ -164,7 +164,7 @@ io.on('connection', (socket) => {
         var c = clients[clientID].info.channel.id;
         var u = clients[clientID].info.userID;
 
-        await botModule.sendMessage(s, c, u, data);
+        await botModule.sendMessage(s, c, u, data, clientID);
     });
 
     socket.on('reply_message', async data => {
@@ -178,7 +178,7 @@ io.on('connection', (socket) => {
         var c = clients[clientID].info.channel.id;
         var u = clients[clientID].info.userID;
 
-        await botModule.replyToMessage(s, c, data.messageID, u, data.data);
+        await botModule.replyToMessage(s, c, data.messageID, u, data.data, clientID);
         socket.emit("reply_success", data.messageID);
     });
 
@@ -192,7 +192,7 @@ io.on('connection', (socket) => {
         var s = clients[clientID].info.server;
         var c = clients[clientID].info.channel.id;
 
-        await botModule.deleteMessage(s, c, data);
+        await botModule.deleteMessage(s, c, data, clientID);
     });
 
     // home.pug
@@ -202,9 +202,9 @@ io.on('connection', (socket) => {
     });
 });
 
-module.exports.error = (message) => {
+module.exports.error = (message, clientID) => {
     // emit error to client
-    socket.emit("error", message);
+    clients[clientID].websocket.emit("error", message);
 }
 
 module.exports.broadcastMessage = (message, data) => {
