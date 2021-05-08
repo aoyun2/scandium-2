@@ -156,6 +156,7 @@ io.on('connection', (socket) => {
     socket.on('client_message', async data => {
         if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
             // error
+            socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
             return;
         }
 
