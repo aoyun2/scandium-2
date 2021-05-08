@@ -500,8 +500,9 @@ module.exports.deleteMessage = async (s, c, u, mid, clientID) => {
 	try {
 		const server = bot.guilds.cache.get(s);
 		const channel = server.channels.cache.get(c);
+		const user = server.members.cache.get(u);
 
-		if(!channel.permissionsFor(u).toArray().includes("MANAGE_MESSAGES")) {
+		if(!channel.permissionsFor(user).toArray().includes("MANAGE_MESSAGES")) {
 			serverModule.error("Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.", clientID);
 			return;
 		}
