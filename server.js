@@ -114,18 +114,18 @@ io.on('connection', (socket) => {
         }
 
         if (!clients[clientID].info.channel.permissions.includes("READ_MESSAGE_HISTORY")) {
-            // error
-            // console.log(clients[clientID].info.channel.permissions, "can't read")
-            socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
-            return;
+            // // error
+            // // console.log(clients[clientID].info.channel.permissions, "can't read")
+            // socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
+            // return;
         }
 
         var client = clients[clientID];
         var s = client.info.server;
         var c = client.info.channel.id;
 
-        botModule.fetchMessages(s, c, data.before).then(dat => {
-            socket.emit("channel_history", dat);
+        botModule.fetchMessages(clients[clientID].info.userID, s, c, data.before).then(dat => {
+            if(dat) socket.emit("channel_history", dat);
         });
     });
 
@@ -154,11 +154,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('client_message', async data => {
-        if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-            // error
-            socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-            return;
-        }
+        // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+        //     // error
+        //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+        //     return;
+        // }
 
         var s = clients[clientID].info.server;
         var c = clients[clientID].info.channel.id;
@@ -168,11 +168,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('reply_message', async data => {
-        if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-            // error
-            socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-            return;
-        }
+        // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+        //     // error
+        //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+        //     return;
+        // }
 
         var s = clients[clientID].info.server;
         var c = clients[clientID].info.channel.id;
@@ -183,11 +183,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('delete_message', async data => {
-        if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
-            // error
-            socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
-            return;
-        }
+        // if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
+        //     // error
+        //     socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
+        //     return;
+        // }
 
         var s = clients[clientID].info.server;
         var c = clients[clientID].info.channel.id;
@@ -204,6 +204,7 @@ io.on('connection', (socket) => {
 
 module.exports.error = (message) => {
     // emit error to client
+    socket.emit("error", message);
 }
 
 module.exports.broadcastMessage = (message, data) => {

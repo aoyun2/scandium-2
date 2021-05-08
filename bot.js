@@ -301,10 +301,16 @@ async function processMessage(m) {
 	return JSON.stringify(mObj);
 }
 
-module.exports.fetchMessages = async (server, channel, before) => {
+module.exports.fetchMessages = async (userID, server, channel, before) => {
 	try {
 		const s = bot.guilds.cache.get(server);
 		const c = s.channels.cache.get(channel);
+		const u = s.members.cache.get(userID);
+
+		if(!c.permissionsFor(u).toArray().includes("VIEW_CHANNEL")) {
+			serverModule.error("Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
+			return undefined;
+		}
 
 		var messages = await Promise.all((await c.messages.fetch({ limit: 10, before: before })).map(async m => {
 			return await processMessage(m);
@@ -352,7 +358,7 @@ module.exports.fetchChannels = (server, id) => {
 
 		// change this to only load channels that are visible to the user
 		allChannels = allChannels.filter(c => {
-			return (c.type === "text") && module.exports.fetchPermissions(s.id, c.id, u.user.id).includes("VIEW_CHANNEL");
+			return (c.type === "text") && c.permissionsFor(u).toArray().includes("VIEW_CHANNEL");
 		}).map(c => [c.name, c.id]);
 
 		if (allChannels.length === 0) return ["No visible channels.", null];
@@ -388,6 +394,11 @@ module.exports.sendMessage = async (s, c, u, data) => {
 	const server = bot.guilds.cache.get(s);
 	const channel = server.channels.cache.get(c);
 	const user = server.members.cache.get(u);
+
+	if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
+		serverModule.error("Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+		return;
+	}
 
 	let webhooks = await channel.fetchWebhooks();
 	if (Array.from(webhooks).length === 0) {
@@ -452,6 +463,11 @@ module.exports.replyToMessage = async (s, c, mid, u, data) => {
 		const channel = server.channels.cache.get(c);
 		const user = server.members.cache.get(u);
 
+		if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
+			serverModule.error("Error replying to message. You may not have the permission SEND_MESSAGES in this channel.");
+			return;
+		}
+
 		var message = await channel.messages.fetch(mid)
 
 		let webhooks = await channel.fetchWebhooks();
@@ -480,10 +496,15 @@ module.exports.replyToMessage = async (s, c, mid, u, data) => {
 	} catch (e) {console.log(e);}
 }
 
-module.exports.deleteMessage = async (s, c, mid) => {
+module.exports.deleteMessage = async (s, c, u, mid) => {
 	try {
 		const server = bot.guilds.cache.get(s);
 		const channel = server.channels.cache.get(c);
+
+		if(!channel.permissionsFor(u).toArray().includes("MANAGE_MESSAGES")) {
+			serverModule.error("Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
+			return;
+		}
 
 		var message = await channel.messages.fetch(mid)
 
