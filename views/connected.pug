@@ -670,6 +670,8 @@ html
                 messageactions.appendChild(del);
                 messageactions.appendChild(reply);
 
+                messageactions.classList.add("message-actions");
+
                 message.appendChild(messageactions);
 
                 message.appendChild(content);
@@ -825,7 +827,7 @@ html
 
                 console.log(message)
 
-                message.children[2].children[1].innerText = "Reply";
+                message.querySelector(".message-actions > button:nth-child(2)").innerText = "Reply";
             });
 
             function displayError(m) {
