@@ -179,6 +179,7 @@ io.on('connection', (socket) => {
         var u = clients[clientID].info.userID;
 
         await botModule.replyToMessage(s, c, data.messageID, u, data.data, clientID);
+        console.log(data.messageID)
         socket.emit("reply_success", data.messageID);
     });
 
