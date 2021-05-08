@@ -74,7 +74,7 @@ html
             }
 
             #input .tooltiptext ul li:hover {
-                text-decoration: underline;
+                background-color: gray;
             }
 
             /* #input:hover .tooltiptext {
@@ -311,7 +311,7 @@ html
 
                                 for (var e of matchingEmojis) {
                                     var li = document.createElement('li');
-                                    li.textContent = e.name;
+                                    li.textContent = e.name + "  ";
                                     li.id = e.string;
                                     li.style.userSelect = "none";
 
@@ -320,14 +320,6 @@ html
                                     image.style.verticalAlign = "middle";
                                     image.style.maxWidth = "50px";
                                     li.appendChild(image);
-
-                                    li.addEventListener("mouseover", e_1 => {
-                                        e_1.target.style.textDecoration = "underline overline";
-                                    });
-
-                                    li.addEventListener("mouseout", e_1 => {
-                                        e_1.target.style.textDecoration = "none";
-                                    });
 
                                     li.addEventListener("click", e_1 => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
