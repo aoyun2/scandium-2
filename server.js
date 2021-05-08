@@ -191,8 +191,9 @@ io.on('connection', (socket) => {
 
         var s = clients[clientID].info.server;
         var c = clients[clientID].info.channel.id;
+        var u = clients[clientID].info.userID;
 
-        await botModule.deleteMessage(s, c, data, clientID);
+        await botModule.deleteMessage(s, c, u, data, clientID);
     });
 
     // home.pug
