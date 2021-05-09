@@ -183,6 +183,20 @@ io.on('connection', (socket) => {
         socket.emit("reply_success", data.messageID);
     });
 
+    socket.on('edit_message', async data => {
+        // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+        //     // error
+        //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+        //     return;
+        // }
+
+        var s = clients[clientID].info.server;
+        var c = clients[clientID].info.channel.id;
+        var u = clients[clientID].info.userID;
+
+        await botModule.editMessage(s, c, data.messageID, u, data.data, clientID);
+    });
+
     socket.on('delete_message', async data => {
         // if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
         //     // error

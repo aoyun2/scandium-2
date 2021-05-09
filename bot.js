@@ -291,7 +291,7 @@ async function processMessage(m) {
 
 	var mObj = {
 		id: m.id,
-		author: m.member && m.member.nickname ? (m.member.nickname + ` AKA ${m.author.username}`) : m.author.username,
+		author: m.member && m.member.nickname ? m.member.nickname : m.author.username,
 		color: m.member ? m.member.displayHexColor : null,
 		sentAt: m.createdAt,
 		edited: m.editedAt ? true : false,
@@ -313,7 +313,7 @@ module.exports.fetchMessages = async (userID, server, channel, before, clientID)
 		const u = s.members.cache.get(userID);
 
 		if(!c.permissionsFor(u).toArray().includes("VIEW_CHANNEL")) {
-			serverModule.error("Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.", clientID);
+			serverModule.error("SCANDIUM_LOAD_ERROR: You may not have the permission READ_MESSAGE_HISTORY in this channel.", clientID);
 			return undefined;
 		}
 
@@ -401,7 +401,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 	const user = server.members.cache.get(u);
 
 	if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
-		serverModule.error("Error sending message. You may not have the permission SEND_MESSAGES in this channel.", clientID);
+		serverModule.error("SCANDIUM_SEND_ERROR: You may not have the permission SEND_MESSAGES in this channel.", clientID);
 		return;
 	}
 
@@ -457,7 +457,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 	// console.log(message)
 
 	await webhook.send(data, {
-		username: user.user.username,
+		username: user.user.username + ` | Scandium user #${parseInt('' + ((user.id & 0x3E0000) >> 17) + ((user.id & 0x1F000) >> 12) + (user.id & 0xFFF), 36)}`,
 		avatarURL: user.user.avatarURL({ dynamic: true })
 	});
 }
@@ -469,11 +469,11 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		const user = server.members.cache.get(u);
 
 		if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
-			serverModule.error("Error replying to message. You may not have the permission SEND_MESSAGES in this channel.", clientID);
+			serverModule.error("SCANDIUM_REPLY_ERROR: You may not have the permission SEND_MESSAGES in this channel.", clientID);
 			return;
 		}
 
-		var message = await channel.messages.fetch(mid)
+		var message = await channel.messages.fetch(mid);
 
 		let webhooks = await channel.fetchWebhooks();
 		if (Array.from(webhooks).length === 0) {
@@ -492,13 +492,60 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		var replyEmbed = new Discord.MessageEmbed()
 			.setColor('#A3A6E8')
 			.setDescription(`**Replying to [message](${message.url})**\n\n> ${message.content.length > 100 ? message.content.substring(0, 100) + "..." : message.content}`);
-
+		
 		webhook.send(data, {
 			embeds: [replyEmbed],
-			username: user.user.username,
+			username: user.user.username + ` | Scandium user #${parseInt('' + ((user.id & 0x3E0000) >> 17) + ((user.id & 0x1F000) >> 12) + (user.id & 0xFFF), 36)}`,
 			avatarURL: user.user.avatarURL({ dynamic: true })
 		});
-	} catch (e) {console.log(e);}
+	} catch (e) {serverModule.error(e.message, clientID);}
+}
+
+module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
+	try {
+		const server = bot.guilds.cache.get(s);
+		const channel = server.channels.cache.get(c);
+		const user = server.members.cache.get(u);
+
+		if(!channel.permissionsFor(user).toArray().includes("MANAGE_MESSAGES")) {
+			serverModule.error("SCANDIUM_EDIT_ERROR: You may not have the permission MANAGE_MESSAGES in this channel.", clientID);
+			return;
+		}
+
+		var message = await channel.messages.fetch(mid);
+		var webhook = await message.fetchWebhook();
+
+		var userSnowflakeThing = parseInt('' + ((user.id & 0x3E0000) >> 17) + ((user.id & 0x1F000) >> 12) + (user.id & 0xFFF), 36);
+
+		// var userURL = await fetch(user.user.avatarURL());
+		// var userb64 = (await (userURL).buffer()).toString('base64')
+		// var userAvatar = `data:${userURL.headers.get("Content-Type")};base64,${userb64}`;
+
+		// var webhookURL = await fetch(user.user.avatarURL());
+		// var webhookb64 = (await (webhookURL).buffer()).toString('base64')
+		// var webhookAvatar = `data:${webhookURL.headers.get("Content-Type")};base64,${webhookb64}`;
+		
+		if(!message.webhookID || userSnowflakeThing != message.author.username.split('|').pop().replace(" Scandium user #", '')) {
+			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other users.", clientID);
+			return;
+		}
+
+		// webhook.editMessage(message, data);
+
+		const axios = require('axios');
+
+		var res = await axios.patch(`https://discord.com/api/webhooks/${message.webhookID}/${webhook.token}/messages/${mid}`, 
+			{
+				content: data
+			},
+			{
+				headers: {
+					Authorization: 'Bot ' + botSettings.token
+				}
+			}
+		);
+		console.log(res)
+	} catch(e) {serverModule.error(e.message, clientID);}
 }
 
 module.exports.deleteMessage = async (s, c, u, mid, clientID) => {
@@ -508,12 +555,12 @@ module.exports.deleteMessage = async (s, c, u, mid, clientID) => {
 		const user = server.members.cache.get(u);
 
 		if(!channel.permissionsFor(user).toArray().includes("MANAGE_MESSAGES")) {
-			serverModule.error("Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.", clientID);
+			serverModule.error("SCANDIUM_DELETE_ERROR: You may not have the permission MANAGE_MESSAGES in this channel.", clientID);
 			return;
 		}
 
 		var message = await channel.messages.fetch(mid)
 
 		message.delete();
-	} catch (e) {console.log(e);}
+	} catch (e) {serverModule.error(e.message, clientID);}
 }

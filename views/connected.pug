@@ -258,6 +258,7 @@ html
             var requestDebounce = false;
             var channelEnd = false;
             var replying = false;
+            var editing = false;
 
             window.addEventListener('resize', () => {
                 try {
@@ -286,11 +287,14 @@ html
             function handleMessageSending(event) {
                 try {
                     if (event.keyCode === 13 && !event.shiftKey && (messageinput.value && !messageinput.value.match(/^ *$/))) {
-                        if(!replying) {
+                        if(!(replying || editing)) {
                             socket.emit("client_message", messageinput.value);
                             messageinput.value = '';
-                        } else {
+                        } else if (replying) {
                             socket.emit("reply_message", { messageID: replying, data: messageinput.value });
+                            messageinput.value = '';
+                        } else if (editing) {
+                            socket.emit("edit_message", { messageID: editing, data: messageinput.value });
                             messageinput.value = '';
                         }
                     } else {
@@ -650,9 +654,11 @@ html
                 del.innerText = "Delete";
                 var reply = document.createElement("button");
                 reply.innerText = "Reply";
+                var edit = document.createElement("button");
+                edit.innerText = "Edit";
 
                 reply.addEventListener("click", e => {
-                    if (!replying) {
+                    if (!replying && !editing) {
                         replying = e.target.parentNode.parentNode.id;
                         e.target.innerText = "Cancel";
                     } else if (e.target.parentNode.parentNode.id === replying) {
@@ -661,13 +667,23 @@ html
                     }
                 });
 
+                edit.addEventListener("click", e => {
+                    if (!replying && !editing) {
+                        editing = e.target.parentNode.parentNode.id;
+                        e.target.innerText = "Cancel";
+                    } else if (e.target.parentNode.parentNode.id === editing) {
+                        editing = false;
+                        e.target.innerText = "Edit";
+                    }
+                });
+
                 del.addEventListener("click", e => {
                     socket.emit("delete_message", e.target.parentNode.parentNode.id);
                 });
 
-                if (messageObject.id === userID) messageactions.appendChild(edit);
                 messageactions.appendChild(del);
                 messageactions.appendChild(reply);
+                messageactions.appendChild(edit);
 
                 messageactions.classList.add("message-actions");
 
@@ -807,9 +823,14 @@ html
                 var oldMessage = document.getElementById(data.id);
                 if(!oldMessage) return;
 
+                if (editing === data.id) {
+                    editing = false;
+                    // oldMessage.querySelector(".message-actions > button:nth-child(3)").innerText = "Edit";
+                }
+
                 var newMessage = createMessage(data.message);
 
-                oldMessage.innerHTML = newMessage.innerHTML;
+                oldMessage.parentNode.replaceChild(newMessage, oldMessage);
             });
 
             socket.on("message_delete", id => {
