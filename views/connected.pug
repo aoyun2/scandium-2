@@ -511,7 +511,7 @@ html
                             file.onclick = () => {
                                 console.log(a.url)
                                 if(a.url.includes("application")) {
-                                    let mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
+                                    let mimeType = a.url.split(',')[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
                                     window.open(a.url.replace(mimeType, "application/scandiumdownload"));
                                 } else {
                                     var newTab = window.open();
