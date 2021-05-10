@@ -511,7 +511,8 @@ html
                             file.onclick = () => {
                                 console.log(a.url)
                                 if(a.url.includes("application")) {
-                                    window.open(a.url);
+                                    let mimeType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
+                                    window.open(a.url.replace(mimeType, "application/scandiumdownload"));
                                 } else {
                                     var newTab = window.open();
                                     newTab.document.write('<iframe src="' + a.url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
