@@ -312,7 +312,7 @@ module.exports.fetchMessages = async (userID, server, channel, before, clientID)
 		const c = s.channels.cache.get(channel);
 		const u = s.members.cache.get(userID);
 
-		if(!c.permissionsFor(u).toArray().includes("VIEW_CHANNEL")) {
+		if(!c.permissionsFor(u).toArray().includes("READ_MESSAGE_HISTORY")) {
 			serverModule.error("SCANDIUM_LOAD_ERROR: You may not have the permission READ_MESSAGE_HISTORY in this channel.", clientID);
 			return undefined;
 		}
