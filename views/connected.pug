@@ -510,7 +510,7 @@ html
                             file.innerText = `FILE: ${a.name}`;
                             file.onclick = () => {
                                 if(a.url.includes("application")) {
-                                    window.open(a.url, '_blank').focus();
+                                    window.open(a.url);
                                 } else {
                                     var newTab = window.open();
                                     newTab.document.write('<iframe src="' + a.url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
