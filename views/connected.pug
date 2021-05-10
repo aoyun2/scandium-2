@@ -730,6 +730,25 @@ html
                 loading.style.color = "purple";
                 messagediv.appendChild(loading);
             });
+            
+            function loadMentions() {
+                const mentions = document.querySelectorAll('.d-mention');
+                Array.from(mentions).forEach((m, index) => {
+                    // if(!isInViewport(m)) return;
+
+                    var user = /^<@!?([0-9]*)>/.exec(m.innerText);
+                    var channel = /^<#([0-9]*)>/.exec(m.innerText);
+                    var role = /^<@&([0-9]*)>/.exec(m.innerText);
+
+                    if(user) {
+                        socket.emit('fetch_mention_data', {type: 'user', id: user[1]});
+                    } else if(channel) {
+                        socket.emit('fetch_mention_data', {type: 'channel', id: channel[1]});
+                    } if(role) {
+                        socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
+                    }
+                });
+            }
 
             socket.on("channel_history", data => {
                 // console.log(data);
@@ -748,22 +767,7 @@ html
                 if (data.length < 10) endOfChannel();
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
-                const mentions = document.querySelectorAll('.d-mention');
-                Array.from(mentions).forEach((m, index) => {
-                    // if(!isInViewport(m)) return;
-
-                    var user = /^<@!?([0-9]*)>/.exec(m.innerText);
-                    var channel = /^<#([0-9]*)>/.exec(m.innerText);
-                    var role = /^<@&([0-9]*)>/.exec(m.innerText);
-
-                    if(user) {
-                        socket.emit('fetch_mention_data', {type: 'user', id: user[1]});
-                    } else if(channel) {
-                        socket.emit('fetch_mention_data', {type: 'channel', id: channel[1]});
-                    } if(role) {
-                        socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
-                    }
-                });
+                loadMentions();
             });
             
             messagediv.addEventListener('scroll', () => {
@@ -797,6 +801,8 @@ html
                         socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
                     }
                 });*/
+                
+                loadMentions();
             }
 
             function endOfChannel() {
