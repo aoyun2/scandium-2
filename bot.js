@@ -457,7 +457,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 	// console.log(message)
 
 	await webhook.send(data, {
-		username: user.user.username + ` | Scandium user #${(((user.id & 0x3E0000) >> 17) + ((user.id & 0x1F000) >> 12) + (user.id & 0xFFF)).toString(36)}`,
+		username: user.user.username + ` | Scandium user #${(user.id | 85926).toString(36)}`,
 		avatarURL: user.user.avatarURL({ dynamic: true })
 	});
 }
@@ -495,7 +495,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		
 		webhook.send(data, {
 			embeds: [replyEmbed],
-			username: user.user.username + ` | Scandium user #${(((user.id & 0x3E0000) >> 17) + ((user.id & 0x1F000) >> 12) + (user.id & 0xFFF)).toString(36)}`,
+			username: user.user.username + ` | Scandium user #${(user.id | 85926).toString(36)}`,
 			avatarURL: user.user.avatarURL({ dynamic: true })
 		});
 	} catch (e) {serverModule.error(e.message, clientID);}
@@ -515,7 +515,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		var message = await channel.messages.fetch(mid);
 		var webhook = await message.fetchWebhook();
 
-		var userSnowflakeThing = (((user.id & 0x3E0000) >> 17) + ((user.id & 0x1F000) >> 12) + (user.id & 0xFFF)).toString(36);
+		var userSnowflakeThing = (user.id | 85926).toString(36);
 
 		// var userURL = await fetch(user.user.avatarURL());
 		// var userb64 = (await (userURL).buffer()).toString('base64')
