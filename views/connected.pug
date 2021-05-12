@@ -7,7 +7,7 @@ html
                 font-family: Arial, Helvetica, sans-serif;
             }
 
-            html {
+            html {b
                 overflow: hidden;
             }
 
@@ -230,7 +230,7 @@ html
 
         div(id="input")
             textarea(id="input_messages" onkeyup="handleMessageSending(event)" placeholder="Add to the discussion!")
-            span(class="tooltiptext")
+            span(class="tooltiptext" tabindex="-1")
         script.
             const socket = io();
             const channelinput = document.querySelector("#channelselect");
@@ -351,7 +351,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    e.target.click();
+                                    document.querySelector("#input > .tooltiptext").focus();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
@@ -429,7 +429,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    e.target.click();
+                                    document.querySelector("#input > .tooltiptext").focus();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
@@ -482,7 +482,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    e.target.click();
+                                    document.querySelector("#input > .tooltiptext").focus();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
