@@ -345,22 +345,18 @@ html
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
                                     }
                                 });
-                                
-                                suggestions.addEventListener("mouseenter", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        messageinput.blur();
-                                    }
-                                });
-                                
-                                suggestions.addEventListener("mouseleave", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        messageinput.focus();
-                                    }
-                                });
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                                
+                                document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
+                                    messageinput.blur();
+                                });
+                                
+                                document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
+                                    messageinput.focus();
+                                });
                             } else {
                                 document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
@@ -428,21 +424,17 @@ html
                                     }
                                 });
                                 
-                                suggestions.addEventListener("mouseenter", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        messageinput.blur();
-                                    }
-                                });
-                                
-                                suggestions.addEventListener("mouseleave", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        messageinput.focus();
-                                    }
-                                });
-                                
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                                
+                                document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
+                                    messageinput.blur();
+                                });
+                                
+                                document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
+                                    messageinput.focus();
+                                });
                             } else {
                                 document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
@@ -484,22 +476,18 @@ html
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
                                     }
                                 });
-                                
-                                suggestions.addEventListener("mouseenter", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        messageinput.blur();
-                                    }
-                                });
-                                
-                                suggestions.addEventListener("mouseleave", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        messageinput.focus();
-                                    }
-                                });
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                                
+                                document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
+                                    messageinput.blur();
+                                });
+                                
+                                document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
+                                    messageinput.focus();
+                                });
                             } else {
                                 document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
