@@ -283,6 +283,13 @@ html
                     // messagediv.style.height = window.innerHeight - messageinput.scrollHeight - 150 + 'px';
                 } catch(e) {console.log(e)};
             }
+            
+            function blurAll(){
+                var tmp = document.createElement("input");
+                document.body.appendChild(tmp);
+                tmp.focus();
+                document.body.removeChild(tmp);
+            }
 
             function handleMessageSending(event) {
                 try {
@@ -351,7 +358,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    if(e.relatedTarget === messageinput) messageinput.blur();
+                                    blurAll();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
@@ -429,7 +436,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    if(e.relatedTarget === messageinput) messageinput.blur();
+                                    blurAll();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
@@ -482,7 +489,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    if(e.relatedTarget === messageinput) messageinput.blur();
+                                    blurAll();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
