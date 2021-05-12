@@ -347,11 +347,15 @@ html
                                 });
                                 
                                 suggestions.addEventListener("mouseenter", function(e) {
-                                    messageinput.blur();
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.blur();
+                                    }
                                 });
                                 
                                 suggestions.addEventListener("mouseleave", function(e) {
-                                    messageinput.focus();
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.focus();
+                                    }
                                 });
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
@@ -425,11 +429,15 @@ html
                                 });
                                 
                                 suggestions.addEventListener("mouseenter", function(e) {
-                                    messageinput.blur();
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.blur();
+                                    }
                                 });
                                 
                                 suggestions.addEventListener("mouseleave", function(e) {
-                                    messageinput.focus();
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.focus();
+                                    }
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
@@ -478,11 +486,15 @@ html
                                 });
                                 
                                 suggestions.addEventListener("mouseenter", function(e) {
-                                    messageinput.blur();
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.blur();
+                                    }
                                 });
                                 
                                 suggestions.addEventListener("mouseleave", function(e) {
-                                    messageinput.focus();
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.focus();
+                                    }
                                 });
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
