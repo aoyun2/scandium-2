@@ -337,9 +337,9 @@ html
                                 }
                                 
                                 suggestions.addEventListener("click", function(e) {
-                                    if(e.target && e.target.nodeName == "LI") {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, n) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
                                     }
                                 });
 
@@ -405,9 +405,9 @@ html
                                 }
 
                                 suggestions.addEventListener("click", function(e) {
-                                    if(e.target && e.target.nodeName == "LI") {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.slice(0, n) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
                                     }
                                 });
                                 
@@ -448,9 +448,9 @@ html
                                 }
                                 
                                 suggestions.addEventListener("click", function(e) {
-                                    if(e.target && e.target.nodeName == "LI") {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.slice(0, n) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
                                     }
                                 });
 
