@@ -326,15 +326,22 @@ html
                                     image.style.maxWidth = "50px";
                                     li.appendChild(image);
 
-                                    li.addEventListener("click", e_1 => {
+                                    /*li.addEventListener("click", e_1 => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
                                         if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e_1.target.id);
 
                                         // messageinput.value += e_1.target.id;
-                                    });
+                                    });*/
 
                                     suggestions.appendChild(li);
                                 }
+                                
+                                suggestions.addEventListener("click", function(e) {
+                                    if(e.target && e.target.nodeName == "LI") {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                    }
+                                });
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
@@ -369,7 +376,7 @@ html
 
                                     li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                        //if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
                                         // messageinput.value += e.target.id;
                                     });
@@ -387,16 +394,23 @@ html
                                     li.id = r.string;
                                     //li.style.userSelect = "none";
 
-                                    li.addEventListener("click", e => {
+                                    /*li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                        //if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
                                         //messageinput.value += e.target.id;
-                                    });
+                                    });*/
 
                                     suggestions.appendChild(li);
                                 }
 
+                                suggestions.addEventListener("click", function(e) {
+                                    if(e.target && e.target.nodeName == "LI") {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                    }
+                                });
+                                
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
@@ -423,15 +437,22 @@ html
                                     li.id = `<#${c.value}>`;
                                     //li.style.userSelect = "none";
 
-                                    li.addEventListener("click", e => {
+                                    /*li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
                                         if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
                                         //messageinput.value += e.target.id;
-                                    });
+                                    });*/
 
                                     suggestions.appendChild(li);
                                 }
+                                
+                                suggestions.addEventListener("click", function(e) {
+                                    if(e.target && e.target.nodeName == "LI") {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+                                    }
+                                });
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
