@@ -328,7 +328,7 @@ html
 
                                     li.addEventListener("click", e_1 => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e.string);
+                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e_1.id);
 
                                         // messageinput.value += e_1.target.id;
                                     });
@@ -369,7 +369,7 @@ html
 
                                     li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, u.string);
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.id);
 
                                         // messageinput.value += e.target.id;
                                     });
@@ -389,7 +389,7 @@ html
 
                                     li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, r.string);
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.id);
 
                                         //messageinput.value += e.target.id;
                                     });
@@ -425,7 +425,7 @@ html
 
                                     li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, `<#${c.value}>`);
+                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, e.id);
 
                                         //messageinput.value += e.target.id;
                                     });
