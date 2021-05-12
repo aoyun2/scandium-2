@@ -351,7 +351,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    e.target.focus()
+                                    if(e.relatedTarget === messageinput) messageinput.blur();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
@@ -429,7 +429,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    e.target.focus()
+                                    if(e.relatedTarget === messageinput) messageinput.blur();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
@@ -482,7 +482,7 @@ html
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    e.target.focus()
+                                    if(e.relatedTarget === messageinput) messageinput.blur();
                                 });
                                 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
