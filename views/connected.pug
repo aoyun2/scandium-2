@@ -345,6 +345,18 @@ html
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
                                     }
                                 });
+                                
+                                suggestions.addEventListener("mouseover", function(e) {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        e.target.focus();
+                                    }
+                                });
+                                
+                                suggestions.addEventListener("mouseout", function(e) {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.focus();
+                                    }
+                                });
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
@@ -416,6 +428,18 @@ html
                                     }
                                 });
                                 
+                                suggestions.addEventListener("mouseover", function(e) {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        e.target.focus();
+                                    }
+                                });
+                                
+                                suggestions.addEventListener("mouseout", function(e) {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.focus();
+                                    }
+                                });
+                                
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
                                 document.querySelector("#input > .tooltiptext").style.visibility = "visible";
@@ -458,6 +482,18 @@ html
                                         if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
                                         document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                    }
+                                });
+                                
+                                suggestions.addEventListener("mouseover", function(e) {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        e.target.focus();
+                                    }
+                                });
+                                
+                                suggestions.addEventListener("mouseout", function(e) {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                        messageinput.focus();
                                     }
                                 });
 
