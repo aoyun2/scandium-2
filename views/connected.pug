@@ -328,9 +328,9 @@ html
 
                                     li.addEventListener("click", e_1 => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, '');
+                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e_1.target.id);
 
-                                        messageinput.value += e_1.target.id;
+                                        // messageinput.value += e_1.target.id;
                                     });
 
                                     suggestions.appendChild(li);
@@ -369,9 +369,9 @@ html
 
                                     li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, '');
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
-                                        messageinput.value += e.target.id;
+                                        // messageinput.value += e.target.id;
                                     });
 
                                     suggestions.appendChild(li);
@@ -389,9 +389,9 @@ html
 
                                     li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, '');
+                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
-                                        messageinput.value += e.target.id;
+                                        //messageinput.value += e.target.id;
                                     });
 
                                     suggestions.appendChild(li);
@@ -425,9 +425,9 @@ html
 
                                     li.addEventListener("click", e => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, '');
+                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
-                                        messageinput.value += e.target.id;
+                                        //messageinput.value += e.target.id;
                                     });
 
                                     suggestions.appendChild(li);
