@@ -868,9 +868,7 @@ html
                     } if(role) {
                         socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
                     }
-                });*/
-                
-                loadMentions();
+                });*/                
             }
 
             function endOfChannel() {
@@ -915,6 +913,7 @@ html
             socket.on("new_message", (data) => {
                 // console.log(data);
                 addMessage(data, false);
+                loadMentions();
             });
 
             socket.on("message_edit", data => {
@@ -930,6 +929,7 @@ html
                 var newMessage = createMessage(data.message);
 
                 oldMessage.parentNode.replaceChild(newMessage, oldMessage);
+                loadMentions();
             });
 
             socket.on("message_delete", id => {
