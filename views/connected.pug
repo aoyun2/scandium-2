@@ -295,7 +295,7 @@ html
 
             // register the config object with an instance
             // of intersectionObserver
-            let observer = new intersectionObserver(function(entries, self) {
+            let observer = new IntersectionObserver(function(entries, self) {
               // iterate over each entry
               entries.forEach(entry => {
                 // process just the images that are intersecting.
