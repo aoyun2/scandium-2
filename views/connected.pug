@@ -321,9 +321,9 @@ html
                                     //li.style.userSelect = "none";
 
                                     var image = document.createElement("img");
-                                    image.src = e.url;
                                     image.id = e.string;
                                     image.loading = "lazy";
+                                    image.src = e.url;
                                     image.style.verticalAlign = "middle";
                                     image.style.maxWidth = "50px";
                                     li.appendChild(image);
@@ -546,9 +546,9 @@ html
                         case "data:image":
                             var image = document.createElement('img');
                             image.classList.add(`d-image-embed`);
-                            image.src = a.url;
                             image.alt = `Epic embed fail.`;
                             image.loading = "lazy";
+                            image.src = a.url;
                             attachments.appendChild(image);
                             break;
                         case "data:video":
@@ -597,8 +597,8 @@ html
                 if (e.thumbnail && !(e.image || e.video || e.yt_video)) {
                     var thumbnail = document.createElement('img');
                     thumbnail.classList.add(`d-embed-thumbnail`);
-                    thumbnail.src = e.thumbnail;
                     thumbnail.loading = "lazy";
+                    thumbnail.src = e.thumbnail;
                     thumbnail.alt = `Epic embed fail.`;
                     embed.appendChild(thumbnail);
                 }
@@ -630,8 +630,8 @@ html
                 if (e.image) {
                     var image = document.createElement('img');
                     image.classList.add(`d-image-embed`);
-                    image.src = e.image;
                     image.loading = "lazy";
+                    image.src = e.image;
                     image.alt = `Epic embed fail.`;
                     embed.appendChild(image);
                 }
