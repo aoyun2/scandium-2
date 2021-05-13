@@ -283,6 +283,32 @@ html
                     // messagediv.style.height = window.innerHeight - messageinput.scrollHeight - 150 + 'px';
                 } catch(e) {console.log(e)};
             }
+            
+            const config = {
+              rootMargin: '0px 0px 50px 0px',
+              threshold: 0
+            };
+            
+            function preloadImage(i) {
+                i.src = i.getAttribute("data-src");
+            }
+
+            // register the config object with an instance
+            // of intersectionObserver
+            let observer = new intersectionObserver(function(entries, self) {
+              // iterate over each entry
+              entries.forEach(entry => {
+                // process just the images that are intersecting.
+                // isIntersecting is a property exposed by the interface
+                if(entry.isIntersecting) {
+                  // custom function that copies the path to the img
+                  // from data-src to src
+                  preloadImage(entry.target);
+                  // the image is now in place, stop watching
+                  self.unobserve(entry.target);
+                }
+              });
+            }, config);
 
             function handleMessageSending(event) {
                 try {
@@ -322,11 +348,12 @@ html
 
                                     var image = document.createElement("img");
                                     image.id = e.string;
-                                    image.loading = "lazy";
-                                    image.src = e.url;
+                                    image.setAttribute("data-src", e.url);
                                     image.style.verticalAlign = "middle";
                                     image.style.maxWidth = "50px";
                                     li.appendChild(image);
+                                    
+                                    observer.observe(image);
 
                                     /*li.addEventListener("click", e_1 => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
@@ -547,9 +574,9 @@ html
                             var image = document.createElement('img');
                             image.classList.add(`d-image-embed`);
                             image.alt = `Epic embed fail.`;
-                            image.loading = "lazy";
-                            image.src = a.url;
+                            image.setAttribute("data-src", a.url);
                             attachments.appendChild(image);
+                            observer.observe(image);
                             break;
                         case "data:video":
                             var video = document.createElement('video');
@@ -597,10 +624,10 @@ html
                 if (e.thumbnail && !(e.image || e.video || e.yt_video)) {
                     var thumbnail = document.createElement('img');
                     thumbnail.classList.add(`d-embed-thumbnail`);
-                    thumbnail.loading = "lazy";
-                    thumbnail.src = e.thumbnail;
+                    thumbnail.setAttribute("data-src", e.thumbnail);
                     thumbnail.alt = `Epic embed fail.`;
                     embed.appendChild(thumbnail);
+                    observer.observe(thumbnail);
                 }
 
                 var title = document.createElement('h2');
@@ -630,10 +657,10 @@ html
                 if (e.image) {
                     var image = document.createElement('img');
                     image.classList.add(`d-image-embed`);
-                    image.loading = "lazy";
-                    image.src = e.image;
+                    image.setAttribute("data-src", e.image);
                     image.alt = `Epic embed fail.`;
                     embed.appendChild(image);
+                    observer.observe(image);
                 }
 
                 if (e.video) {
