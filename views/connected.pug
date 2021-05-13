@@ -179,7 +179,7 @@ html
                   padding: 5px;
   
                   /* Position the tooltip */
-                  position: relative;
+                  position: absolute;
                   z-index: 1;
                   bottom: 100%;
                   left: 0px;
@@ -801,6 +801,7 @@ html
                 message.appendChild(document.createElement('p'));
                 message.classList.add('message');
                 message.id = messageObject.id;
+                message.style.position = "relative";
 
                 return message;
             }
