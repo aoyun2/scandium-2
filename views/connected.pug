@@ -855,6 +855,8 @@ html
                 // console.log(data);
 
                 if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
+                
+                var firstHistory = messagediv.children.length <= 0;
 
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
@@ -868,7 +870,7 @@ html
                 if (data.length < 10) endOfChannel();
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
-                if (messagediv.children.length === 10) {
+                if (firstHistory) {
                     messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 }
                 loadMentions();
