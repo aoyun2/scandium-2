@@ -170,6 +170,7 @@ html
             .d-reply-container .tooltiptext {
                   visibility: hidden;
                   border: 2px solid black;
+                  border-left: 0px;
                   background: white;
                   color: black;
                   white-space: nowrap;
@@ -865,7 +866,7 @@ html
                     else lastMessage = addMessage(m);
                 });
 
-                if (messagediv.childNodes.length <= 10 || isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                if (messagediv.scrollTop >= (messagediv.scrollHeight - elem.offsetHeight)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 else if (messagediv.childNodes.length > 10) lastMessage.scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
