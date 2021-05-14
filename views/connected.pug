@@ -865,14 +865,14 @@ html
                     else lastMessage = addMessage(m);
                 });
 
-                if (messagediv.childNodes.length === 10) messagediv.scrollTop = messagediv.scrollHeight - messagediv.clientHeight;
-                else if (messagediv.childNodes.length >= 10) messagediv.children.item(10).scrollIntoView(true);
+                if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                else if (messagediv.childNodes.length >= 10) lastMessage.scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
-                lastMessage.scrollIntoView(true, {behavior: "smooth"});
+                //lastMessage.scrollIntoView(true, {behavior: "smooth"});
 
                 loadMentions();
             });
