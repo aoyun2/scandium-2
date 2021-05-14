@@ -868,7 +868,11 @@ html
                 if (data.length < 10) endOfChannel();
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
-                messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                var atBottom = isInViewport(messagediv.lastChild);
+
+                if (atBottom) {
+                    messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                }
                 loadMentions();
             });
             
