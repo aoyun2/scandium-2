@@ -866,7 +866,7 @@ html
                     else lastMessage = addMessage(m);
                 });
 
-                if (messagediv.scrollTop >= (messagediv.scrollHeight - elem.offsetHeight)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                if (messagediv.scrollTop >= (messagediv.scrollHeight - messagediv.offsetHeight)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 else if (messagediv.childNodes.length > 10) lastMessage.scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
