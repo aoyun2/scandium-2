@@ -872,7 +872,7 @@ html
                 if (data.length < 10) endOfChannel();
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
-                lastMessage.scrollIntoView(false, {behavior: "smooth"});
+                lastMessage.scrollIntoView(true, {behavior: "smooth"});
 
                 loadMentions();
             });
