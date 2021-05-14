@@ -260,7 +260,6 @@ html
             var channelEnd = false;
             var replying = false;
             var editing = false;
-            var firstHistoryRequested = false;
 
             window.addEventListener('resize', () => {
                 try {
@@ -547,7 +546,6 @@ html
             });
 
             channelinput.addEventListener('change', () => {
-                firstHistoryRequested = false;
                 messagediv.innerHTML = '';
 
                 requestDebounce = true;
@@ -819,6 +817,8 @@ html
                 if (!prepend && atBottom) {
                     messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 }
+                
+                return message;
             }
 
             socket.once('connect', function() {
@@ -857,9 +857,12 @@ html
                 // console.log(data);
                 if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
                 
+                var lastMessage;
+                
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
-                    addMessage(m);
+                    if(data[data.length-1] !== m) addMessage(m);
+                    else lastMessage = addMessage(m);
                 });
 
                 if (messagediv.childNodes.length === 10) messagediv.scrollTop = messagediv.scrollHeight - messagediv.clientHeight;
@@ -869,10 +872,7 @@ html
                 if (data.length < 10) endOfChannel();
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
-                if (!firstHistoryRequested) {
-                    messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                    firstHistoryRequested = true;
-                }
+                lastMessage.scrollIntoView(false, {behavior: "smooth"});
 
                 loadMentions();
             });
