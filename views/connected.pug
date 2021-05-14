@@ -861,7 +861,7 @@ html
                 
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
-                    if(data[data.length-1] !== m) addMessage(m);
+                    if(data[0] !== m) addMessage(m);
                     else lastMessage = addMessage(m);
                 });
 
