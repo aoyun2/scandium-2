@@ -179,7 +179,7 @@ html
                   border-radius: 6px;
                   padding: 5px;
                   padding-left: 0px;
-                  margin-left: 0px;
+                  margin-left: 3px;
   
                   /* Position the tooltip */
                   position: absolute;
@@ -864,7 +864,7 @@ html
                 });
 
                 if (messagediv.childNodes.length <= 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                //else if (messagediv.childNodes.length > 10 && isInViewport(!messagediv.lastChild)) messagediv..scrollIntoView(true, {behavior: "smooth"});
+                else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
