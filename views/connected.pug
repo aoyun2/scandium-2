@@ -858,16 +858,13 @@ html
                 // console.log(data);
                 if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
                 
-                var lastMessage;
-                
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
-                    if(data[0] !== m) addMessage(m);
-                    else lastMessage = addMessage(m);
+                    addMessage(m);
                 });
 
-                if (messagediv.scrollTop >= (messagediv.scrollHeight - messagediv.offsetHeight)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                else if (messagediv.childNodes.length > 10) lastMessage.scrollIntoView(true, {behavior: "smooth"});
+                if (messagediv.childNodes.length <= 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                //else if (messagediv.childNodes.length > 10 && isInViewport(!messagediv.lastChild)) messagediv..scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
