@@ -260,6 +260,7 @@ html
             var channelEnd = false;
             var replying = false;
             var editing = false;
+            var firstHistoryRequested = false;
 
             window.addEventListener('resize', () => {
                 try {
@@ -546,6 +547,7 @@ html
             });
 
             channelinput.addEventListener('change', () => {
+                firstHistoryRequested = false;
                 messagediv.innerHTML = '';
 
                 requestDebounce = true;
@@ -853,11 +855,8 @@ html
 
             socket.on("channel_history", data => {
                 // console.log(data);
-
                 if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
                 
-                var firstHistory = messagediv.children.length <= 0;
-
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
                     addMessage(m);
@@ -870,9 +869,11 @@ html
                 if (data.length < 10) endOfChannel();
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
-                if (firstHistory) {
+                if (!firstHistoryRequested) {
                     messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                    firstHistoryRequested = true;
                 }
+
                 loadMentions();
             });
             
