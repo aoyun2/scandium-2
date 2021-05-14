@@ -865,8 +865,8 @@ html
                     else lastMessage = addMessage(m);
                 });
 
-                if (messagediv.childNodes.length === 10 || isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                else if (messagediv.childNodes.length >= 10) lastMessage.scrollIntoView(true, {behavior: "smooth"});
+                if (messagediv.childNodes.length <= 10 || isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                else if (messagediv.childNodes.length > 10) lastMessage.scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
