@@ -863,7 +863,7 @@ html
                     addMessage(m);
                 });
 
-                if (messagediv.childNodes.length <= 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
