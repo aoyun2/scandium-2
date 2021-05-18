@@ -161,9 +161,9 @@ html
                   margin-left: -60px;
             }
 
-            .d-reply-container:hover .tooltiptext {
+            /*.d-reply-container:hover .tooltiptext {
                   visibility: visible;
-            }
+            }*/
 
             /*.d-reply-container {
                 position: relative;
@@ -726,6 +726,20 @@ html
                 replyMessage.classList.add('d-reply-container');
                 replyMessage.id = messageObject.id;
                 replyMessage.innerHTML = "<em style='color:purple'>message</em>";
+                
+                (function() {
+                    var state;
+
+                    replyMessage.addEventListener("mouseover", function( event ) {
+                        state = !state;
+                    
+                        if (state) {
+                            event.target.querySelector("tooltiptext").style.visibility = "visible";
+                        } else {
+                            event.target.querySelector("tooltiptext").style.visibility = "hidden";
+                        }
+                    }, false);
+                })();
 
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
