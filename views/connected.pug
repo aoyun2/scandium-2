@@ -734,11 +734,11 @@ html
                 replyTooltip.innerHTML = "<em style='color:purple'>Loading. . .</em>";
                 
                 replyMessage.addEventListener("mouseover", function( event ) {
-                    if(event.target.nodeName === "EM") event.target.querySelector("span").style.visibility = "visible";
+                    if(event.target.nodeName === "EM" && event.target.firstChild) event.target.firstChild.style.visibility = "visible";
                 }, false);
                 
                 replyMessage.addEventListener("mouseout", function( event ) {
-                    if(event.target.nodeName === "EM") event.target.querySelector("span").style.visibility = "hidden";
+                    if(event.target.nodeName === "EM") event.target.firstChild.style.visibility = "hidden";
                 }, false);
                 
                 replyMessage.appendChild(replyTooltip);
