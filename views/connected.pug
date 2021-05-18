@@ -730,7 +730,7 @@ html
                 }, {once: true}, false);
                 
                 replyMessage.addEventListener("mouseout", function( event ) {
-                    replyMessage.firstChild.style.visibility = "hidden";
+                    event.target.firstChild = "hidden";
                 }, {once: true}, false);
 
                 var replyTooltip = document.createElement('span');
