@@ -334,22 +334,9 @@ module.exports.fetchMessage = async (server, channel, id) => {
 		var message = await c.messages.fetch(id);
 
 		// console.log(s, c);
-		if (!message) return {
-			id: null,
-			author: null,
-			color: null,
-			sentAt: null,
-			edited: null,
-			canEdit: null,
-			text: "Message either was deleted or could not be loaded.",
-			attachments: null,
-			embeds: null,
-			reference: null,
-			system: null
-		}
-		
-		return await processMessage(message);
-	} catch (e) { console.log(e); return undefined; }
+		if (!message) return null;
+		else return await processMessage(message);
+	} catch (e) { console.log(e); return null; }
 }
 
 module.exports.fetchChannels = (server, id) => {
