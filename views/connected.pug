@@ -178,8 +178,8 @@ html
                   text-align: left;
                   border-radius: 6px;
                   padding: 5px;
-                  padding-left: 0px;
-                  margin-left: 3px;
+                  padding-left: 3px;
+                  margin-left: 0px;
   
                   /* Position the tooltip */
                   position: absolute;
@@ -395,8 +395,8 @@ html
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                             }
                         } else if (lastWord.charAt(0) === "@") {
-                            var matchingUsers = users.filter(u => `@${u.name}`.toLowerCase().startsWith(lastWord) || `@${u.displayname}`.startsWith(lastWord));
-                            var matchingRoles = roles.filter(r => `@${r.name}`.toLowerCase().startsWith(lastWord));
+                            var matchingUsers = users.filter(u => `@${u.name}`.toLowerCase().startsWith(lastWord.toLowerCase()) || `@${u.displayname.toLowerCase()}`.startsWith(lastWord.toLowerCase()));
+                            var matchingRoles = roles.filter(r => `@${r.name}`.toLowerCase().startsWith(lastWord.toLowerCase()) || r.name.toLowerCase().startsWith(lastWord.toLowerCase()));
                             //- console.log(matchingUsers)
 
                             if (matchingUsers.length > 0 || matchingRoles.length > 0) {
