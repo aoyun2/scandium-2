@@ -738,7 +738,7 @@ html
                 replyTooltip.innerHTML = "<em style='color:purple'>Loading. . .</em>";
                 
                 replyTooltip.addEventListener("mouseout", function( event ) {
-                    event.target.style.visibility = "hidden";
+                    event.target.firstChild.style.visibility = "hidden";
                 }, false);
                 
                 replyMessage.appendChild(replyTooltip);
