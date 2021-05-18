@@ -730,13 +730,13 @@ html
                 (function() {
                     var state;
 
-                    replyMessage.addEventListener("mouseover", function( event ) {
+                    replyMessage.addEventListener("click", function( event ) {
                         state = !state;
                     
                         if (state) {
-                            event.target.querySelector("tooltiptext").style.visibility = "visible";
+                            event.target.querySelector(".tooltiptext").style.visibility = "visible";
                         } else {
-                            event.target.querySelector("tooltiptext").style.visibility = "hidden";
+                            event.target.querySelector(".tooltiptext").style.visibility = "hidden";
                         }
                     }, false);
                 })();
