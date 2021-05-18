@@ -727,15 +727,15 @@ html
 
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
-                    
-                    event.target.addEventListener("mouseover", function ( e ) {
-                        e.target.firstChild.style.visibility = "visible";
-                    }, false);
                 }, {once: true}, false);
 
                 var replyTooltip = document.createElement('span');
                 replyTooltip.classList.add('tooltiptext');
                 replyTooltip.innerHTML = "<em style='color:purple'>Loading. . .</em>";
+                
+                replyTooltip.addEventListener("mouseover", function( event ) {
+                    event.target.firstChild.style.visibility = "visible";
+                }, false);
                 
                 replyTooltip.addEventListener("mouseout", function( event ) {
                     event.target.firstChild.style.visibility = "hidden";
