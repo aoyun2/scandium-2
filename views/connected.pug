@@ -939,8 +939,12 @@ html
                     if (!tooltip) return;
 
                     tooltip.innerHTML = '';
+                    
+                    var notice = document.createElement('em');
+                    notice.style.color = "purple";
+                    notice.innerText = "Message was deleted or could not be loaded.";
 
-                    var message = createMessage(data.JSON);
+                    var message = createMessage(data.JSON || notice);
 
                     tooltip.appendChild(message);
                     
