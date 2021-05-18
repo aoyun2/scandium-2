@@ -733,11 +733,11 @@ html
                 replyTooltip.classList.add('tooltiptext');
                 replyTooltip.innerHTML = "<em style='color:purple'>Loading. . .</em>";
                 
-                replyTooltip.addEventListener("mouseover", function( event ) {
+                replyMessage.addEventListener("mouseover", function( event ) {
                     if(event.target.nodeName === "EM") event.target.querySelector("span").style.visibility = "visible";
                 }, false);
                 
-                replyTooltip.addEventListener("mouseout", function( event ) {
+                replyMessage.addEventListener("mouseout", function( event ) {
                     if(event.target.nodeName === "EM") event.target.querySelector("span").style.visibility = "hidden";
                 }, false);
                 
