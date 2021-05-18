@@ -728,6 +728,10 @@ html
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
                 }, {once: true}, false);
+                
+                replyMessage.addEventListener("mouseout", function( event ) {
+                    repluMessage.firstChild.style.visibility = "hidden";
+                }, {once: true}, false);
 
                 var replyTooltip = document.createElement('span');
                 replyTooltip.classList.add('tooltiptext');
