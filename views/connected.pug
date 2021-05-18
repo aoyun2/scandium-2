@@ -159,9 +159,9 @@ html
                   margin-left: -60px;
             }
 
-            .d-reply-container:hover .tooltiptext {
+            /*.d-reply-container:hover .tooltiptext {
                   visibility: visible;
-            }
+            }*/
 
             /*.d-reply-container {
                 position: relative;
@@ -727,6 +727,10 @@ html
 
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
+                    
+                    event.target.addEventListener("mouseover", function ( e ) {
+                        e.target.firstChild.style.visibility = "visible";
+                    }, false);
                 }, {once: true}, false);
 
                 var replyTooltip = document.createElement('span');
