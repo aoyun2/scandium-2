@@ -944,9 +944,9 @@ html
                     notice.style.color = "purple";
                     notice.innerText = "Message was deleted or could not be loaded.";
 
-                    var message = createMessage(data.JSON || notice);
+                    var message = data.JSON ? createMessage(data.JSON) : null;
 
-                    tooltip.appendChild(message);
+                    tooltip.appendChild(message || notice);
                     
                     loadMentions();
                 });
