@@ -746,9 +746,9 @@ html
                         console.error(event.currentTarget);
 
                         if (state) {
-                            event.target.firstElementChild.style.visibility = "visible";
+                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
                         } else {
-                            event.target.firstElementChild.style.visibility = "hidden";
+                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "hidden";
                         }
                     }, false);
                 })();
