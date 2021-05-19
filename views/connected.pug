@@ -738,17 +738,17 @@ html
                 
                 replyMessage.appendChild(replyTooltip);
                 
-
-                 (function() {
-                    var state = false;
+                // closure is not needed here
+                //(function() {
+                //   var state = false;
                     replyMessage.addEventListener("click", function( event ) {
-                        state = !state;
+                        //state = !state;
                         
                         event.stopPropagation();
 
-                        if (state) {
+                        if (event.currentTarget.querySelector(".tooltiptext").style.visibility === "hidden") {
                             event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
-                        } else {
+                        } else if (event.currentTarget.querySelector(".tooltiptext").style.visibility === "visible") {
                             var recursive = event.currentTarget.getElementsByClassName("tooltiptext");
                             
                             for(var i of recursive) {
@@ -756,7 +756,7 @@ html
                             }
                         }
                     }, false);
-                })();
+                //})();
                 
                 reply.appendChild(replyMessage);
 
