@@ -50,6 +50,12 @@ html
             const userinput = document.querySelector("#userinput");
             const serverinput = document.querySelector("#serverselect");
             
+            window.onload = function() {
+                try {
+                    socket.emit("populate_server_dropdown", userinput.value);
+                } catch(e) {console.log(e)};
+            }
+            
             userinput.addEventListener('change', (event) => {
                 try {
                     socket.emit("populate_server_dropdown", userinput.value);
