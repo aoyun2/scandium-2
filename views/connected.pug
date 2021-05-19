@@ -744,9 +744,9 @@ html
                         state = !state;
 
                         if (state) {
-                            event.currentTarget.firstElementChild.style.visibility = "visible";
+                            event.target.firstChild.style.visibility = "visible";
                         } else {
-                            event.currentTarget.firstElementChild.style.visibility = "hidden";
+                            event.target.firstChild.style.visibility = "hidden";
                         }
                     }, false);
                 })();
