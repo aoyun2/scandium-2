@@ -746,9 +746,9 @@ html
                         
                         event.stopPropagation();
 
-                        if (event.currentTarget.querySelector(".tooltiptext").style.visibility === "hidden") {
+                        if (event.currentTarget.querySelector(".tooltiptext").style.visibility == "hidden") {
                             event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
-                        } else if (event.currentTarget.querySelector(".tooltiptext").style.visibility === "visible") {
+                        } else if (event.currentTarget.querySelector(".tooltiptext").style.visibility == "visible") {
                             var recursive = event.currentTarget.getElementsByClassName("tooltiptext");
                             
                             for(var i of recursive) {
