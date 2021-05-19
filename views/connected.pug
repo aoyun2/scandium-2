@@ -743,12 +743,14 @@ html
                     replyMessage.addEventListener("click", function( event ) {
                         state = !state;
                         
+                        if (event.target.nodeName !== "EM") return;
+                        
                         //console.error(event.currentTarget);
 
                         if (state) {
-                            event.target.querySelector(".tooltiptext").style.visibility = "visible";
+                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
                         } else {
-                            event.target.querySelector(".tooltiptext").style.visibility = "hidden";
+                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "hidden";
                         }
                     }, false);
                 })();
