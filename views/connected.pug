@@ -740,11 +740,11 @@ html
                 
 
                  (function() {
-                    var state;
+                    var state = false;
                     replyMessage.addEventListener("click", function( event ) {
-                        state = event.currentTarget.querySelector(".tooltiptext").style.visibility === "hidden";
-
-                        if (event.currentTarget !== this) return;
+                        state = !state;
+                        
+                        event.stopPropogation();
 
                         if (state) {
                             event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
