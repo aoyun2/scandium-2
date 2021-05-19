@@ -727,21 +727,17 @@ html
                 replyMessage.id = messageObject.id;
                 replyMessage.innerHTML = "<em style='color:purple'>message</em>";
                 
-                (function() {
-                    var state = false;
+                replyMessage.addEventListener("click", function( event ) {
+                    state = event.target.firstChild.style.visibility === "hidden";
 
-                    replyMessage.addEventListener("click", function( event ) {
-                        state = !state;
-                        
-                        console.error(event);
-                    
-                        if (state) {
-                            event.target.firstChild.style.visibility = "visible";
-                        } else {
-                            event.target.firstChild.style.visibility = "hidden";
-                        }
-                    }, false);
-                })();
+                    console.error(event);
+
+                    if (state) {
+                        event.target.firstChild.style.visibility = "visible";
+                    } else {
+                        event.target.firstChild.style.visibility = "hidden";
+                    }
+                }, false);
 
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
