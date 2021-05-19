@@ -742,11 +742,13 @@ html
 
                     replyMessage.addEventListener("click", function( event ) {
                         state = !state;
+                        
+                        console.error(event.target.children);
 
                         if (state) {
-                            event.target.firstChild.style.visibility = "visible";
+                            event.target.firstElementChild.style.visibility = "visible";
                         } else {
-                            event.target.firstChild.style.visibility = "hidden";
+                            event.target.firstElementChild.style.visibility = "hidden";
                         }
                     }, false);
                 })();
