@@ -733,7 +733,7 @@ html
                     replyMessage.addEventListener("click", function( event ) {
                         state = !state;
                         
-                        console.error(event.target.getAttribute('value'));
+                        console.error(event);
                     
                         if (state) {
                             event.target.firstChild.style.visibility = "visible";
