@@ -728,9 +728,9 @@ html
                 replyMessage.innerHTML = "<em style='color:purple'>message</em>";
                 
                 replyMessage.addEventListener("click", function( event ) {
-                    state = event.target.firstChild.style.visibility === "hidden";
-
                     console.error(event);
+
+                    state = event.target.firstChild.style.visibility === "hidden";
 
                     if (state) {
                         event.target.firstChild.style.visibility = "visible";
