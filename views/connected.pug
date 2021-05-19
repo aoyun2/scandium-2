@@ -744,7 +744,7 @@ html
                     replyMessage.addEventListener("click", function( event ) {
                         state = !state;
 
-                        if (event.currentTarget !== this) return;
+                        if (event.target.parent !== this) return;
 
                         if (state) {
                             event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
