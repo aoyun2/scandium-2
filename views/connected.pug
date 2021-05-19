@@ -730,9 +730,9 @@ html
                 replyMessage.style.userSelect = "none";
                 replyMessage.setAttribute("tabindex", "-1");
 
-                replyMessage.addEventListener("mouseover", function( event ) {
+                /*replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
-                }, {once: true}, false);
+                }, {once: true}, false);*/
 
                 var replyTooltip = document.createElement('span');
                 replyTooltip.classList.add('tooltiptext');
@@ -741,10 +741,14 @@ html
                 replyMessage.appendChild(replyTooltip);
                 
                 // closure is not needed here
-                //(function() {
-                //   var state = false;
+                (function() {
+                    var first = true;
                     replyMessage.addEventListener("click", function( event ) {
                         //state = !state;
+                        if (first) {
+                            socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
+                            first = false;
+                        }
                         
                         event.stopPropagation();
 
@@ -758,7 +762,7 @@ html
                             }
                         }
                     }, false);
-                //})();
+                })();
                 
                 replyMessage.addEventListener("blur", function( event ) {
                         //state = !state;
