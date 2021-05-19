@@ -161,9 +161,9 @@ html
                   margin-left: -60px;
             }
 
-            /*.d-reply-container:hover .tooltiptext {
-                  visibility: visible;
-            }*/
+            .d-reply-container:hover {
+                  background-color: lightgray;
+            }
 
             /*.d-reply-container {
                 position: relative;
@@ -349,7 +349,7 @@ html
                                     var li = document.createElement('li');
                                     li.textContent = e.name + "  ";
                                     li.id = e.string;
-                                    //li.style.userSelect = "none";
+                                    li.style.userSelect = "none";
 
                                     var image = document.createElement("img");
                                     image.id = e.string;
@@ -726,6 +726,7 @@ html
                 replyMessage.classList.add('d-reply-container');
                 replyMessage.id = messageObject.id;
                 replyMessage.innerHTML = "<em style='color:purple'>message</em>";
+                replyMessage.style.userSelect = "none";
 
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
