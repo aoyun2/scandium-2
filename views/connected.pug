@@ -758,6 +758,18 @@ html
                     }, false);
                 //})();
                 
+                replyMessage.addEventListener("blur", function( event ) {
+                        //state = !state;
+                        
+                        //event.stopPropagation();
+
+                        var recursive = event.currentTarget.getElementsByClassName("tooltiptext");
+
+                        for(var i of recursive) {
+                            i.style.visibility = "hidden";
+                        }
+                    }, false);
+                
                 reply.appendChild(replyMessage);
 
                 if (new Date(messageObject.sentAt).getDate() === new Date().getDate() &&
