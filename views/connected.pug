@@ -738,23 +738,20 @@ html
                 
                 replyMessage.appendChild(replyTooltip);
                 
-                (function() {
-                    var state;
 
-                    replyMessage.addEventListener("click", function( event ) {
-                        state = !state;
-                        
-                        if (event.currentTarget !== this) return;
-                        
-                        //console.error(event.currentTarget);
+                replyMessage.addEventListener("click", function( event ) {
+                    var state = event.currentTarget.querySelector(".tooltiptext").style.visibility === "hidden";
 
-                        if (state) {
-                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
-                        } else {
-                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "hidden";
-                        }
-                    }, false);
-                })();
+                    if (event.currentTarget !== this) return;
+
+                    //console.error(event.currentTarget);
+
+                    if (state) {
+                        event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
+                    } else {
+                        event.currentTarget.querySelector(".tooltiptext").style.visibility = "hidden";
+                    }
+                }, false);
                 
                 reply.appendChild(replyMessage);
 
