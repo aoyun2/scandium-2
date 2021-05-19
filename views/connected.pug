@@ -728,17 +728,17 @@ html
                 replyMessage.innerHTML = "<em style='color:purple'>message</em>";
                 
                 (function() {
-                    var state;
+                    var state = false;
 
                     replyMessage.addEventListener("click", function( event ) {
                         state = !state;
                         
-                        console.error(event.target);
+                        console.error(event.currentTarget.getAttribute('value'));
                     
                         if (state) {
-                            event.currentTarget.firstElementChild.style.visibility = "visible";
+                            event.currentTarget.firstChild.style.visibility = "visible";
                         } else {
-                            event.currentTarget.firstElementChild.style.visibility = "hidden";
+                            event.currentTarget.firstChild.style.visibility = "hidden";
                         }
                     }, false);
                 })();
