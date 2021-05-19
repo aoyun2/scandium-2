@@ -726,18 +726,6 @@ html
                 replyMessage.classList.add('d-reply-container');
                 replyMessage.id = messageObject.id;
                 replyMessage.innerHTML = "<em style='color:purple'>message</em>";
-                
-                replyMessage.addEventListener("click", function( event ) {
-                    console.error(event);
-
-                    state = event.target.firstChild.style.visibility === "hidden";
-
-                    if (state) {
-                        event.target.firstChild.style.visibility = "visible";
-                    } else {
-                        event.target.firstChild.style.visibility = "hidden";
-                    }
-                }, false);
 
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
@@ -748,6 +736,21 @@ html
                 replyTooltip.innerHTML = "<em style='color:purple'>Loading. . .</em>";
                 
                 replyMessage.appendChild(replyTooltip);
+                
+                (function() {
+                    var state;
+
+                    replyMessage.addEventListener("click", function( event ) {
+                        state = !state;
+
+                        if (state) {
+                            event.currentTarget.firstElementChild.style.visibility = "visible";
+                        } else {
+                            event.currentTarget.firstElementChild.style.visibility = "hidden";
+                        }
+                    }, false);
+                })();
+                
                 reply.appendChild(replyMessage);
 
                 if (new Date(messageObject.sentAt).getDate() === new Date().getDate() &&
