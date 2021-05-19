@@ -749,7 +749,11 @@ html
                         if (state) {
                             event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
                         } else {
-                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "hidden";
+                            var recursive = event.currentTarget.getElementsByClassName("tooltiptext");
+                            
+                            for(var i of recursive) {
+                                i.style.visibility = "hidden";
+                            }
                         }
                     }, false);
                 })();
