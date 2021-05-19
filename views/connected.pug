@@ -739,19 +739,20 @@ html
                 replyMessage.appendChild(replyTooltip);
                 
 
-                replyMessage.addEventListener("click", function( event ) {
-                    var state = event.currentTarget.querySelector(".tooltiptext").style.visibility === "hidden";
+                 (function() {
+                    var state;
+                    replyMessage.addEventListener("click", function( event ) {
+                        state = !state;
 
-                    if (event.currentTarget !== this) return;
+                        if (event.target.nodeName !== "EM") return;
 
-                    //console.error(event.currentTarget);
-
-                    if (state) {
-                        event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
-                    } else {
-                        event.currentTarget.querySelector(".tooltiptext").style.visibility = "hidden";
-                    }
-                }, false);
+                        if (state) {
+                            event.target.querySelector(".tooltiptext").style.visibility = "visible";
+                        } else {
+                            event.target.querySelector(".tooltiptext").style.visibility = "hidden";
+                        }
+                    }, false);
+                })();
                 
                 reply.appendChild(replyMessage);
 
