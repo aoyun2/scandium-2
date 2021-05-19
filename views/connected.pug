@@ -727,6 +727,7 @@ html
                 replyMessage.id = messageObject.id;
                 replyMessage.innerHTML = "<em style='color:purple'>message</em>";
                 replyMessage.style.userSelect = "none";
+                replyMessage.setAttribute("tabindex", "-1");
 
                 replyMessage.addEventListener("mouseover", function( event ) {
                     socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
