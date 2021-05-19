@@ -989,9 +989,9 @@ html
                     var message = data.JSON ? createMessage(data.JSON) : null;
 
                     tooltip.appendChild(message || notice);
-                    
-                    loadMentions();
                 });
+                
+                loadMentions();
             });
 
             socket.on("new_message", (data) => {
