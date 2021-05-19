@@ -321,6 +321,7 @@ html
                         if(!(replying || editing)) {
                             socket.emit("client_message", messageinput.value);
                             messageinput.value = '';
+                            event.preventDefault();
                         } else if (replying) {
                             socket.emit("reply_message", { messageID: replying, data: messageinput.value });
                             messageinput.value = '';
