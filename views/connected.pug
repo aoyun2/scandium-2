@@ -766,7 +766,7 @@ html
                         
                         if (event.target.contains(event.relatedTarget)) return;
 
-                        var recursive = event.currentTarget.getElementsByClassName("tooltiptext");
+                        var recursive = event.currentTarget.closest(".message > span").getElementsByClassName("tooltiptext");
 
                         for(var i of recursive) {
                             i.style.visibility = "hidden";
