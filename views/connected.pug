@@ -742,9 +742,9 @@ html
                  (function() {
                     var state;
                     replyMessage.addEventListener("click", function( event ) {
-                        state = !state;
+                        state = event.currentTarget.querySelector(".tooltiptext").style.visibility === "hidden";
 
-                        if (event.target.parent !== this) return;
+                        if (event.currentTarget !== this) return;
 
                         if (state) {
                             event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
