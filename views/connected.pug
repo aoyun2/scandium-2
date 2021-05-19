@@ -733,12 +733,12 @@ html
                     replyMessage.addEventListener("click", function( event ) {
                         state = !state;
                         
-                        console.error(event.currentTarget.getAttribute('value'));
+                        console.error(event.target.getAttribute('value'));
                     
                         if (state) {
-                            event.currentTarget.firstChild.style.visibility = "visible";
+                            event.target.firstChild.style.visibility = "visible";
                         } else {
-                            event.currentTarget.firstChild.style.visibility = "hidden";
+                            event.target.firstChild.style.visibility = "hidden";
                         }
                     }, false);
                 })();
