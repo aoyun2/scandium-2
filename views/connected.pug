@@ -744,6 +744,8 @@ html
                 (function() {
                     var first = true;
                     replyMessage.addEventListener("click", function( event ) {
+                        if (event.target !== this) return;
+                    
                         //state = !state;
                         if (first) {
                             socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
