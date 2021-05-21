@@ -296,6 +296,8 @@ html
             
             function preloadImage(i) {
                 i.src = i.getAttribute("data-src");
+                
+                if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
             }
 
             // register the config object with an instance
