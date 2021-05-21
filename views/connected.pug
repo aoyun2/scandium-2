@@ -748,7 +748,7 @@ html
                 (function() {
                     var first = true;
                     replyMessage.addEventListener("click", function( event ) {
-                        if (event.target !== this) return;
+                        if (event.target !== event.currentTarget) return;
                     
                         //state = !state;
                         if (first) {
