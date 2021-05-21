@@ -858,6 +858,10 @@ html
                 message.classList.add('message');
                 message.id = messageObject.id;
                 message.style.position = "relative";
+                
+                for (var emojiImage of messagediv.getElementsByClassName("d-emoji d-emoji-animated")) {
+                    observer.observe(emojiImage);
+                }
 
                 return message;
             }
