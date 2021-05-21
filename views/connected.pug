@@ -917,7 +917,7 @@ html
                 });
                 
                 
-                if (messagediv.childNodes.length > 10) messagediv.children.item(9).scrollIntoView(false, {behavior: "smooth"});
+                if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(9).scrollIntoView(false, {behavior: "smooth"});
                 else messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 
                 //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
