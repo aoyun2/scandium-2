@@ -911,7 +911,7 @@ html
                 });
                 
                 if (!isInViewport(messagediv.lastChild)) messagediv.children.item(9).scrollIntoView(true, {behavior: "smooth"});
-                else messagediv.children.item(9).scrollIntoView(false, {behavior: "smooth"});
+                else messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 
                 //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
