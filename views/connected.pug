@@ -294,16 +294,6 @@ html
               threshold: 0
             };
             
-            function preloadImage(i) {
-                i.src = i.getAttribute("data-src");
-                
-                i.addEventListener("load", function () {
-                    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                }, {once: true}, false);
-            }
-
-            // register the config object with an instance
-            // of intersectionObserver
             let observer = new IntersectionObserver(function(entries, self) {
               // iterate over each entry
               entries.forEach(entry => {
@@ -314,10 +304,24 @@ html
                   // from data-src to src
                   preloadImage(entry.target);
                   // the image is now in place, stop watching
-                  self.unobserve(entry.target);
+                  //self.unobserve(entry.target);
                 }
               });
             }, config);
+            
+            function preloadImage(i) {
+                i.src = i.getAttribute("data-src");
+                
+                i.addEventListener("load", function () {
+                    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                }, {once: true}, false);
+                
+                observer.unobserve(i);
+            }
+
+            // register the config object with an instance
+            // of intersectionObserver
+
 
             function handleMessageSending(event) {
                 try {
@@ -860,8 +864,7 @@ html
                 message.style.position = "relative";
                 
                 for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    if (!isInViewport(emojiImage)) observer.observe(emojiImage);
-                    else preloadImage(emojiImage);
+                    observer.observe(emojiImage);
                 }
 
                 return message;
@@ -872,6 +875,10 @@ html
                 var atBottom = isInViewport(messagediv.lastChild);
 
                 prepend ? messagediv.prepend(message) : messagediv.append(message);
+                
+                for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                    if(isInViewport(emojiImage)) preloadImage(emojiImage);
+                }
 
                 if (!prepend && atBottom) {
                     messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
