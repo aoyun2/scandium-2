@@ -860,7 +860,8 @@ html
                 message.style.position = "relative";
                 
                 for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    observer.observe(emojiImage);
+                    if (!isInViewport(emojiImage)) observer.observe(emojiImage);
+                    else preloadImage(emojiImage);
                 }
 
                 return message;
