@@ -876,12 +876,13 @@ html
 
                 prepend ? messagediv.prepend(message) : messagediv.append(message);
                 
-                for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    if(isInViewport(emojiImage)) preloadImage(emojiImage);
-                }
 
                 if (!prepend && atBottom) {
                     messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                }
+                
+                for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                    if(isInViewport(emojiImage)) preloadImage(emojiImage);
                 }
                 
                 return message;
