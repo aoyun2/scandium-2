@@ -883,6 +883,7 @@ html
                 
                 for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
                     if(isInViewport(emojiImage)) preloadImage(emojiImage);
+                    else observer.observe(emojiImage);
                 }
                 
                 return message;
