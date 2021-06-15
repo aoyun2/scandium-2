@@ -58,7 +58,8 @@ html
             
             userinput.addEventListener('change', (event) => {
                 try {
-                    socket.emit("populate_server_dropdown", userinput.value);
+                    socket.emit("populate_server_dropdown", userinput.value.trim());
+                    
                 } catch(e) {console.log(e)};
             });
 
