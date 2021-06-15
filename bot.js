@@ -364,10 +364,10 @@ module.exports.fetchGuilds = (id) => {
 		var allServers = bot.guilds.cache.filter(g => g.member(id)).map(g => [g.name, g.id]);
 
 		console.log(allServers);
-		if (allServers.length === 0) return [null, "You don't seem to be in any servers."];
+		if (allServers.length === 0) return ["You don't seem to be in any servers.", null];
 
 		return allServers;
-	} catch (e) { console.log(e); return [null, "Error fetching Servers."]; }
+	} catch (e) { console.log(e); return ["Error fetching Servers.", null]; }
 }
 
 module.exports.fetchPermissions = (server, channel, id) => {
