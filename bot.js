@@ -28,9 +28,9 @@ class ExtAPIMessage extends APIMessage {
     }
 }
 
-console.log(Client.fetchWebhook.toString());
+console.log(Client.prototype.fetchWebhook.toString());
 
-Client.fetchWebhook = function (id, token) {
+Client.prototype.fetchWebhook = function (id, token) {
     return this.api
       .webhooks(id, token)
       .get()
