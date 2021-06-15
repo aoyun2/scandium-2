@@ -361,7 +361,7 @@ module.exports.fetchChannels = (server, id) => {
 
 module.exports.fetchGuilds = (id) => {
 	try {
-		var allServers = bot.guilds.cache.filter(g => g.member(id)).map(g => [g.name, g.id]);
+		var allServers = bot.guilds.cache.filter(g => g.members.cache.filter(m => m.id === id).length > 0).map(g => [g.name, g.id]);
 
 		console.log(allServers);
 		if (!allServers.length) return [`You don't seem to be in any servers.`, null];
