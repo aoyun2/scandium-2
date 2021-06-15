@@ -37,6 +37,8 @@ Client.prototype.fetchWebhook = function (id, token) {
       .then(data => new Webhook(this, {...data, token})); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
 }
 
+console.log(Client.prototype.fetchWebhook.toString());
+
 async function inlineReply(message, content, options) {
 	var apiMessage = APIMessage.create(this, content, options).resolveData();
 
