@@ -383,70 +383,72 @@ module.exports.fetchPermissions = (server, channel, id) => {
 }
 
 module.exports.sendMessage = async (s, c, u, data, clientID) => {
-	const server = bot.guilds.cache.get(s);
-	const channel = server.channels.cache.get(c);
-	const user = server.members.cache.get(u);
+	try {
+		const server = bot.guilds.cache.get(s);
+		const channel = server.channels.cache.get(c);
+		const user = server.members.cache.get(u);
 
-	if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
-		serverModule.error("SCANDIUM_SEND_ERROR: You may not have the permission SEND_MESSAGES in this channel.", clientID);
-		return;
-	}
+		if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
+			serverModule.error("SCANDIUM_SEND_ERROR: You may not have the permission SEND_MESSAGES in this channel.", clientID);
+			return;
+		}
 
-	let webhooks = await channel.fetchWebhooks();
-	if (Array.from(webhooks).length === 0) {
-		//console.log("empty");
-		await channel.createWebhook("Scandium 2");
-		webhooks = await channel.fetchWebhooks();
-	}
+		let webhooks = await channel.fetchWebhooks();
+		if (Array.from(webhooks).length === 0) {
+			//console.log("empty");
+			await channel.createWebhook("Scandium 2");
+			webhooks = await channel.fetchWebhooks();
+		}
 
-	const webhook = webhooks.first();
+		const webhook = webhooks.first();
 
-	// var message = data;
+		// var message = data;
 
-	// var emojis = message.match(/:[^:\s]*(?:::[^:\s]*)*:/g) || [];
-	// var channels = message.match(/#([a-zA-Z0-9_-]*)/g) || [];
-	// var mentions = message.match(/@([^ ]*)/g) || [];
+		// var emojis = message.match(/:[^:\s]*(?:::[^:\s]*)*:/g) || [];
+		// var channels = message.match(/#([a-zA-Z0-9_-]*)/g) || [];
+		// var mentions = message.match(/@([^ ]*)/g) || [];
 
-	// console.log(emojis, channels, mentions)
+		// console.log(emojis, channels, mentions)
 
-	// for (var e of emojis) {
-	// 	console.log(e)
-	// 	var emoji = server.emojis.cache.find(em => { return `:${em.name}:` == e })
-		
-	// 	if (emoji) {
-	// 		var emoji_text = emoji.toString();
-	// 		message = message.replace(e, emoji_text);
-	// 	}
-	// }
+		// for (var e of emojis) {
+		// 	console.log(e)
+		// 	var emoji = server.emojis.cache.find(em => { return `:${em.name}:` == e })
 
-	// for (var c of channels) {
-	// 	console.log(c)
-	// 	var mentioned_channel = server.channels.cache.find(cn => `#${cn.name}` == c);
-	// 	console.log(c, mentioned_channel);
+		// 	if (emoji) {
+		// 		var emoji_text = emoji.toString();
+		// 		message = message.replace(e, emoji_text);
+		// 	}
+		// }
 
-	// 	if (mentioned_channel) {
-	// 		var channel_text = mentioned_channel.toString();
-	// 		message = message.replace(c, channel_text);
-	// 	}
-	// }
+		// for (var c of channels) {
+		// 	console.log(c)
+		// 	var mentioned_channel = server.channels.cache.find(cn => `#${cn.name}` == c);
+		// 	console.log(c, mentioned_channel);
 
-	// for (var m of mentions) {
-	// 	console.log(m)
-	// 	var mention = server.members.cache.find(mb => `@${mb.displayName}`.replace(' ', '_') === m || `@${mb.user.username}`.replace(' ', '_') === m) || server.roles.cache.find(r => `@${r.name}` === m);
-	// 	console.log(m, mention);
+		// 	if (mentioned_channel) {
+		// 		var channel_text = mentioned_channel.toString();
+		// 		message = message.replace(c, channel_text);
+		// 	}
+		// }
 
-	// 	if (mention) {
-	// 		var mention_text = mention.toString();
-	// 		message = message.replace(m, mention_text);
-	// 	}
-	// }
+		// for (var m of mentions) {
+		// 	console.log(m)
+		// 	var mention = server.members.cache.find(mb => `@${mb.displayName}`.replace(' ', '_') === m || `@${mb.user.username}`.replace(' ', '_') === m) || server.roles.cache.find(r => `@${r.name}` === m);
+		// 	console.log(m, mention);
 
-	// console.log(message)
+		// 	if (mention) {
+		// 		var mention_text = mention.toString();
+		// 		message = message.replace(m, mention_text);
+		// 	}
+		// }
 
-	await webhook.send(data, {
-		username: user.user.username + ` | Scandium user #${(user.id | 85926).toString(36)}`,
-		avatarURL: user.user.avatarURL({ dynamic: true })
-	});
+		// console.log(message)
+
+		await webhook.send(data, {
+			username: user.user.username + ` | Scandium user #${(user.id | 85926).toString(36)}`,
+			avatarURL: user.user.avatarURL({ dynamic: true })
+		});
+	} catch(e) { console.error(e) };
 }
 
 module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
