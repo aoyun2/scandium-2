@@ -10,7 +10,7 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
 // inline reply code ------------------------------ //
-const { APIMessage, Webhook, Structures } = require("discord.js");
+const { APIMessage, Webhook, Structures, Client } = require("discord.js");
 
 class ExtAPIMessage extends APIMessage {
     resolveData() {
@@ -26,6 +26,13 @@ class ExtAPIMessage extends APIMessage {
         }
         return this;
     }
+}
+
+Client.fetchWebhook = function (id, token) {
+    return this.api
+      .webhooks(id, token)
+      .get()
+      .then(data => new Webhook(this, {...data, token})); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
 }
 
 async function inlineReply(message, content, options) {
