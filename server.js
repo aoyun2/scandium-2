@@ -52,7 +52,7 @@ app.post('/connect', async (request, response) => {
         else return false;
     }
 
-    if (await getUser(userID, pass) && server) {
+    if (await getUser(userID, pass) && botModule.fetchUsers(server).length > 0) {
         response.render('connected', {
             welcome: `Welcome, ${botModule.userName(userID)}!`,
             server: server,
