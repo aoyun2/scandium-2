@@ -364,7 +364,7 @@ module.exports.fetchGuilds = (id) => {
 		var allServers = bot.guilds.cache.filter(g => g.member(id)).map(g => [g.name, g.id]);
 
 		console.log(allServers);
-		if (allServers.length === 0) return ["You don't seem to be in any servers.", null];
+		if (!allServers.length) return [`You don't seem to be in any servers.`, null];
 
 		return allServers;
 	} catch (e) { console.log(e); return ["Error fetching Servers.", null]; }
