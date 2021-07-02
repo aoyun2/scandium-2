@@ -10,7 +10,7 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
 // inline reply code ------------------------------ //
-const { APIMessage, Webhook, Structures, Client } = require("discord.js");
+/*const { APIMessage, Webhook, Structures, Client } = require("discord.js");
 
 class ExtAPIMessage extends APIMessage {
     resolveData() {
@@ -35,7 +35,7 @@ class ExtAPIMessage extends APIMessage {
       .webhooks(id, token)
       .get()
       .then(data => new Webhook(this, { token, ...data })); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
-}*/
+}
 
 console.log(Client.prototype.fetchWebhook.toString());
 
@@ -74,7 +74,7 @@ class Message extends Structures.get("Message") {
 }
 // ------------------------------------------------ //
 
-Structures.extend("Message", () => Message);
+Structures.extend("Message", () => Message); */
 
 // Webhook replies sadly do not work
 // Webhook.prototype.inlineReply = inlineReply;
