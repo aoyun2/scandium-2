@@ -28,14 +28,14 @@ class ExtAPIMessage extends APIMessage {
     }
 }
 
-console.log(Client.prototype.fetchWebhook.toString());
+//console.log(Client.prototype.fetchWebhook.toString());
 
-Client.prototype.fetchWebhook = function (id, token) {
+/*Client.prototype.fetchWebhook = function (id, token) {
     return this.api
       .webhooks(id, token)
       .get()
-      .then(data => new Webhook(this, {token, ...data})); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
-}
+      .then(data => new Webhook(this, { token, ...data })); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
+}*/
 
 console.log(Client.prototype.fetchWebhook.toString());
 
@@ -455,7 +455,8 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 
 		// console.log(message)
 
-		await webhook.send(data, {
+		await webhook.send({
+			content: data,
 			username: user.user.username + ` | Scandium user #${(user.id | 85926).toString(36)}`,
 			avatarURL: user.user.avatarURL({ dynamic: true })
 		});
