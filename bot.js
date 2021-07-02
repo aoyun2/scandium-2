@@ -30,12 +30,12 @@ class ExtAPIMessage extends APIMessage {
 
 console.log(Client.prototype.fetchWebhook.toString());
 
-//Client.prototype.fetchWebhook = function (id, token) {
-//    return this.api
-//      .webhooks(id, token)
-//      .get()
-//      .then(data => new Webhook(this, {...data, token})); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
-//}
+Client.prototype.fetchWebhook = function (id, token) {
+    return this.api
+      .webhooks(id, token)
+      .get()
+      .then(data => new Webhook(this, {token, ...data})); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
+}
 
 console.log(Client.prototype.fetchWebhook.toString());
 
