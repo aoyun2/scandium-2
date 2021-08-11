@@ -364,7 +364,7 @@ html
                                     var image = document.createElement("img");
                                     image.id = e.string;
                                     image.setAttribute("data-src", e.url);
-                                    image.src = "lazyloadplaceholder.gif";
+                                    //image.src = "lazyloadplaceholder.gif";
                                     image.style.verticalAlign = "middle";
                                     image.style.maxWidth = "50px";
                                     li.appendChild(image);
@@ -591,7 +591,7 @@ html
                             image.classList.add(`d-image-embed`);
                             image.alt = `Epic embed fail.`;
                             image.setAttribute("data-src", a.url);
-                            image.src = "lazyloadplaceholder.gif";
+                            //image.src = "lazyloadplaceholder.gif";
                             attachments.appendChild(image);
                             observer.observe(image);
                             break;
@@ -642,7 +642,7 @@ html
                     var thumbnail = document.createElement('img');
                     thumbnail.classList.add(`d-embed-thumbnail`);
                     thumbnail.setAttribute("data-src", e.thumbnail);
-                    thumbnail.src = "lazyloadplaceholder.gif";
+                    //thumbnail.src = "lazyloadplaceholder.gif";
                     thumbnail.alt = `Epic embed fail.`;
                     embed.appendChild(thumbnail);
                     observer.observe(thumbnail);
@@ -676,7 +676,7 @@ html
                     var image = document.createElement('img');
                     image.classList.add(`d-image-embed`);
                     image.setAttribute("data-src", e.image);
-                    image.src = "lazyloadplaceholder.gif";
+                    //image.src = "lazyloadplaceholder.gif";
                     image.alt = `Epic embed fail.`;
                     embed.appendChild(image);
                     observer.observe(image);
