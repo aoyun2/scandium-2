@@ -310,11 +310,11 @@ html
             }, config);
             
             function preloadImage(i) {
-                i.src = i.getAttribute("data-src");
+                if(i.src === null) i.src = i.getAttribute("data-src");
                 
-                i.addEventListener("load", function () {
-                    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                }, {once: true}, false);
+                //i.addEventListener("load", function () {
+                //    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                //}, {once: true}, false);
                 
                 observer.unobserve(i);
             }
