@@ -310,7 +310,8 @@ html
             }, config);
             
             function preloadImage(i) {
-                if(i.src === null) i.src = i.getAttribute("data-src");
+                console.log(i.src)
+                if(!i.src) i.src = i.getAttribute("data-src");
                 
                 //i.addEventListener("load", function () {
                 //    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
