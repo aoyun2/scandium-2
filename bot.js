@@ -411,7 +411,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			webhooks = await channel.fetchWebhooks();
 		}
 
-		const webhook = webhooks.first();
+		const webhook = webhooks[0];
 
 		// var message = data;
 
