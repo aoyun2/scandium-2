@@ -405,13 +405,13 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		}
 
 		let webhooks = await channel.fetchWebhooks();
-		if (Array.from(webhooks).length === 0) {
+		if (!webhooks || webhooks.length <= 0) {
 			//console.log("empty");
 			await channel.createWebhook("Scandium 2");
 			webhooks = await channel.fetchWebhooks();
 		}
 
-		const webhook = webhooks[0];
+		const webhook = webhooks.first();
 
 		// var message = data;
 
