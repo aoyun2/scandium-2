@@ -411,7 +411,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			webhooks = await channel.fetchWebhooks();
 		}*/
 
-		const webhook = webhooks.first();
+		let webhook = webhooks.first();
 		if (webhook) {
 			await webhook.delete();	
 		}
@@ -487,7 +487,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			webhooks = await channel.fetchWebhooks();
 		}*/
 
-		const webhook = webhooks.first();
+		let webhook = webhooks.first();
 		if (webhook) {
 			await webhook.delete();	
 		}
