@@ -839,6 +839,8 @@ html
                     } else if (e.target.parentNode.parentNode.id === editing) {
                         editing = false;
                         e.target.innerText = "Edit";
+                    } else {
+                        displayError("Already Editing.");
                     }
                 });
 
