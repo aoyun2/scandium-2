@@ -412,7 +412,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		}
 
 		const webhook = webhooks.first();
-
+		console.log(webhook)
 		// var message = data;
 
 		// var emojis = message.match(/:[^:\s]*(?:::[^:\s]*)*:/g) || [];
