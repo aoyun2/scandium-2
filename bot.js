@@ -405,13 +405,17 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		}
 
 		let webhooks = await channel.fetchWebhooks();
-		if (!webhooks || webhooks.length <= 0) {
+		/*if (!webhooks || webhooks.length <= 0) {
 			//console.log("empty");
 			await channel.createWebhook("Scandium 2");
 			webhooks = await channel.fetchWebhooks();
-		}
+		}*/
 
 		const webhook = webhooks.first();
+		if (webhook) {
+			await webhook.delete();	
+		}
+		webhook = await channel.createWebhook("Scandium 2");
 		console.log(webhook)
 		// var message = data;
 
@@ -477,13 +481,18 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		var message = await channel.messages.fetch(mid);
 
 		let webhooks = await channel.fetchWebhooks();
-		if (Array.from(webhooks).length === 0) {
+		/*if (!webhooks || webhooks.length <= 0) {
 			//console.log("empty");
 			await channel.createWebhook("Scandium 2");
 			webhooks = await channel.fetchWebhooks();
-		}
+		}*/
 
 		const webhook = webhooks.first();
+		if (webhook) {
+			await webhook.delete();	
+		}
+		webhook = await channel.createWebhook("Scandium 2");
+		console.log(webhook)
 
 		// webhook.inlineReply(message, data, {
 		// 	username: user.user.username,
