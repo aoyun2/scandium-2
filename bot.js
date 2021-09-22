@@ -536,7 +536,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		// var webhookAvatar = `data:${webhookURL.headers.get("Content-Type")};base64,${webhookb64}`;
 		
 		if(!message.webhookID || userSnowflakeThing != message.author.username.split('|').pop().replace(" Scandium user #", '')) {
-			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other users.", clientID);
+			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
 			return;
 		}
 
