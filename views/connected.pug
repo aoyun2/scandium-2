@@ -304,7 +304,7 @@ html
                   // from data-src to src
                   preloadImage(entry.target);
                   // the image is now in place, stop watching
-                  //self.unobserve(entry.target);
+                  self.unobserve(entry.target);
                 }
               });
             }, config);
@@ -317,7 +317,7 @@ html
                 //    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 //}, {once: true}, false);
                 
-                observer.unobserve(i);
+                //observer.unobserve(i);
             }
 
             // register the config object with an instance
@@ -885,8 +885,8 @@ html
                 }
                 
                 for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    if(isInViewport(emojiImage)) preloadImage(emojiImage);
-                    else observer.observe(emojiImage);
+                    /*if(isInViewport(emojiImage)) preloadImage(emojiImage);
+                    else*/ observer.observe(emojiImage);
                 }
                 
                 return message;
