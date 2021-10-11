@@ -867,7 +867,7 @@ html
                 message.style.position = "relative";
                 
                 for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    if(!emojiImage.src) observer.observe(emojiImage);
+                    observer.observe(emojiImage);
                 }
 
                 return message;
