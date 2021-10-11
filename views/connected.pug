@@ -888,8 +888,11 @@ html
                     observer.observe(emojiImage);
                 }*/
                 for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    if(isInViewport(emojiImage)) preloadImage(emojiImage);
-                    else observer.observe(emojiImage);
+                    observer.observe(emojiImage);
+                }
+                
+                for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                    preloadImage(emojiImage);
                 }
                 
                 return message;
