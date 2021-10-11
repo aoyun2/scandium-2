@@ -59,7 +59,7 @@ module.exports.run = async (bot, message, args) => {
             UserID: \`${message.author.id}\`\n
             Password: ||\`${data}\`||`);
     
-            if(message.guild) message.inlineReply("Check your DMs :mailbox_with_mail:")
+            if(message.guild) message.reply("Check your DMs :mailbox_with_mail:")
             message.author.send(exampleEmbed2);
             client.quit();
         }
@@ -73,7 +73,7 @@ module.exports.run = async (bot, message, args) => {
                 .setDescription(`You can login [here](https://scandium-2.herokuapp.com/) with the credentials:\n\n
                 UserID: \`${message.author.id}\`\n
                 Password: ||\`${pass}\`||`);
-            if(message.guild) message.inlineReply("Check your DMs :mailbox_with_mail:")
+            if(message.guild) message.reply("Check your DMs :mailbox_with_mail:")
             message.author.send(exampleEmbed2);
             client.quit();
         };
