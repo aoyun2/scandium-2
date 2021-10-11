@@ -311,7 +311,7 @@ html
             
             function preloadImage(i) {
                 console.log(i.getAttribute('src'))
-                if(i.getAttribute('src') === "") i.setAttribute('src', i.getAttribute("data-src"));
+                i.setAttribute('src', i.getAttribute("data-src"));
                 
                 //i.addEventListener("load", function () {
                 //    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
