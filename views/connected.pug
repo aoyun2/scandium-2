@@ -883,15 +883,14 @@ html
                 if (!prepend && atBottom && messagediv.lastChild) {
                     messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 }
-                
-                for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                                
+                /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
                     observer.observe(emojiImage);
-                }
-                
-                /*for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    /*if(isInViewport(emojiImage)) preloadImage(emojiImage);
-                    else observer.observe(emojiImage);
                 }*/
+                for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                    if(isInViewport(emojiImage)) preloadImage(emojiImage);
+                    else observer.observe(emojiImage);
+                }
                 
                 return message;
             }
