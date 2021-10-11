@@ -866,9 +866,9 @@ html
                 message.id = messageObject.id;
                 message.style.position = "relative";
                 
-                /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
                     observer.observe(emojiImage);
-                }*/
+                }
 
                 return message;
             }
@@ -884,10 +884,10 @@ html
                     messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 }
                 
-                for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                /*for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
                     /*if(isInViewport(emojiImage)) preloadImage(emojiImage);
-                    else*/ observer.observe(emojiImage);
-                }
+                    else observer.observe(emojiImage);
+                }*/
                 
                 return message;
             }
