@@ -929,6 +929,10 @@ html
                     }
                 });
             }
+            
+            socket.on("request_rate_limit", () => {
+                requestDebounce = false
+            });
 
             socket.on("channel_history", data => {
                 // console.log(data);
@@ -940,8 +944,8 @@ html
                 });
                 
                 
-                if (!isInViewport(messagediv.lastChild) && messagediv.children.item(9)) messagediv.children.item(9).scrollIntoView({block: "end"});
-                else if(messagediv.lastChild) messagediv.lastChild.scrollIntoView({block: "end"});
+                //if (!isInViewport(messagediv.lastChild) && messagediv.children.item(9)) messagediv.children.item(9).scrollIntoView({block: "end"});
+                //else if(messagediv.lastChild) messagediv.lastChild.scrollIntoView({block: "end"});
                 
                 //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
