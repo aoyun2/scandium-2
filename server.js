@@ -140,7 +140,7 @@ io.on('connection', (socket) => {
               // no available points to consume
               // emit error or warning message
               //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
-            socket.emit("error", "Rate limit exceeded. Try again later.");
+            //socket.emit("error", "Rate limit exceeded. Try again later.");
         }
     });
 
@@ -163,7 +163,7 @@ io.on('connection', (socket) => {
               // no available points to consume
               // emit error or warning message
               //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
-            socket.emit("error", "Rate limit exceeded. Try again later.");
+            //socket.emit("error", "Rate limit exceeded. Try again later.");
         }
     });
 
@@ -179,7 +179,7 @@ io.on('connection', (socket) => {
               // no available points to consume
               // emit error or warning message
               //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
-            socket.emit("error", "Rate limit exceeded. Try again later.");
+            //socket.emit("error", "Rate limit exceeded. Try again later.");
         }
     });
 
@@ -282,7 +282,7 @@ io.on('connection', (socket) => {
               // no available points to consume
               // emit error or warning message
               //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
-            socket.emit("error", "Rate limit exceeded. Try again later.");
+            //socket.emit("error", "Rate limit exceeded. Try again later.");
         }
     });
 });
