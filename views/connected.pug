@@ -881,7 +881,7 @@ html
                 
 
                 if (!prepend && atBottom && messagediv.lastChild) {
-                    messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                    messagediv.lastChild.scrollIntoView(false);
                 }
                                 
                 /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
@@ -931,7 +931,9 @@ html
             }
             
             socket.on("request_rate_limit", () => {
+                if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
                 requestDebounce = false
+                loadMentions();
             });
 
             socket.on("channel_history", data => {
@@ -944,8 +946,8 @@ html
                 });
                 
                 
-                //if (!isInViewport(messagediv.lastChild) && messagediv.children.item(9)) messagediv.children.item(9).scrollIntoView({block: "end"});
-                //else if(messagediv.lastChild) messagediv.lastChild.scrollIntoView({block: "end"});
+                if (!isInViewport(messagediv.lastChild) && messagediv.children.item(9)) messagediv.children.item(9).scrollIntoView(true);
+                else if(messagediv.lastChild) messagediv.lastChild.scrollIntoView(true);
                 
                 //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
