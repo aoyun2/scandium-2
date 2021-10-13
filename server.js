@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const redis = require("redis");
+const { RateLimiterMemory } = require('rate-limiter-flexible');
 
 const app = express();
 const serverhttp = require('http').createServer(app).listen(process.env.PORT || 3001, () => {
@@ -70,6 +71,11 @@ app.post('/connect', async (request, response) => {
 });
 
 var clients = {};
+const rateLimiter = new RateLimiterMemory(
+  {
+    points: 2, // 5 points
+    duration: 1, // per second
+  });
 
 io.on('connection', (socket) => {
     const clientID = uuidv4();
@@ -103,118 +109,181 @@ io.on('connection', (socket) => {
     });
 
     socket.on("request_channel_data", data => {
-        // console.log(data)
+        try {
+            await rateLimiter.consume(socket.id); 
+            // console.log(data)
 
-        // keep in mind: READ_MESSAGE_HISTORY
+            // keep in mind: READ_MESSAGE_HISTORY
 
-        if (clients[clientID].info.channel.id !== data.channel) {
-            clients[clientID].info.channel = {
-                id: data.channelID,
-                permissions: botModule.fetchPermissions(clients[clientID].info.server, data.channelID, clients[clientID].info.userID)
+            if (clients[clientID].info.channel.id !== data.channel) {
+                clients[clientID].info.channel = {
+                    id: data.channelID,
+                    permissions: botModule.fetchPermissions(clients[clientID].info.server, data.channelID, clients[clientID].info.userID)
+                }
             }
+
+            if (!clients[clientID].info.channel.permissions.includes("READ_MESSAGE_HISTORY")) {
+                // // error
+                // // console.log(clients[clientID].info.channel.permissions, "can't read")
+                // socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
+                // return;
+            }
+
+            var client = clients[clientID];
+            var s = client.info.server;
+            var c = client.info.channel.id;
+
+            botModule.fetchMessages(clients[clientID].info.userID, s, c, data.before, clientID).then(dat => {
+                if(dat) socket.emit("channel_history", dat);
+            });
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
         }
-
-        if (!clients[clientID].info.channel.permissions.includes("READ_MESSAGE_HISTORY")) {
-            // // error
-            // // console.log(clients[clientID].info.channel.permissions, "can't read")
-            // socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
-            // return;
-        }
-
-        var client = clients[clientID];
-        var s = client.info.server;
-        var c = client.info.channel.id;
-
-        botModule.fetchMessages(clients[clientID].info.userID, s, c, data.before, clientID).then(dat => {
-            if(dat) socket.emit("channel_history", dat);
-        });
     });
 
     socket.on('fetch_mention_data', data => {
         // console.log(data);
-
-        switch (data.type) {
-            case 'user':
-                socket.emit("mention_data", { id: data.id, data: botModule.userName(data.id) });
-                break;
-            case 'channel':
-                socket.emit("mention_data", { id: data.id, data: botModule.channelName(data.id) });
-                break;
-            case 'role':
-                socket.emit("mention_data", { id: data.id, data: botModule.roleName(clients[clientID].info.server, data.id) });
-                break;
+        try {
+            await rateLimiter.consume(socket.id); 
+            switch (data.type) {
+                case 'user':
+                    socket.emit("mention_data", { id: data.id, data: botModule.userName(data.id) });
+                    break;
+                case 'channel':
+                    socket.emit("mention_data", { id: data.id, data: botModule.channelName(data.id) });
+                    break;
+                case 'role':
+                    socket.emit("mention_data", { id: data.id, data: botModule.roleName(clients[clientID].info.server, data.id) });
+                    break;
+            }
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
         }
     });
 
     socket.on('fetch_reply_JSON', async data => {
-        socket.emit('reply_JSON',
-            {
-                JSON: await botModule.fetchMessage(clients[clientID].info.server, clients[clientID].info.channel.id, data.id),
-                messageID: data.messageID
-            });
+        try {
+            await rateLimiter.consume(socket.id); 
+            socket.emit('reply_JSON',
+                {
+                    JSON: await botModule.fetchMessage(clients[clientID].info.server, clients[clientID].info.channel.id, data.id),
+                    messageID: data.messageID
+                });
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
+        }
     });
 
     socket.on('client_message', async data => {
-        // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-        //     // error
-        //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-        //     return;
-        // }
+        try {
+            await rateLimiter.consume(socket.id); 
+            // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+            //     // error
+            //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+            //     return;
+            // }
 
-        var s = clients[clientID].info.server;
-        var c = clients[clientID].info.channel.id;
-        var u = clients[clientID].info.userID;
+            var s = clients[clientID].info.server;
+            var c = clients[clientID].info.channel.id;
+            var u = clients[clientID].info.userID;
 
-        await botModule.sendMessage(s, c, u, data, clientID);
+            await botModule.sendMessage(s, c, u, data, clientID);
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
+        }
     });
 
     socket.on('reply_message', async data => {
-        // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-        //     // error
-        //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-        //     return;
-        // }
+        try {
+            await rateLimiter.consume(socket.id); 
+            // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+            //     // error
+            //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+            //     return;
+            // }
 
-        var s = clients[clientID].info.server;
-        var c = clients[clientID].info.channel.id;
-        var u = clients[clientID].info.userID;
+            var s = clients[clientID].info.server;
+            var c = clients[clientID].info.channel.id;
+            var u = clients[clientID].info.userID;
 
-        await botModule.replyToMessage(s, c, data.messageID, u, data.data, clientID);
-        socket.emit("reply_success", data.messageID);
+            await botModule.replyToMessage(s, c, data.messageID, u, data.data, clientID);
+            socket.emit("reply_success", data.messageID);
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
+        }
     });
 
     socket.on('edit_message', async data => {
-        // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-        //     // error
-        //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-        //     return;
-        // }
+        try {
+            await rateLimiter.consume(socket.id); 
+            // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+            //     // error
+            //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+            //     return;
+            // }
 
-        var s = clients[clientID].info.server;
-        var c = clients[clientID].info.channel.id;
-        var u = clients[clientID].info.userID;
+            var s = clients[clientID].info.server;
+            var c = clients[clientID].info.channel.id;
+            var u = clients[clientID].info.userID;
 
-        await botModule.editMessage(s, c, data.messageID, u, data.data, clientID);
+            await botModule.editMessage(s, c, data.messageID, u, data.data, clientID);
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
+        }
     });
 
     socket.on('delete_message', async data => {
-        // if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
-        //     // error
-        //     socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
-        //     return;
-        // }
+        try {
+            await rateLimiter.consume(socket.id); 
+            // if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
+            //     // error
+            //     socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
+            //     return;
+            // }
 
-        var s = clients[clientID].info.server;
-        var c = clients[clientID].info.channel.id;
-        var u = clients[clientID].info.userID;
+            var s = clients[clientID].info.server;
+            var c = clients[clientID].info.channel.id;
+            var u = clients[clientID].info.userID;
 
-        await botModule.deleteMessage(s, c, u, data, clientID);
+            await botModule.deleteMessage(s, c, u, data, clientID);
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
+        }
     });
 
     // home.pug
 
     socket.on("populate_server_dropdown", userID => {
-        socket.emit("servers", botModule.fetchGuilds(userID));
+        try {
+            await rateLimiter.consume(socket.id); 
+            socket.emit("servers", botModule.fetchGuilds(userID));
+        } catch(rejRes) {
+              // no available points to consume
+              // emit error or warning message
+              //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
+            socket.emit("error", "Rate limit exceeded. Try again later.");
+        }
     });
 });
 
