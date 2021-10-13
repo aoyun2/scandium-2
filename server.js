@@ -108,7 +108,7 @@ io.on('connection', (socket) => {
         console.log("disconnection", clients);
     });
 
-    socket.on("request_channel_data", data => {
+    socket.on("request_channel_data", async data => {
         try {
             await rateLimiter.consume(socket.id); 
             // console.log(data)
@@ -144,7 +144,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('fetch_mention_data', data => {
+    socket.on('fetch_mention_data', async data => {
         // console.log(data);
         try {
             await rateLimiter.consume(socket.id); 
@@ -274,7 +274,7 @@ io.on('connection', (socket) => {
 
     // home.pug
 
-    socket.on("populate_server_dropdown", userID => {
+    socket.on("populate_server_dropdown", async userID => {
         try {
             await rateLimiter.consume(socket.id); 
             socket.emit("servers", botModule.fetchGuilds(userID));
