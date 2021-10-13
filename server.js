@@ -141,6 +141,7 @@ io.on('connection', (socket) => {
               // emit error or warning message
               //socket.emit('blocked', { 'retry-ms': rejRes.msBeforeNext });
             //socket.emit("error", "Rate limit exceeded. Try again later.");
+            socket.emit("request_rate_limit");
         }
     });
 
