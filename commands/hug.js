@@ -50,14 +50,14 @@ async function rtenor() {
 
 module.exports.run = async (bot,message,args) => {  
     if (message.channel instanceof Discord.DMChannel) {
-        const exampleEmbed2 = new Discord.RichEmbed()
+        const exampleEmbed2 = new Discord.MessageEmbed()
           .setColor('#ff0000')
           .setTitle(`This command is not allowed in DMs`);
         return await message.channel.send(exampleEmbed2);
     }
   
     if (args.length != 1) {
-        const exampleEmbed2 = new Discord.RichEmbed()
+        const exampleEmbed2 = new Discord.MessageEmbed()
           .setColor('#ff0000')
           .setTitle(`Invalid command structure.`);
         return await message.channel.send(exampleEmbed2);
@@ -78,7 +78,7 @@ module.exports.run = async (bot,message,args) => {
 
     let gif = await rtenor();
 	
-    const exampleEmbed = new Discord.RichEmbed()
+    const exampleEmbed = new Discord.MessageEmbed()
       .setColor('#A3A6E8')
       .setTitle(`**${message.author.username} hugged ${person.displayName}**`)
       .setImage(gif)
