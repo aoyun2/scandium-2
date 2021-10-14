@@ -99,6 +99,7 @@ fs.readdir("./commands/", (err, files) => {
 	jsFiles.forEach((f, i) => {
 		var props = require("./commands/" + f);
 		bot.commands.set(props.name, props);
+		console.log(props.name, props);
 	})
 })
 
