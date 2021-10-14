@@ -47,7 +47,7 @@ const joiner = async(inDir, outFile, bufferBetween=10)=> {
 module.exports.run = async (bot, message, args) => {
     try {
           if (message.channel instanceof Discord.DMChannel) {
-            const exampleEmbed2 = new Discord.RichEmbed()
+            const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor('#ff0000')
               .setTitle(`This command is not allowed in DMs`);
             return await message.channel.send(exampleEmbed2);
@@ -83,14 +83,14 @@ module.exports.run = async (bot, message, args) => {
               return new TreeNode(leftSubTree, rightSubTree, op);
           }
           if (module.exports.users.includes((message.author.id.toString())+':'+(message.channel.id.toString()))) {
-            const exampleEmbed2 = new Discord.RichEmbed()
+            const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor('#ff0000')
               .setTitle(`A quiz is in progress already.`);
             return await message.channel.send(exampleEmbed2);
           }
       
           if (args.length !== 1 || args[0] > 60 || isNaN(parseInt(args[0]))) {
-            const exampleEmbed2 = new Discord.RichEmbed()
+            const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor('#ff0000')
               .setTitle(`Invalid command structure.`);
             return await message.channel.send(exampleEmbed2);
@@ -161,7 +161,7 @@ module.exports.run = async (bot, message, args) => {
           await joiner('./quizimages/', './quizimages/g.png')
           
           m.delete(500);
-           const exampleEmbed2 = new Discord.RichEmbed()
+           const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor("#A3A6E8")
               .setTitle(`You have ${args[0]} min. to do this problem`)
               .attachFiles([`./quizimages/g.png`])
@@ -214,14 +214,14 @@ module.exports.run = async (bot, message, args) => {
               .then(collected => {
                   const reaction = collected.first();
                   if (reaction.emoji.name === answer) {
-                      const exampleEmbed2 = new Discord.RichEmbed()
+                      const exampleEmbed2 = new Discord.MessageEmbed()
                         .setColor('#A3A6E8')
                         .setTitle("Correct!")
                         .setDescription(`You can find the problem here: ${randomlink}`)
                       message.channel.send(exampleEmbed2);
                       module.exports.users.splice(module.exports.users.indexOf(message.author.id), 1);
                   } else {
-                      const exampleEmbed2 = new Discord.RichEmbed()
+                      const exampleEmbed2 = new Discord.MessageEmbed()
                             .setColor('#ff0000')
                             .setTitle(`The correct answer was ${answer}`)
                             .setDescription(`You can find the problem here: ${randomlink}`)
@@ -231,7 +231,7 @@ module.exports.run = async (bot, message, args) => {
               })
               .catch(collected => {
                     module.exports.users.splice(module.exports.users.indexOf(message.author.id), 1);
-                    const exampleEmbed2 = new Discord.RichEmbed()
+                    const exampleEmbed2 = new Discord.MessageEmbed()
                             .setColor('#ff0000')
                             .setTitle(`The correct answer was ${answer}`)
                             .setDescription(`You can find the problem here: ${randomlink}`)
@@ -240,7 +240,7 @@ module.exports.run = async (bot, message, args) => {
 
           await browser.close();
     } catch(e) { 
-        const exampleEmbed2 = new Discord.RichEmbed()
+        const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor('#ff0000')
               .setTitle(`There was an error, please try again.`)
         module.exports.users.splice(module.exports.users.indexOf(message.author.id), 1);
