@@ -109,7 +109,7 @@ bot.on("message", async (message) => {
 	if(message.guild) serverModule.broadcastMessage(await processMessage(message), { server: message.guild.id, channel: message.channel.id });
 
 	if (!message.content.includes(prefix) /*|| message.author.bot*/) { return; }
-
+	console.log(message);
 	var command = message.content.split(/\s+/g)[0];
 	var args = message.content.replace(`${command} `, '').split(';');
 	if (args.includes(command)) args = [];
