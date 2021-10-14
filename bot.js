@@ -414,12 +414,12 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			webhooks = await channel.fetchWebhooks();
 		}*/
 
-		let webhook = webhooks.filter(w => {
+		let webhook = webhooks.first();/*filter(w => {
 			return w.owner.id = bot.user.id;
-		})[0];
+		})[0];*/
 		
-		if (!webhook) {
-			//await webhook.delete();	
+		if (webhook) {
+			await webhook.delete();	
 			webhook = await channel.createWebhook("Scandium 2");
 		}
 
