@@ -1,6 +1,8 @@
 const Discord = require("discord.js"); 
 const https = require('https');
 
+module.exports.name = "headpat";
+
 function handleData(result) {
     //$.each( result.data, function( idx, img ){
     let id = Math.floor(Math.random() * result.results.length)
@@ -83,12 +85,4 @@ module.exports.run = async (bot,message,args) => {
       .setTimestamp()
 
     await message.channel.send(exampleEmbed);
-}
-
-module.exports.help = {
-
-    name:"headpat",
-    desc: "head",
-    personalThoughts: "pat"
-
 }
