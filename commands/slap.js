@@ -64,7 +64,7 @@ module.exports.run = async (bot,message,args) => {
     }
   
     let requestedperson = String(args);
-    let person = message.guild.members.find(member => member.displayName.toLowerCase().includes(requestedperson.toLowerCase()));
+    let person = message.guild.members.cache.find(member => member.displayName.toLowerCase().includes(requestedperson.toLowerCase()));
     if (!person)
     {
 	    await message.channel.send(`Invalid person.`);
