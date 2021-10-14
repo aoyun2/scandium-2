@@ -104,7 +104,7 @@ fs.readdir("./commands/", (err, files) => {
 })
 
 bot.on("ready", async () => {
-	bot.user.setActivity("the funny.");
+	bot.user.setActivity("Melty Blood Actress Again: Current Code");
 })
 
 bot.on("message", async (message) => {
@@ -414,11 +414,15 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			webhooks = await channel.fetchWebhooks();
 		}*/
 
-		let webhook = webhooks.first();
-		if (webhook) {
-			await webhook.delete();	
+		let webhook = webhooks.filter(w => {
+			return w.owner.id = bot.user.id;
+		})[0];
+		
+		if (!webhook) {
+			//await webhook.delete();	
+			webhook = await channel.createWebhook("Scandium 2");
 		}
-		webhook = await channel.createWebhook("Scandium 2");
+
 		console.log(webhook)
 		// var message = data;
 
