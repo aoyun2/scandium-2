@@ -5,6 +5,7 @@ const imageSize = require('image-size');
 const fs = require('fs');
 const path = require('path');
 
+module.exports.name = "quiz";
 module.exports.users = [];
 
 //credit to potato man: https://gist.github.com/FirstPotatoMan/9d02d14f468870ffe93ca6e256617c68
