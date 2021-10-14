@@ -1,6 +1,8 @@
 const Discord = require("discord.js"); 
 const https = require('https');
 
+module.exports.name = "slap";
+
 function handleData(result) {
     //$.each( result.data, function( idx, img ){
     let id = Math.floor(Math.random() * result.results.length)
