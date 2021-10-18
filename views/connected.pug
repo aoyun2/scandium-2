@@ -226,8 +226,11 @@ html
             div
                 strong Channel: 
                 select(id='channelselect')
-                    each c in channels
+
+                each c in channels
+                    if (typeof(c) !== 'undefined'){
                         option(value=c[1]) #{c[0]}
+                    } 
 
             br
             
