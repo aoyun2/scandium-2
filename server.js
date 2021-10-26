@@ -73,7 +73,7 @@ app.post('/connect', async (request, response) => {
 var clients = {};
 const rateLimiter = new RateLimiterMemory(
   {
-    points: 3, // 5 points
+    points: 2, // 5 points
     duration: 1, // per second
   });
 
