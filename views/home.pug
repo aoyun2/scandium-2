@@ -15,6 +15,14 @@ html
 
                 height: 100vh;
             }
+            
+            a {
+                position: absolute;
+                left: 50%;
+                -moz-transform: translateX(-50%);
+                -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+            }
         script(src="/socket.io/socket.io.js")
 
         link(rel="icon" href="favicon.ico" type="image/x-icon")
@@ -28,9 +36,9 @@ html
         meta(content="#A3A6E8" data-react-helmet="true" name="theme-color")
 
     body
+        a(href="https://docs.google.com/document/d/1jsoH_Kj6qTVLUR03BDiIFUnNI919I3jO-jD_u2hwZUY/edit?usp=sharing") READ ME BEFORE USE
+    
         div(id="container")
-            a(href="https://docs.google.com/document/d/1jsoH_Kj6qTVLUR03BDiIFUnNI919I3jO-jD_u2hwZUY/edit?usp=sharing") READ ME BEFORE USE
-        
             form(action="/connect", method="POST")
               label(for = "username") User ID 
               br
