@@ -547,7 +547,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		// var webhookAvatar = `data:${webhookURL.headers.get("Content-Type")};base64,${webhookb64}`;
 		//console.log(userSnowflakeThing);
 		//console.log(user.user.avatarURL({dynamic: true}).split('?id=').pop());
-		var yes = message.embeds.first.title;
+		var yes = message.embeds[0].title;
 		console.log(yes);
 		if(!message.webhookID || webhook.owner.id != 829863259033042965 || userSnowflakeThing != yes) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
