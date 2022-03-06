@@ -465,12 +465,13 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		const embed = new Discord.MessageEmbed()
 			.setTitle(id)
 		
-		await webhook.send({
+		var m = await webhook.send({
 			content: data,
 			username: user.user.username,
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
+		m.suppressEmbeds();
 	} catch(e) { console.error(e) };
 }
 
@@ -513,12 +514,13 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
 			.setTitle(id)
-		webhook.send(data, {
+		var m = await webhook.send(data, {
 			embeds: [replyEmbed],
 			username: user.user.username,
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
+		m.suppressEmbeds();
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
 
