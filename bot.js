@@ -461,11 +461,11 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		// }
 
 		// console.log(message)
-
+		let id = (user.id | 85926).toString(36);
 		await webhook.send({
 			content: data,
-			username: user.user.username + ` | Scandium user #${(user.id | 85926).toString(36)}`,
-			avatarURL: user.user.avatarURL({ dynamic: true })
+			username: user.user.username,
+			avatarURL: user.user.avatarURL() + `?id=${id}`;
 		});
 	} catch(e) { console.error(e) };
 }
@@ -506,10 +506,11 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			.setColor('#A3A6E8')
 			.setDescription(`**Replying to [message](${message.url})**\n\n> ${message.content.length > 100 ? message.content.substring(0, 100) + "..." : message.content}`);
 		
+		let id = (user.id | 85926).toString(36);
 		webhook.send(data, {
 			embeds: [replyEmbed],
-			username: user.user.username + ` | Scandium user #${(user.id | 85926).toString(36)}`,
-			avatarURL: user.user.avatarURL({ dynamic: true })
+			username: user.user.username,
+			avatarURL: user.user.avatarURL() + `?id=${id}`;
 		});
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
@@ -538,7 +539,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		// var webhookb64 = (await (webhookURL).buffer()).toString('base64')
 		// var webhookAvatar = `data:${webhookURL.headers.get("Content-Type")};base64,${webhookb64}`;
 		
-		if(!message.webhookID || userSnowflakeThing != message.author.username.split('|').pop().replace(" Scandium user #", '')) {
+		if(!message.webhookID || userSnowflakeThing != user.user.avatarURL().split('?id=').pop()) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
 			return;
 		}
