@@ -463,7 +463,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		 
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
-			.setTitle(id)
+			.AddField("Check out Scandium 2:", `\`\`\`${id}\nhttp://scandium-2.herokuapp.com\`\`\``);
 		
 		var ms = await webhook.send({
 			content: data,
@@ -471,7 +471,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
-		await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
+		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch(e) {serverModule.error(e.message, clientID);};
 }
 
@@ -513,14 +513,13 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
-			.setTitle(id)
+			.AddField("", `\`\`\`${id}\nMessage sent by Scandium user: http://scandium-2.herokuapp.com\`\`\``);
 		var ms = await webhook.send(data, {
-			embeds: [replyEmbed],
+			embeds: [replyEmbed, embed],
 			username: user.user.username,
 			avatarURL: user.user.avatarURL({dynamic: true}),
-			embeds: [embed]
 		});
-		await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
+		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
 
@@ -549,9 +548,10 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		// var webhookAvatar = `data:${webhookURL.headers.get("Content-Type")};base64,${webhookb64}`;
 		//console.log(userSnowflakeThing);
 		//console.log(user.user.avatarURL({dynamic: true}).split('?id=').pop());
-		var yes = message.embeds[0].title;
+		//var e = message.embeds.filter(em => em.title === "");
+		var yes = message.embeds[message.embeds.length - 1].fields[0].value;
 		console.log(yes);
-		if(!message.webhookID || webhook.owner.id != 829863259033042965 || userSnowflakeThing != yes) {
+		if(!message.webhookID || webhook.owner.id != 829863259033042965 || !yes.includes(userSnowflakeThing)) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
 			return;
 		}
