@@ -471,7 +471,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
-		await c.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
+		await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch(e) {serverModule.error(e.message, clientID);};
 }
 
@@ -520,7 +520,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
-		await c.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
+		await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
 
