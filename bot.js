@@ -471,8 +471,8 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
-		m.suppressEmbeds();
-	} catch(e) { console.error(e) };
+		m.suppressEmbeds(true);
+	} catch(e) {serverModule.error(e.message, clientID);};
 }
 
 module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
@@ -520,7 +520,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
-		m.suppressEmbeds();
+		m.suppressEmbeds(true);
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
 
