@@ -460,7 +460,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		// 	}
 		// }
 
-		// console.log(message)
+		 console.log(user.user.avatarURL() + `?id=${id}`)
 		let id = (user.id | 85926).toString(36);
 		await webhook.send({
 			content: data,
