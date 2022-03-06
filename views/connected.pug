@@ -553,6 +553,7 @@ html
             }
 
             messageinput.addEventListener('input', () => {
+                emojify.setConfig({ignore_emoticons: true, mode: "sprite"});
                 emojify.run();
                 readjustSizeOfMessageBox();
             });
