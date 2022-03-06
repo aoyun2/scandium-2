@@ -463,7 +463,8 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		 
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
-			.addField("Check out Scandium 2:", `\`\`\`${id}\nhttp://scandium-2.herokuapp.com\`\`\``);
+			.setColor('#A3A6E8')
+			.addField("", `\`\`\`${id}\nMessage sent by Scandium user: http://scandium-2.herokuapp.com\`\`\``);
 		
 		var ms = await webhook.send({
 			content: data,
@@ -513,6 +514,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
+			.setColor('#A3A6E8')
 			.addField("", `\`\`\`${id}\nMessage sent by Scandium user: http://scandium-2.herokuapp.com\`\`\``);
 		var ms = await webhook.send(data, {
 			embeds: [replyEmbed, embed],
