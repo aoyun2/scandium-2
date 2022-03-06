@@ -462,7 +462,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 
 		 
 		let id = (user.id | 85926).toString(36);
-		console.log(user.user.avatarURL() + `?id=${id}`)
+		
 		await webhook.send({
 			content: data,
 			username: user.user.username,
@@ -539,7 +539,8 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		// var webhookURL = await fetch(user.user.avatarURL());
 		// var webhookb64 = (await (webhookURL).buffer()).toString('base64')
 		// var webhookAvatar = `data:${webhookURL.headers.get("Content-Type")};base64,${webhookb64}`;
-		
+		console.log(userSnowflakeThing);
+		console.log(user.user.avatarURL().split('?id=').pop());
 		if(!message.webhookID || userSnowflakeThing != user.user.avatarURL().split('?id=').pop()) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
 			return; 
