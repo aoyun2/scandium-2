@@ -1110,6 +1110,8 @@ html
             // displayError("hi")
 
             socket.on("error", m => {
+                replying = false;
+                editing = false;
                 displayError(m);
             });
 
