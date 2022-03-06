@@ -462,11 +462,14 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 
 		 
 		let id = (user.id | 85926).toString(36);
+		const embed = new MessageEmbed()
+			.setTitle(id)
 		
 		await webhook.send({
 			content: data,
 			username: user.user.username,
-			avatarURL: user.user.avatarURL() + `?id=${id}`
+			avatarURL: user.user.avatarURL({dynamic: true}),
+			embeds: [embed]
 		});
 	} catch(e) { console.error(e) };
 }
@@ -508,10 +511,13 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			.setDescription(`**Replying to [message](${message.url})**\n\n> ${message.content.length > 100 ? message.content.substring(0, 100) + "..." : message.content}`);
 		
 		let id = (user.id | 85926).toString(36);
+		const embed = new MessageEmbed()
+			.setTitle(id)
 		webhook.send(data, {
 			embeds: [replyEmbed],
 			username: user.user.username,
-			avatarURL: user.user.avatarURL() + `?id=${id}`
+			avatarURL: user.user.avatarURL({dynamic: true}),
+			embeds: [embed]
 		});
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
@@ -539,11 +545,13 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		// var webhookURL = await fetch(user.user.avatarURL());
 		// var webhookb64 = (await (webhookURL).buffer()).toString('base64')
 		// var webhookAvatar = `data:${webhookURL.headers.get("Content-Type")};base64,${webhookb64}`;
-		console.log(userSnowflakeThing);
-		console.log(user.user.avatarURL().split('?id=').pop());
-		if(!message.webhookID || userSnowflakeThing != user.user.avatarURL().split('?id=').pop()) {
+		//console.log(userSnowflakeThing);
+		//console.log(user.user.avatarURL({dynamic: true}).split('?id=').pop());
+		var yes = message.embeds.first.title;
+		console.log(yes);
+		if(!message.webhookID || webhook.owner.id != 829863259033042965 || userSnowflakeThing != yes) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
-			return; 
+			return;
 		}
 
 		// webhook.editMessage(message, data);
