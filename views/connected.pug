@@ -218,6 +218,7 @@ html
         script(src="/socket.io/socket.io.js")
         link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css")
         script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js")
+        script(src="https://cdn.jsdelivr.net/npm/emoji-name-map@1.2.9/lib/index.min.js")
     body
         div(class="error-container")
         div(id="container")
@@ -345,9 +346,10 @@ html
                         
                         if (lastWord.charAt(0) === ":") {
                             var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
+                            var defaultMatching = emoji.emoji.keys().filter(k => k.toLowerCase().startsWith(lastWord));
                             //- console.log(matchingEmojis)
 
-                            if (matchingEmojis.length > 0) {
+                            if (matchingEmojis.length > 0 || defaultMatching.length > 0) {
                                 var suggestions = document.createElement("ul");
 
                                 var emojisHeader = document.createElement("em");
@@ -382,10 +384,26 @@ html
                                     suggestions.appendChild(li);
                                 }
                                 
+                                for (var e of defaultMatching) {
+                                    var li = document.createElement('li');
+                                    li.textContent = emoji.get(e);
+                                    li.id = "default";
+                                    li.style.userSelect = "none";
+                                    
+                                    suggestions.appendChild(li);
+                                }
+                                
                                 suggestions.addEventListener("click", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") && !e.target.id === "default") {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
                                         if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
+                                        document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                        document.querySelector("#input > .tooltiptext").innerHTML = '';
+
+                                        messageinput.focus();
+                                    } else if (e.target && e.target.id === "default") {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.textContent);
                                         document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
 
