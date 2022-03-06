@@ -465,7 +465,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		await webhook.send({
 			content: data,
 			username: user.user.username,
-			avatarURL: user.user.avatarURL() + `?id=${id}`;
+			avatarURL: user.user.avatarURL() + `?id=${id}`
 		});
 	} catch(e) { console.error(e) };
 }
@@ -510,7 +510,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		webhook.send(data, {
 			embeds: [replyEmbed],
 			username: user.user.username,
-			avatarURL: user.user.avatarURL() + `?id=${id}`;
+			avatarURL: user.user.avatarURL() + `?id=${id}`
 		});
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
