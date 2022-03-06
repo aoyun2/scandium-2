@@ -462,7 +462,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 
 		 
 		let id = (user.id | 85926).toString(36);
-		const embed = new MessageEmbed()
+		const embed = new Discord.MessageEmbed()
 			.setTitle(id)
 		
 		await webhook.send({
@@ -511,7 +511,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			.setDescription(`**Replying to [message](${message.url})**\n\n> ${message.content.length > 100 ? message.content.substring(0, 100) + "..." : message.content}`);
 		
 		let id = (user.id | 85926).toString(36);
-		const embed = new MessageEmbed()
+		const embed = new Discord.MessageEmbed()
 			.setTitle(id)
 		webhook.send(data, {
 			embeds: [replyEmbed],
