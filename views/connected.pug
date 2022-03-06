@@ -553,7 +553,7 @@ html
             }
 
             messageinput.addEventListener('input', () => {
-                emojify.setConfig({blacklist.elements: ["script"], ignore_emoticons: true, mode: "sprite"});
+                emojify.setConfig({blacklist:{elements: ["script"]}, ignore_emoticons: true, mode: "sprite"});
                 emojify.run(messageinput);
                 readjustSizeOfMessageBox();
             });
