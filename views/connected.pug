@@ -561,6 +561,8 @@ html
             });
 
             channelinput.addEventListener('change', () => {
+                replying = false;
+                editing = false;
                 messagediv.innerHTML = '';
 
                 requestDebounce = true;
