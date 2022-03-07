@@ -344,13 +344,18 @@ html
                         }
                     } else {
                         // Autocomplete
-                        const defaultEmojiList = await fetch('https://api.github.com/emojis')
+                        const defaultEmojiList = await fetch('https://github.com/github/gemoji/blob/master/db/emoji.json')
                             .then(response => response.json())
                         var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
 
                         if (lastWord.charAt(0) === ":") {
                             var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
-                            var matchingDefaults = Object.keys(defaultEmojiList).filter(k => (":"+k.toLowerCase()).startsWith(lastWord));
+                            var matchingDefaults = defaultEmojiList.filter(k => {
+                                var descriptionMatch = (":"+k["description"].toLowerCase()).startsWith(lastWord);
+                                var aliasesMatching = k["aliases"].some(a => (":" + a).startsWith(lastWord));
+                                var tagsMatching = k["tags"].some(t => (":" + t).startsWith(lastWord));
+                                return descriptionMatch || aliasesMatching || tagsMatching;
+                            });
                             console.log(Object.keys(defaultEmojiList))
                             console.log(matchingDefaults)
 
@@ -392,7 +397,7 @@ html
                                 if (lastWord.length > 1) {
                                     for (var e of matchingDefaults) {
                                         var li = document.createElement('li');
-                                        li.id = ":"+e+":";
+                                        li.id = e["emoji"];
                                         li.textContent = li.id;
                                         li.style.userSelect = "none";
                                         suggestions.appendChild(li);
