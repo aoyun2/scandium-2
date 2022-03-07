@@ -248,8 +248,6 @@ html
             const userID = "#{userID}";
             const serverID = "#{server}";
             
-            var emoji = new EmojiConvertor();
-
             var e = document.createElement("div"); 
             e.innerHTML = "#{emojis}";
             const emojis = JSON.parse(e.innerText);
@@ -395,7 +393,6 @@ html
                                 if (lastWord.length > 1) {
                                     for (var e of matchingDefaults) {
                                         var li = document.createElement('li');
-                                        li.textContent = emoji.replace_colons(":"+e+":");
                                         li.id = ":"+e+":";
                                         li.style.userSelect = "none";
                                         suggestions.appendChild(li);
@@ -404,6 +401,7 @@ html
                                 
                                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                                 //emojify.run(suggestions);
+                                twemoji.parse(suggestions);
 
                                 suggestions.addEventListener("click", function(e) {
                                     if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
