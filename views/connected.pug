@@ -241,9 +241,8 @@ html
             textarea(id="input_messages" onkeyup="handleMessageSending(event)" placeholder="Add to the discussion!")
             span(class="tooltiptext" tabindex="-1")
         script.
-            fetch('https://api.github.com/emojis')
+            const defaultEmojiList = await fetch('https://api.github.com/emojis')
                 .then(response => response.json())
-                .then(data => console.log(data));
             
             const socket = io();
             const channelinput = document.querySelector("#channelselect");
@@ -352,9 +351,10 @@ html
                         
                         if (lastWord.charAt(0) === ":") {
                             var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
+                            var matchingDefaults = defaultEmojiList.keys().filter(k => k.name.toLowerCase().startsWith(lastWord));
                             //- console.log(matchingEmojis)
 
-                            if (matchingEmojis.length > 0) {
+                            if (matchingEmojis.length > 0 || matchingDefaults.length > 0) {
                                 var suggestions = document.createElement("ul");
 
                                 var emojisHeader = document.createElement("em");
@@ -389,6 +389,17 @@ html
                                     suggestions.appendChild(li);
                                 }
                                 
+                                for (var e of matchingDefaults) {
+                                    var li = document.createElement('li');
+                                    li.textContent = e;
+                                    li.id = "default";
+                                    li.style.userSelect = "none";
+
+                                    suggestions.appendChild(li);
+                                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                                    emojify.run(messagediv);
+                                }
+                                
                                 suggestions.addEventListener("click", function(e) {
                                     if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") && !e.target.id === "default") {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
@@ -397,6 +408,11 @@ html
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
                                         
                                         messageinput.focus();
+                                    } else if (e.target && e.target.id === "default") {
+                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.textContent);
+                                        document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                        document.querySelector("#input > .tooltiptext").innerHTML = '';
                                     }
                                 });
 
