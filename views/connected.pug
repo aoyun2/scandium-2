@@ -326,6 +326,9 @@ html
 
             // register the config object with an instance
             // of intersectionObserver
+            const defaultEmojiList = await fetch('https://github.com/github/gemoji/blob/master/db/emoji.json')
+                .then(response => response.json())
+            displayError(defaultEmojiList.toString());
 
 
             async function handleMessageSending(event) {
@@ -344,9 +347,6 @@ html
                         }
                     } else {
                         // Autocomplete
-                        const defaultEmojiList = await fetch('https://github.com/github/gemoji/blob/master/db/emoji.json')
-                            .then(response => response.json())
-                        displayError(defaultEmojiList.toString());
                         var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
 
                         if (lastWord.charAt(0) === ":") {
