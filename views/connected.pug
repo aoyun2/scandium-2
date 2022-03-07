@@ -352,7 +352,7 @@ html
                         if (lastWord.charAt(0) === ":") {
                             var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
                             var matchingDefaults = Object.keys(defaultEmojiList).filter(k => k.name.toLowerCase().startsWith(lastWord));
-                            console.log(matchingDefaults)
+                            console.log(Object.keys(defaultEmojiList))
 
                             if (matchingEmojis.length > 0 || matchingDefaults.length > 0) {
                                 var suggestions = document.createElement("ul");
