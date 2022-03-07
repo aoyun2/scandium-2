@@ -395,9 +395,7 @@ html
                                         li.textContent = ":"+e+":";
                                         li.id = "default";
                                         li.style.userSelect = "none";
-
                                         suggestions.appendChild(li);
-
                                     }
                                 }
                                 
@@ -405,18 +403,18 @@ html
                                 emojify.run(suggestions);
 
                                 suggestions.addEventListener("click", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") && !e.target.id === "default") {
+                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") && e.target.id !== "default") {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
                                         if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
                                         document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
-
                                         messageinput.focus();
                                     } else if (e.target && e.target.id === "default") {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
                                         if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.textContent);
                                         document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                         document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                        messageinput.focus();
                                     }
                                 });
 
