@@ -346,7 +346,7 @@ html
                         // Autocomplete
                         const defaultEmojiList = await fetch('https://github.com/github/gemoji/blob/master/db/emoji.json')
                             .then(response => response.json())
-                        displayError(defaultEmojiList);
+                        displayError(defaultEmojiList.toString());
                         var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
 
                         if (lastWord.charAt(0) === ":") {
