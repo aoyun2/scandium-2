@@ -356,8 +356,6 @@ html
                                 var tagsMatching = k["tags"].some(t => (":" + t).startsWith(lastWord));
                                 return descriptionMatch || aliasesMatching || tagsMatching;
                             });
-                            console.log(Object.keys(defaultEmojiList))
-                            console.log(matchingDefaults)
 
                             if (matchingEmojis.length > 0 || matchingDefaults.length > 0) {
                                 var suggestions = document.createElement("ul");
