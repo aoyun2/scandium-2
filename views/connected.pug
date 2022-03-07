@@ -243,920 +243,920 @@ html
         script.
             (async () => {
 
-            const defaultEmojiList = await fetch('https://api.github.com/emojis')
-                .then(response => response.json())
-            
-            const socket = io();
-            const channelinput = document.querySelector("#channelselect");
-            const messageinput = document.querySelector("#input_messages");
-            const userID = "#{userID}";
-            const serverID = "#{server}";
+                const defaultEmojiList = await fetch('https://api.github.com/emojis')
+                    .then(response => response.json())
 
-            var e = document.createElement("div"); 
-            e.innerHTML = "#{emojis}";
-            const emojis = JSON.parse(e.innerText);
+                const socket = io();
+                const channelinput = document.querySelector("#channelselect");
+                const messageinput = document.querySelector("#input_messages");
+                const userID = "#{userID}";
+                const serverID = "#{server}";
 
-            var u = document.createElement("div"); 
-            u.innerHTML = "#{users}";
-            const users = JSON.parse(u.innerText);
+                var e = document.createElement("div"); 
+                e.innerHTML = "#{emojis}";
+                const emojis = JSON.parse(e.innerText);
 
-            var r = document.createElement("div"); 
-            r.innerHTML = "#{roles}";
-            const roles = JSON.parse(r.innerText);
+                var u = document.createElement("div"); 
+                u.innerHTML = "#{users}";
+                const users = JSON.parse(u.innerText);
 
-            e.remove(); u.remove(); r.remove();
-            console.log(emojis, users);
+                var r = document.createElement("div"); 
+                r.innerHTML = "#{roles}";
+                const roles = JSON.parse(r.innerText);
 
-            const messagediv = document.querySelector("#messages");
+                e.remove(); u.remove(); r.remove();
+                console.log(emojis, users);
 
-            var requestDebounce = false;
-            var channelEnd = false;
-            var replying = false;
-            var editing = false;
+                const messagediv = document.querySelector("#messages");
 
-            window.addEventListener('resize', () => {
-                try {
-                    if (window.innerHeight < 800) {
-                        document.querySelector("body > div > h1").style.display = "none";
-                        document.querySelector("body > div > div > h3").style.display = "none";
-                    } else {
-                        document.querySelector("body > div > h1").style.display = "inline";
-                        document.querySelector("body > div > div > h3").style.display = "inline";
-                    }
-                } catch(e) {};
-            });
+                var requestDebounce = false;
+                var channelEnd = false;
+                var replying = false;
+                var editing = false;
 
-            function readjustSizeOfMessageBox() {
-                try {
-                    messageinput.style.width = "0";
-                    messageinput.style.height = "0";
-
-                    messageinput.style.width = "95vw";
-                    messageinput.style.height = messageinput.scrollHeight + 'px';
-
-                    // messagediv.style.height = window.innerHeight - messageinput.scrollHeight - 150 + 'px';
-                } catch(e) {console.log(e)};
-            }
-            
-            const config = {
-              rootMargin: '0px 0px 50px 0px',
-              threshold: 0
-            };
-            
-            let observer = new IntersectionObserver(function(entries, self) {
-              // iterate over each entry
-              entries.forEach(entry => {
-                // process just the images that are intersecting.
-                // isIntersecting is a property exposed by the interface
-                if(entry.isIntersecting) {
-                  // custom function that copies the path to the img
-                  // from data-src to src
-                  preloadImage(entry.target);
-                  // the image is now in place, stop watching
-                  self.unobserve(entry.target);
-                }
-              });
-            }, config);
-            
-            function preloadImage(i) {
-                console.log(i.getAttribute('src'))
-                i.setAttribute('src', i.getAttribute("data-src"));
-                
-                //i.addEventListener("load", function () {
-                //    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                //}, {once: true}, false);
-                
-                //observer.unobserve(i);
-            }
-
-            // register the config object with an instance
-            // of intersectionObserver
-
-
-            function handleMessageSending(event) {
-                try {
-                    if (event.keyCode === 13 && !event.shiftKey && (messageinput.value && !messageinput.value.match(/^ *$/))) {
-                        event.preventDefault();
-                        if(!(replying || editing)) {
-                            socket.emit("client_message", messageinput.value);
-                            messageinput.value = '';
-                        } else if (replying) {
-                            socket.emit("reply_message", { messageID: replying, data: messageinput.value });
-                            messageinput.value = '';
-                        } else if (editing) {
-                            socket.emit("edit_message", { messageID: editing, data: messageinput.value });
-                            messageinput.value = '';
+                window.addEventListener('resize', () => {
+                    try {
+                        if (window.innerHeight < 800) {
+                            document.querySelector("body > div > h1").style.display = "none";
+                            document.querySelector("body > div > div > h3").style.display = "none";
+                        } else {
+                            document.querySelector("body > div > h1").style.display = "inline";
+                            document.querySelector("body > div > div > h3").style.display = "inline";
                         }
-                    } else {
-                        // Autocomplete
-                        var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
-                        
-                        if (lastWord.charAt(0) === ":") {
-                            var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
-                            var matchingDefaults = defaultEmojiList.keys().filter(k => k.name.toLowerCase().startsWith(lastWord));
-                            //- console.log(matchingEmojis)
+                    } catch(e) {};
+                });
 
-                            if (matchingEmojis.length > 0 || matchingDefaults.length > 0) {
-                                var suggestions = document.createElement("ul");
+                function readjustSizeOfMessageBox() {
+                    try {
+                        messageinput.style.width = "0";
+                        messageinput.style.height = "0";
 
-                                var emojisHeader = document.createElement("em");
-                                emojisHeader.innerText = "Emojis:";
-                                emojisHeader.style.color = "purple";
+                        messageinput.style.width = "95vw";
+                        messageinput.style.height = messageinput.scrollHeight + 'px';
 
-                                suggestions.appendChild(emojisHeader);
+                        // messagediv.style.height = window.innerHeight - messageinput.scrollHeight - 150 + 'px';
+                    } catch(e) {console.log(e)};
+                }
 
-                                for (var e of matchingEmojis) {
-                                    var li = document.createElement('li');
-                                    li.textContent = e.name + "  ";
-                                    li.id = e.string;
-                                    li.style.userSelect = "none";
+                const config = {
+                  rootMargin: '0px 0px 50px 0px',
+                  threshold: 0
+                };
 
-                                    var image = document.createElement("img");
-                                    image.id = e.string;
-                                    image.setAttribute("data-src", e.url);
-                                    //image.src = "lazyloadplaceholder.gif";
-                                    image.style.verticalAlign = "middle";
-                                    image.style.maxWidth = "50px";
-                                    li.appendChild(image);
-                                    
-                                    observer.observe(image);
+                let observer = new IntersectionObserver(function(entries, self) {
+                  // iterate over each entry
+                  entries.forEach(entry => {
+                    // process just the images that are intersecting.
+                    // isIntersecting is a property exposed by the interface
+                    if(entry.isIntersecting) {
+                      // custom function that copies the path to the img
+                      // from data-src to src
+                      preloadImage(entry.target);
+                      // the image is now in place, stop watching
+                      self.unobserve(entry.target);
+                    }
+                  });
+                }, config);
 
-                                    /*li.addEventListener("click", e_1 => {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e_1.target.id);
+                function preloadImage(i) {
+                    console.log(i.getAttribute('src'))
+                    i.setAttribute('src', i.getAttribute("data-src"));
 
-                                        // messageinput.value += e_1.target.id;
-                                    });*/
+                    //i.addEventListener("load", function () {
+                    //    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                    //}, {once: true}, false);
 
-                                    suggestions.appendChild(li);
-                                }
-                                
-                                for (var e of matchingDefaults) {
-                                    var li = document.createElement('li');
-                                    li.textContent = e;
-                                    li.id = "default";
-                                    li.style.userSelect = "none";
+                    //observer.unobserve(i);
+                }
 
-                                    suggestions.appendChild(li);
-                                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                                    emojify.run(messagediv);
-                                }
-                                
-                                suggestions.addEventListener("click", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") && !e.target.id === "default") {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
-                                        document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                                        document.querySelector("#input > .tooltiptext").innerHTML = '';
-                                        
-                                        messageinput.focus();
-                                    } else if (e.target && e.target.id === "default") {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.textContent);
-                                        document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                                        document.querySelector("#input > .tooltiptext").innerHTML = '';
-                                    }
-                                });
+                // register the config object with an instance
+                // of intersectionObserver
 
-                                document.querySelector("#input > .tooltiptext").innerHTML = '';
-                                document.querySelector("#input > .tooltiptext").appendChild(suggestions);
-                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
-                                
-                                document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    document.querySelector("#input > .tooltiptext").focus();
-                                });
-                                
-                                document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
-                                    messageinput.focus();
-                                });
-                            } else {
-                                document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                                document.querySelector("#input > .tooltiptext").innerHTML = '';
-                            }
-                        } else if (lastWord.charAt(0) === "@") {
-                            var matchingUsers = users.filter(u => `@${u.name}`.toLowerCase().startsWith(lastWord.toLowerCase()) || `@${u.displayname.toLowerCase()}`.startsWith(lastWord.toLowerCase()));
-                            var matchingRoles = roles.filter(r => `@${r.name}`.toLowerCase().startsWith(lastWord.toLowerCase()) || r.name.toLowerCase().startsWith(lastWord.toLowerCase()));
-                            //- console.log(matchingUsers)
 
-                            if (matchingUsers.length > 0 || matchingRoles.length > 0) {
-                                var suggestions = document.createElement("ul");
-
-                                var usersHeader = document.createElement("em");
-                                usersHeader.innerText = "Users:";
-                                usersHeader.style.color = "purple";
-
-                                var rolesHeader = document.createElement("em");
-                                rolesHeader.innerText = "Roles:";
-                                rolesHeader.style.color = "purple";
-
-                                suggestions.appendChild(usersHeader);
-
-                                for (var u of matchingUsers) {
-                                    var li = document.createElement('li');
-                                    li.textContent = u.displayname;
-                                    li.id = u.string;
-                                    //li.style.userSelect = "none";
-
-                                    li.addEventListener("click", e => {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        //if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
-
-                                        // messageinput.value += e.target.id;
-                                    });
-
-                                    suggestions.appendChild(li);
-                                }
-
-                                suggestions.appendChild(document.createElement("br"));
-
-                                suggestions.appendChild(rolesHeader);
-
-                                for (var r of matchingRoles) {
-                                    var li = document.createElement('li');
-                                    li.textContent = r.name;
-                                    li.id = r.string;
-                                    //li.style.userSelect = "none";
-
-                                    /*li.addEventListener("click", e => {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        //if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
-
-                                        //messageinput.value += e.target.id;
-                                    });*/
-
-                                    suggestions.appendChild(li);
-                                }
-
-                                suggestions.addEventListener("click", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
-                                        document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                                        document.querySelector("#input > .tooltiptext").innerHTML = '';
-
-                                        messageinput.focus();
-                                    }
-                                });
-                                
-                                document.querySelector("#input > .tooltiptext").innerHTML = '';
-                                document.querySelector("#input > .tooltiptext").appendChild(suggestions);
-                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
-                                
-                                document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    document.querySelector("#input > .tooltiptext").focus();
-                                });
-                                
-                                document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
-                                    messageinput.focus();
-                                });
-                            } else {
-                                document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                                document.querySelector("#input > .tooltiptext").innerHTML = '';
-                            }
-                        } else if (lastWord.charAt(0) === "#") {
-                            var matchingChannels = Array.prototype.filter.call(channelinput.children, ({ textContent }) => `#${textContent}`.toLowerCase().startsWith(lastWord));
-                            //- console.log(matchingChannels);
-
-                            if(matchingChannels.length > 0) {
-                                var suggestions = document.createElement("ul");
-
-                                var channelsHeader = document.createElement("em");
-                                channelsHeader.innerText = "Channels:";
-                                channelsHeader.style.color = "purple";
-
-                                suggestions.appendChild(channelsHeader);
-
-                                for (var c of matchingChannels) {
-                                    var li = document.createElement('li');
-                                    li.textContent = c.textContent;
-                                    li.id = `<#${c.value}>`;
-                                    //li.style.userSelect = "none";
-
-                                    /*li.addEventListener("click", e => {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
-
-                                        //messageinput.value += e.target.id;
-                                    });*/
-
-                                    suggestions.appendChild(li);
-                                }
-                                
-                                suggestions.addEventListener("click", function(e) {
-                                    if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
-                                        var lastWord2 = messageinput.value.trim().split(" ").pop();
-                                        if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
-                                        document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                                        document.querySelector("#input > .tooltiptext").innerHTML = '';
-
-                                        messageinput.focus();
-                                    }
-                                });
-
-                                document.querySelector("#input > .tooltiptext").innerHTML = '';
-                                document.querySelector("#input > .tooltiptext").appendChild(suggestions);
-                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
-                                
-                                document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
-                                    document.querySelector("#input > .tooltiptext").focus();
-                                });
-                                
-                                document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
-                                    messageinput.focus();
-                                });
-                            } else {
-                                document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                                document.querySelector("#input > .tooltiptext").innerHTML = '';
+                function handleMessageSending(event) {
+                    try {
+                        if (event.keyCode === 13 && !event.shiftKey && (messageinput.value && !messageinput.value.match(/^ *$/))) {
+                            event.preventDefault();
+                            if(!(replying || editing)) {
+                                socket.emit("client_message", messageinput.value);
+                                messageinput.value = '';
+                            } else if (replying) {
+                                socket.emit("reply_message", { messageID: replying, data: messageinput.value });
+                                messageinput.value = '';
+                            } else if (editing) {
+                                socket.emit("edit_message", { messageID: editing, data: messageinput.value });
+                                messageinput.value = '';
                             }
                         } else {
-                            document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
-                            document.querySelector("#input > .tooltiptext").innerHTML = '';
-                        }
-                    }
-                } catch(e) {console.log(e)};
-            }
+                            // Autocomplete
+                            var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
 
-            messageinput.addEventListener('input', () => {
-                readjustSizeOfMessageBox();
-            });
+                            if (lastWord.charAt(0) === ":") {
+                                var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
+                                var matchingDefaults = defaultEmojiList.keys().filter(k => k.name.toLowerCase().startsWith(lastWord));
+                                //- console.log(matchingEmojis)
 
-            messageinput.addEventListener('blur', (e) => {
-                readjustSizeOfMessageBox();
-                //handleMessageSending(e);
-            });
+                                if (matchingEmojis.length > 0 || matchingDefaults.length > 0) {
+                                    var suggestions = document.createElement("ul");
 
-            channelinput.addEventListener('change', () => {
-                replying = false;
-                editing = false;
-                messagediv.innerHTML = '';
+                                    var emojisHeader = document.createElement("em");
+                                    emojisHeader.innerText = "Emojis:";
+                                    emojisHeader.style.color = "purple";
 
-                requestDebounce = true;
-                channelEnd = false;
+                                    suggestions.appendChild(emojisHeader);
 
-                socket.emit('request_channel_data', {channelID: channelinput.value, before: null});
-                var loading = document.createElement('em');
-                loading.innerText = "Loading messages. . .";
-                loading.style.color = "purple";
-                messagediv.appendChild(loading);
-            });
+                                    for (var e of matchingEmojis) {
+                                        var li = document.createElement('li');
+                                        li.textContent = e.name + "  ";
+                                        li.id = e.string;
+                                        li.style.userSelect = "none";
 
-            function isInViewport(element) {
-                try {
-                    var rect = element.getBoundingClientRect();
-                    var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-                    return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-                } catch(e) {console.log(e)}
-            }
+                                        var image = document.createElement("img");
+                                        image.id = e.string;
+                                        image.setAttribute("data-src", e.url);
+                                        //image.src = "lazyloadplaceholder.gif";
+                                        image.style.verticalAlign = "middle";
+                                        image.style.maxWidth = "50px";
+                                        li.appendChild(image);
 
-            function createAttachments(m_a) {
-                var attachments = document.createElement('div');
-                m_a.forEach(a => {
-                    const type = a.url.split('/')[0];
-                    // console.log(type);
-                    switch (type) {
-                        case "data:image":
-                            var image = document.createElement('img');
-                            image.classList.add(`d-image-embed`);
-                            image.alt = `Epic embed fail.`;
-                            image.setAttribute("data-src", a.url);
-                            //image.src = "lazyloadplaceholder.gif";
-                            attachments.appendChild(image);
-                            observer.observe(image);
-                            break;
-                        case "data:video":
-                            var video = document.createElement('video');
-                            video.classList.add(`d-video-embed`);
-                            video.src = a.url;
-                            video.controls = true;
-                            video.autoplay = true;
-                            video.muted = true;
-                            video.loop = true;
-                            attachments.appendChild(video);
-                            break;
-                        case "data:audio":
-                            var audio = document.createElement('audio');
-                            audio.classList.add(`d-audio-embed`);
-                            audio.src = a.url;
-                            audio.controls = true;
-                            attachments.appendChild(audio);
-                            break;
-                        default:
-                            var file = document.createElement('button');
-                            file.innerText = `FILE: ${a.name}`;
-                            file.onclick = () => {
-                                console.log(a.url)
-                                if(a.url.includes("application")) {
-                                    let mimeType = a.url.split(',')[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
-                                    window.open(a.url.replace(mimeType, "application/scandiumdownload"));
+                                        observer.observe(image);
+
+                                        /*li.addEventListener("click", e_1 => {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.replace(lastWord2, e_1.target.id);
+
+                                            // messageinput.value += e_1.target.id;
+                                        });*/
+
+                                        suggestions.appendChild(li);
+                                    }
+
+                                    for (var e of matchingDefaults) {
+                                        var li = document.createElement('li');
+                                        li.textContent = e;
+                                        li.id = "default";
+                                        li.style.userSelect = "none";
+
+                                        suggestions.appendChild(li);
+                                        emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                                        emojify.run(messagediv);
+                                    }
+
+                                    suggestions.addEventListener("click", function(e) {
+                                        if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") && !e.target.id === "default") {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
+                                            document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                            document.querySelector("#input > .tooltiptext").innerHTML = '';
+
+                                            messageinput.focus();
+                                        } else if (e.target && e.target.id === "default") {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            if(lastWord2.charAt(0) === ":") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.textContent);
+                                            document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                            document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                        }
+                                    });
+
+                                    document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                    document.querySelector("#input > .tooltiptext").appendChild(suggestions);
+                                    document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+
+                                    document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
+                                        document.querySelector("#input > .tooltiptext").focus();
+                                    });
+
+                                    document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
+                                        messageinput.focus();
+                                    });
                                 } else {
-                                    var newTab = window.open();
-                                    newTab.document.write('<iframe src="' + a.url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+                                    document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                    document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 }
-                            }
-                            attachments.appendChild(file);
-                            break;
-                    }
-                });
-                attachments.classList.add("d-attachments");
-                return attachments;
-            }
+                            } else if (lastWord.charAt(0) === "@") {
+                                var matchingUsers = users.filter(u => `@${u.name}`.toLowerCase().startsWith(lastWord.toLowerCase()) || `@${u.displayname.toLowerCase()}`.startsWith(lastWord.toLowerCase()));
+                                var matchingRoles = roles.filter(r => `@${r.name}`.toLowerCase().startsWith(lastWord.toLowerCase()) || r.name.toLowerCase().startsWith(lastWord.toLowerCase()));
+                                //- console.log(matchingUsers)
 
-            function createEmbed(e) {
-                // console.log(e);
-                var embed = document.createElement('div');
-                embed.style.borderLeft = `thick solid ${e.color}`;
+                                if (matchingUsers.length > 0 || matchingRoles.length > 0) {
+                                    var suggestions = document.createElement("ul");
 
-                if (e.thumbnail && !(e.image || e.video || e.yt_video)) {
-                    var thumbnail = document.createElement('img');
-                    thumbnail.classList.add(`d-embed-thumbnail`);
-                    thumbnail.setAttribute("data-src", e.thumbnail);
-                    //thumbnail.src = "lazyloadplaceholder.gif";
-                    thumbnail.alt = `Epic embed fail.`;
-                    embed.appendChild(thumbnail);
-                    observer.observe(thumbnail);
-                }
+                                    var usersHeader = document.createElement("em");
+                                    usersHeader.innerText = "Users:";
+                                    usersHeader.style.color = "purple";
 
-                var title = document.createElement('h2');
-                title.innerHTML = e.title;
+                                    var rolesHeader = document.createElement("em");
+                                    rolesHeader.innerText = "Roles:";
+                                    rolesHeader.style.color = "purple";
 
-                var description = document.createElement('p');
-                description.innerHTML = e.description;
+                                    suggestions.appendChild(usersHeader);
 
-                embed.appendChild(title);
-                embed.appendChild(description);
+                                    for (var u of matchingUsers) {
+                                        var li = document.createElement('li');
+                                        li.textContent = u.displayname;
+                                        li.id = u.string;
+                                        //li.style.userSelect = "none";
 
-                e.fields.forEach(f => {
-                    var name = document.createElement('p');
-                    name.innerHTML = f.name;
+                                        li.addEventListener("click", e => {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            //if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
-                    var value = document.createElement('p');
-                    value.innerHTML = f.value;
+                                            // messageinput.value += e.target.id;
+                                        });
 
-                    embed.appendChild(document.createElement('hr'));
-                    embed.appendChild(name);
-                    embed.appendChild(value);
-                });
-                if (e.fields.length > 0) embed.appendChild(document.createElement('hr'));
+                                        suggestions.appendChild(li);
+                                    }
 
-                embed.appendChild(createAttachments(e.files));
-                
-                if (e.image) {
-                    var image = document.createElement('img');
-                    image.classList.add(`d-image-embed`);
-                    image.setAttribute("data-src", e.image);
-                    //image.src = "lazyloadplaceholder.gif";
-                    image.alt = `Epic embed fail.`;
-                    embed.appendChild(image);
-                    observer.observe(image);
-                }
+                                    suggestions.appendChild(document.createElement("br"));
 
-                if (e.video) {
-                    var video = document.createElement('video');
-                    video.classList.add(`d-video-embed`);
-                    video.src = e.video;
-                    video.controls = true;
-                    video.autoplay = true;
-                    video.muted = true;
-                    video.loop = true;
-                    embed.appendChild(video);
-                }
+                                    suggestions.appendChild(rolesHeader);
 
-                if (e.yt_video) {
-                    var video = document.createElement('iframe');
-                    video.classList.add(`d-yt-embed`);
-                    video.src = e.yt_video;
-                    video.frameborder = "0";
-                    video.allowfullscreen = true;
-                    embed.appendChild(video);
-                }
+                                    for (var r of matchingRoles) {
+                                        var li = document.createElement('li');
+                                        li.textContent = r.name;
+                                        li.id = r.string;
+                                        //li.style.userSelect = "none";
 
-                var footer = document.createElement('small');
-                footer.innerHTML = e.footer;
-                embed.appendChild(footer);
+                                        /*li.addEventListener("click", e => {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            //if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
 
-                embed.classList.add("d-embed");
+                                            //messageinput.value += e.target.id;
+                                        });*/
 
-                //console.log(embed);
-                return embed;
-            }
+                                        suggestions.appendChild(li);
+                                    }
 
-            function createMessage(m) {
-                var messageObject = JSON.parse(m);
+                                    suggestions.addEventListener("click", function(e) {
+                                        if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            if(lastWord2.charAt(0) === "@") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
+                                            document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                            document.querySelector("#input > .tooltiptext").innerHTML = '';
 
-                var message = document.createElement('div');
-                var content = document.createElement('div');
-                content.innerHTML = messageObject.text;
+                                            messageinput.focus();
+                                        }
+                                    });
 
-                var name = document.createElement('strong');
-                name.innerText = messageObject.author;
-                name.style = `color: ${messageObject.color};`;
+                                    document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                    document.querySelector("#input > .tooltiptext").appendChild(suggestions);
+                                    document.querySelector("#input > .tooltiptext").style.visibility = "visible";
 
-                var time = document.createElement('strong');
-                const options = { year: "numeric", month: "long", day: "numeric" }
-                var day = new Date(messageObject.sentAt).toLocaleDateString(undefined, options);
-                var hms = new Date(messageObject.sentAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                
-                var reply = document.createElement('span');
-                var replyText = document.createElement('strong');
-                replyText.innerText = ", replying to ";
-                reply.appendChild(replyText);
-                var replyMessage = document.createElement('span');
-                replyMessage.classList.add('d-reply-container');
-                replyMessage.id = messageObject.id;
-                replyMessage.innerHTML = "<em style='color:purple'>message</em>";
-                replyMessage.style.userSelect = "none";
-                replyMessage.setAttribute("tabindex", "0");
+                                    document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
+                                        document.querySelector("#input > .tooltiptext").focus();
+                                    });
 
-                /*replyMessage.addEventListener("mouseover", function( event ) {
-                    socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
-                }, {once: true}, false);*/
+                                    document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
+                                        messageinput.focus();
+                                    });
+                                } else {
+                                    document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                    document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                }
+                            } else if (lastWord.charAt(0) === "#") {
+                                var matchingChannels = Array.prototype.filter.call(channelinput.children, ({ textContent }) => `#${textContent}`.toLowerCase().startsWith(lastWord));
+                                //- console.log(matchingChannels);
 
-                var replyTooltip = document.createElement('span');
-                replyTooltip.classList.add('tooltiptext');
-                replyTooltip.innerHTML = "<em style='color:purple'>Loading. . .</em>";
-                
-                replyMessage.appendChild(replyTooltip);
-                
-                // closure is not needed here
-                (function() {
-                    var first = true;
-                    replyMessage.addEventListener("click", function( event ) {
-                        if (event.target.nodeName !== "EM") return;
-                    
-                        //state = !state;
-                        if (first) {
-                            socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
-                            first = false;
-                        }
-                        
-                        event.stopPropagation();
+                                if(matchingChannels.length > 0) {
+                                    var suggestions = document.createElement("ul");
 
-                        if (event.currentTarget.querySelector(".tooltiptext").style.visibility != "visible") {
-                            event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
-                        } else if (event.currentTarget.querySelector(".tooltiptext").style.visibility == "visible") {
-                            var recursive = event.currentTarget.getElementsByClassName("tooltiptext");
-                            
-                            for(var i of recursive) {
-                                i.style.visibility = "hidden";
+                                    var channelsHeader = document.createElement("em");
+                                    channelsHeader.innerText = "Channels:";
+                                    channelsHeader.style.color = "purple";
+
+                                    suggestions.appendChild(channelsHeader);
+
+                                    for (var c of matchingChannels) {
+                                        var li = document.createElement('li');
+                                        li.textContent = c.textContent;
+                                        li.id = `<#${c.value}>`;
+                                        //li.style.userSelect = "none";
+
+                                        /*li.addEventListener("click", e => {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.replace(lastWord2, e.target.id);
+
+                                            //messageinput.value += e.target.id;
+                                        });*/
+
+                                        suggestions.appendChild(li);
+                                    }
+
+                                    suggestions.addEventListener("click", function(e) {
+                                        if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
+                                            var lastWord2 = messageinput.value.trim().split(" ").pop();
+                                            if(lastWord2.charAt(0) === "#") messageinput.value = messageinput.value.slice(0, messageinput.value.lastIndexOf(lastWord2)) + messageinput.value.slice(messageinput.value.lastIndexOf(lastWord2)).replace(lastWord2, e.target.id);
+                                            document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                            document.querySelector("#input > .tooltiptext").innerHTML = '';
+
+                                            messageinput.focus();
+                                        }
+                                    });
+
+                                    document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                    document.querySelector("#input > .tooltiptext").appendChild(suggestions);
+                                    document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+
+                                    document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
+                                        document.querySelector("#input > .tooltiptext").focus();
+                                    });
+
+                                    document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
+                                        messageinput.focus();
+                                    });
+                                } else {
+                                    document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                    document.querySelector("#input > .tooltiptext").innerHTML = '';
+                                }
+                            } else {
+                                document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
+                                document.querySelector("#input > .tooltiptext").innerHTML = '';
                             }
                         }
-                    }, false);
-                })();
-                
-                replyMessage.addEventListener("blur", function( event ) {
-                        //state = !state;
-                        
-                        //event.stopPropagation();
-                        
-                        if (event.target.contains(event.relatedTarget)) return;
-
-                        var parentElement = event.target.closest("#messages > .message");
-                        var recursive = parentElement.getElementsByClassName("tooltiptext");
-
-                        for(var i of recursive) {
-                            i.style.visibility = "hidden";
-                        }
-                    }, false);
-                
-                reply.appendChild(replyMessage);
-
-                if (new Date(messageObject.sentAt).getDate() === new Date().getDate() &&
-                    new Date(messageObject.sentAt).getMonth() === new Date().getMonth() &&
-                    new Date(messageObject.sentAt).getFullYear() === new Date().getFullYear()) {
-                    time.innerText = ' at ' + hms;
-                } else {
-                    time.innerText = ' on ' + day;
+                    } catch(e) {console.log(e)};
                 }
 
-                var attachments = createAttachments(messageObject.attachments);
-
-                message.appendChild(name);
-                message.appendChild(time);
-
-                var edited = document.createElement("small");
-                edited.innerText = "(edited)";
-                if (messageObject.edited) message.appendChild(edited);
-
-                if (messageObject.reference) message.appendChild(reply);
-
-                var messageactions = document.createElement("div");
-                messageactions.style.display = "inline-block";
-                messageactions.style.marginLeft = "3px";
-
-                var del = document.createElement("button");
-                del.innerText = "Delete";
-                var reply = document.createElement("button");
-                reply.innerText = "Reply";
-                var edit = document.createElement("button");
-                edit.innerText = "Edit";
-
-                reply.addEventListener("click", e => {
-                    if (!replying && !editing) {
-                        replying = e.target.parentNode.parentNode.id;
-                        e.target.innerText = "Cancel";
-                    } else if (e.target.parentNode.parentNode.id === replying) {
-                        replying = false;
-                        e.target.innerText = "Reply";
-                    }
+                messageinput.addEventListener('input', () => {
+                    readjustSizeOfMessageBox();
                 });
 
-                edit.addEventListener("click", e => {
-                    if (!replying && !editing) {
-                        editing = e.target.parentNode.parentNode.id;
-                        e.target.innerText = "Cancel";
-                    } else if (e.target.parentNode.parentNode.id === editing) {
-                        editing = false;
-                        e.target.innerText = "Edit";
-                    } else {
-                        displayError("Already Editing.");
-                    }
+                messageinput.addEventListener('blur', (e) => {
+                    readjustSizeOfMessageBox();
+                    //handleMessageSending(e);
                 });
 
-                del.addEventListener("click", e => {
-                    socket.emit("delete_message", e.target.parentNode.parentNode.id);
-                });
+                channelinput.addEventListener('change', () => {
+                    replying = false;
+                    editing = false;
+                    messagediv.innerHTML = '';
 
-                messageactions.appendChild(del);
-                messageactions.appendChild(reply);
-                messageactions.appendChild(edit);
-
-                messageactions.classList.add("message-actions");
-
-                message.appendChild(messageactions);
-
-                message.appendChild(content);
-                message.appendChild(attachments);
-                messageObject.embeds.forEach(e => {
-                   message.appendChild(createEmbed(e)); 
-                });
-                message.appendChild(document.createElement('p'));
-                message.classList.add('message');
-                message.id = messageObject.id;
-                message.style.position = "relative";
-                
-                for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    observer.observe(emojiImage);
-                }
-
-                return message;
-            }
-
-            function addMessage(m, prepend = true) {
-                var message = createMessage(m);
-                var atBottom = isInViewport(messagediv.lastChild);
-
-                prepend ? messagediv.prepend(message) : messagediv.append(message);
-                
-
-                if (!prepend && atBottom && messagediv.lastChild) {
-                    messagediv.lastChild.scrollIntoView(false);
-                }
-                                
-                /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    observer.observe(emojiImage);
-                }*/
-                /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    observer.observe(emojiImage);
-                }
-                
-                for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    preloadImage(emojiImage);
-                }*/
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
-                loadMentions();
-                
-                return message;
-            }
-
-            socket.once('connect', function() {
-                socket.emit('join', {userID: userID, serverID: serverID, channelID: channelinput.value});
-            });
-
-            socket.once('connection_success', function() {
-                socket.emit('request_channel_data', {channelID: channelinput.value, before: null});
-
-                var loading = document.createElement('em');
-                loading.innerText = "Loading messages. . .";
-                loading.style.color = "purple";
-                messagediv.appendChild(loading);
-            });
-            
-            function loadMentions() {
-                const mentions = document.querySelectorAll('.d-mention');
-                Array.from(mentions).forEach((m, index) => {
-                    // if(!isInViewport(m)) return;
-
-                    var user = /^<@!?([0-9]*)>/.exec(m.innerText);
-                    var channel = /^<#([0-9]*)>/.exec(m.innerText);
-                    var role = /^<@&([0-9]*)>/.exec(m.innerText);
-
-                    if(user) {
-                        socket.emit('fetch_mention_data', {type: 'user', id: user[1]});
-                    } else if(channel) {
-                        socket.emit('fetch_mention_data', {type: 'channel', id: channel[1]});
-                    } if(role) {
-                        socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
-                    }
-                });
-            }
-            
-            socket.on("request_rate_limit", () => {
-                if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
-                requestDebounce = false
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
-                loadMentions();
-            });
-
-            socket.on("channel_history", data => {
-                // console.log(data);
-                if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
-                
-                data.forEach(m => {
-                    // console.log(JSON.parse(m));
-                    addMessage(m);
-                });
-                
-                
-                if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
-                else if(messagediv.lastChild) messagediv.lastChild.scrollIntoView(true);
-                
-                //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
-
-                requestDebounce = false;
-                if (data.length < 10) endOfChannel();
-                else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
-                
-                //lastMessage.scrollIntoView(true, {behavior: "smooth"});
-                
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
-                loadMentions();
-            });
-            
-            messagediv.addEventListener('scroll', () => {
-                loadMessages();
-                loadMentions();
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
-            });
-
-            function loadMessages() {
-                if (isInViewport(messagediv.firstChild) && !requestDebounce && !channelEnd) {
                     requestDebounce = true;
-                    socket.emit('request_channel_data', {channelID: channelinput.value, before: messagediv.firstChild.id});
+                    channelEnd = false;
+
+                    socket.emit('request_channel_data', {channelID: channelinput.value, before: null});
                     var loading = document.createElement('em');
                     loading.innerText = "Loading messages. . .";
                     loading.style.color = "purple";
-                    messagediv.prepend(loading);
-                    console.log("Loading more messages");
-                } /*else if (!isInViewport(messagediv.firstChild)) console.log("bug detected")*/
-
-                /*const mentions = document.querySelectorAll('.d-mention');
-                Array.from(mentions).forEach((m, index) => {
-                    // if(!isInViewport(m)) return;
-
-                    var user = /^<@!?([0-9]*)>/.exec(m.innerText);
-                    var channel = /^<#([0-9]*)>/.exec(m.innerText);
-                    var role = /^<@&([0-9]*)>/.exec(m.innerText);
-
-                    if(user) {
-                        socket.emit('fetch_mention_data', {type: 'user', id: user[1]});
-                    } else if(channel) {
-                        socket.emit('fetch_mention_data', {type: 'channel', id: channel[1]});
-                    } if(role) {
-                        socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
-                    }
-                });*/                
-            }
-
-            function endOfChannel() {
-                console.log("End of channel");
-                if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
-                channelEnd = true;
-                var notice = document.createElement('em');
-                notice.style.color = "purple";
-                notice.innerText = "This is the start of the channel!";
-                messagediv.prepend(notice);
-            }
-
-            socket.on("mention_data", (data) => {
-                // console.log(data);
-
-                const mentions = document.querySelectorAll('.d-mention');
-                const mentions_filtered = Array.from(mentions).filter(m => m.id === data.id);
-
-                // console.log(mentions_filtered);
-                mentions_filtered.forEach(m => m.innerText = data.data);
-            });
-
-            socket.on("reply_JSON", (data) => {
-                const replies = document.querySelectorAll('.d-reply-container');
-                const replies_filtered = Array.from(replies).filter(r => r.id === data.messageID);
-
-                replies_filtered.forEach(r => {
-                    var tooltip = r.querySelector("span");
-
-                    if (!tooltip) return;
-
-                    tooltip.innerHTML = '';
-                    
-                    var notice = document.createElement('em');
-                    notice.style.color = "purple";
-                    notice.innerText = "Message was deleted or could not be loaded.";
-
-                    var message = data.JSON ? createMessage(data.JSON) : null;
-
-                    tooltip.appendChild(message || notice);
+                    messagediv.appendChild(loading);
                 });
-                
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
-                loadMentions();
-            });
 
-            socket.on("new_message", (data) => {
-                // console.log(data);
-                addMessage(data, false);
-                
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
-                loadMentions();
-            });
-
-            socket.on("message_edit", data => {
-                // console.log(data);
-                var oldMessage = document.getElementById(data.id);
-                if(!oldMessage) return;
-
-                if (editing === data.id) {
-                    editing = false;
-                    // oldMessage.querySelector(".message-actions > button:nth-child(3)").innerText = "Edit";
+                function isInViewport(element) {
+                    try {
+                        var rect = element.getBoundingClientRect();
+                        var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+                        return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+                    } catch(e) {console.log(e)}
                 }
 
-                var newMessage = createMessage(data.message);
+                function createAttachments(m_a) {
+                    var attachments = document.createElement('div');
+                    m_a.forEach(a => {
+                        const type = a.url.split('/')[0];
+                        // console.log(type);
+                        switch (type) {
+                            case "data:image":
+                                var image = document.createElement('img');
+                                image.classList.add(`d-image-embed`);
+                                image.alt = `Epic embed fail.`;
+                                image.setAttribute("data-src", a.url);
+                                //image.src = "lazyloadplaceholder.gif";
+                                attachments.appendChild(image);
+                                observer.observe(image);
+                                break;
+                            case "data:video":
+                                var video = document.createElement('video');
+                                video.classList.add(`d-video-embed`);
+                                video.src = a.url;
+                                video.controls = true;
+                                video.autoplay = true;
+                                video.muted = true;
+                                video.loop = true;
+                                attachments.appendChild(video);
+                                break;
+                            case "data:audio":
+                                var audio = document.createElement('audio');
+                                audio.classList.add(`d-audio-embed`);
+                                audio.src = a.url;
+                                audio.controls = true;
+                                attachments.appendChild(audio);
+                                break;
+                            default:
+                                var file = document.createElement('button');
+                                file.innerText = `FILE: ${a.name}`;
+                                file.onclick = () => {
+                                    console.log(a.url)
+                                    if(a.url.includes("application")) {
+                                        let mimeType = a.url.split(',')[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
+                                        window.open(a.url.replace(mimeType, "application/scandiumdownload"));
+                                    } else {
+                                        var newTab = window.open();
+                                        newTab.document.write('<iframe src="' + a.url  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+                                    }
+                                }
+                                attachments.appendChild(file);
+                                break;
+                        }
+                    });
+                    attachments.classList.add("d-attachments");
+                    return attachments;
+                }
 
-                oldMessage.parentNode.replaceChild(newMessage, oldMessage);
-                
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
-                loadMentions();
-            });
+                function createEmbed(e) {
+                    // console.log(e);
+                    var embed = document.createElement('div');
+                    embed.style.borderLeft = `thick solid ${e.color}`;
 
-            socket.on("message_delete", id => {
-                var message = document.getElementById(id);
-                if(!message) return;
+                    if (e.thumbnail && !(e.image || e.video || e.yt_video)) {
+                        var thumbnail = document.createElement('img');
+                        thumbnail.classList.add(`d-embed-thumbnail`);
+                        thumbnail.setAttribute("data-src", e.thumbnail);
+                        //thumbnail.src = "lazyloadplaceholder.gif";
+                        thumbnail.alt = `Epic embed fail.`;
+                        embed.appendChild(thumbnail);
+                        observer.observe(thumbnail);
+                    }
 
-                message.remove();
-            });
+                    var title = document.createElement('h2');
+                    title.innerHTML = e.title;
 
-            socket.on("reply_success", mid => {
-                replying = false;
-                var message = document.getElementById(mid);
-                if(!message) return;
+                    var description = document.createElement('p');
+                    description.innerHTML = e.description;
 
-                console.log(message)
+                    embed.appendChild(title);
+                    embed.appendChild(description);
 
-                message.querySelector(".message-actions > button:nth-child(2)").innerText = "Reply";
-            });
+                    e.fields.forEach(f => {
+                        var name = document.createElement('p');
+                        name.innerHTML = f.name;
 
-            function displayError(m) {
-                var error = document.createElement("div");
-                var close = document.createElement("span");
+                        var value = document.createElement('p');
+                        value.innerHTML = f.value;
 
-                error.appendChild(close);
-                error.innerHTML = `<strong>${m}</strong>`;
+                        embed.appendChild(document.createElement('hr'));
+                        embed.appendChild(name);
+                        embed.appendChild(value);
+                    });
+                    if (e.fields.length > 0) embed.appendChild(document.createElement('hr'));
 
-                error.classList.add("error");
-                close.classList.add("errorclose");
+                    embed.appendChild(createAttachments(e.files));
 
-                close.innerText = "×";
+                    if (e.image) {
+                        var image = document.createElement('img');
+                        image.classList.add(`d-image-embed`);
+                        image.setAttribute("data-src", e.image);
+                        //image.src = "lazyloadplaceholder.gif";
+                        image.alt = `Epic embed fail.`;
+                        embed.appendChild(image);
+                        observer.observe(image);
+                    }
 
-                close.addEventListener("click", e => {
-                    e.target.parentNode.remove();
+                    if (e.video) {
+                        var video = document.createElement('video');
+                        video.classList.add(`d-video-embed`);
+                        video.src = e.video;
+                        video.controls = true;
+                        video.autoplay = true;
+                        video.muted = true;
+                        video.loop = true;
+                        embed.appendChild(video);
+                    }
+
+                    if (e.yt_video) {
+                        var video = document.createElement('iframe');
+                        video.classList.add(`d-yt-embed`);
+                        video.src = e.yt_video;
+                        video.frameborder = "0";
+                        video.allowfullscreen = true;
+                        embed.appendChild(video);
+                    }
+
+                    var footer = document.createElement('small');
+                    footer.innerHTML = e.footer;
+                    embed.appendChild(footer);
+
+                    embed.classList.add("d-embed");
+
+                    //console.log(embed);
+                    return embed;
+                }
+
+                function createMessage(m) {
+                    var messageObject = JSON.parse(m);
+
+                    var message = document.createElement('div');
+                    var content = document.createElement('div');
+                    content.innerHTML = messageObject.text;
+
+                    var name = document.createElement('strong');
+                    name.innerText = messageObject.author;
+                    name.style = `color: ${messageObject.color};`;
+
+                    var time = document.createElement('strong');
+                    const options = { year: "numeric", month: "long", day: "numeric" }
+                    var day = new Date(messageObject.sentAt).toLocaleDateString(undefined, options);
+                    var hms = new Date(messageObject.sentAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+                    var reply = document.createElement('span');
+                    var replyText = document.createElement('strong');
+                    replyText.innerText = ", replying to ";
+                    reply.appendChild(replyText);
+                    var replyMessage = document.createElement('span');
+                    replyMessage.classList.add('d-reply-container');
+                    replyMessage.id = messageObject.id;
+                    replyMessage.innerHTML = "<em style='color:purple'>message</em>";
+                    replyMessage.style.userSelect = "none";
+                    replyMessage.setAttribute("tabindex", "0");
+
+                    /*replyMessage.addEventListener("mouseover", function( event ) {
+                        socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
+                    }, {once: true}, false);*/
+
+                    var replyTooltip = document.createElement('span');
+                    replyTooltip.classList.add('tooltiptext');
+                    replyTooltip.innerHTML = "<em style='color:purple'>Loading. . .</em>";
+
+                    replyMessage.appendChild(replyTooltip);
+
+                    // closure is not needed here
+                    (function() {
+                        var first = true;
+                        replyMessage.addEventListener("click", function( event ) {
+                            if (event.target.nodeName !== "EM") return;
+
+                            //state = !state;
+                            if (first) {
+                                socket.emit("fetch_reply_JSON", {id: messageObject.reference, messageID: messageObject.id});
+                                first = false;
+                            }
+
+                            event.stopPropagation();
+
+                            if (event.currentTarget.querySelector(".tooltiptext").style.visibility != "visible") {
+                                event.currentTarget.querySelector(".tooltiptext").style.visibility = "visible";
+                            } else if (event.currentTarget.querySelector(".tooltiptext").style.visibility == "visible") {
+                                var recursive = event.currentTarget.getElementsByClassName("tooltiptext");
+
+                                for(var i of recursive) {
+                                    i.style.visibility = "hidden";
+                                }
+                            }
+                        }, false);
+                    })();
+
+                    replyMessage.addEventListener("blur", function( event ) {
+                            //state = !state;
+
+                            //event.stopPropagation();
+
+                            if (event.target.contains(event.relatedTarget)) return;
+
+                            var parentElement = event.target.closest("#messages > .message");
+                            var recursive = parentElement.getElementsByClassName("tooltiptext");
+
+                            for(var i of recursive) {
+                                i.style.visibility = "hidden";
+                            }
+                        }, false);
+
+                    reply.appendChild(replyMessage);
+
+                    if (new Date(messageObject.sentAt).getDate() === new Date().getDate() &&
+                        new Date(messageObject.sentAt).getMonth() === new Date().getMonth() &&
+                        new Date(messageObject.sentAt).getFullYear() === new Date().getFullYear()) {
+                        time.innerText = ' at ' + hms;
+                    } else {
+                        time.innerText = ' on ' + day;
+                    }
+
+                    var attachments = createAttachments(messageObject.attachments);
+
+                    message.appendChild(name);
+                    message.appendChild(time);
+
+                    var edited = document.createElement("small");
+                    edited.innerText = "(edited)";
+                    if (messageObject.edited) message.appendChild(edited);
+
+                    if (messageObject.reference) message.appendChild(reply);
+
+                    var messageactions = document.createElement("div");
+                    messageactions.style.display = "inline-block";
+                    messageactions.style.marginLeft = "3px";
+
+                    var del = document.createElement("button");
+                    del.innerText = "Delete";
+                    var reply = document.createElement("button");
+                    reply.innerText = "Reply";
+                    var edit = document.createElement("button");
+                    edit.innerText = "Edit";
+
+                    reply.addEventListener("click", e => {
+                        if (!replying && !editing) {
+                            replying = e.target.parentNode.parentNode.id;
+                            e.target.innerText = "Cancel";
+                        } else if (e.target.parentNode.parentNode.id === replying) {
+                            replying = false;
+                            e.target.innerText = "Reply";
+                        }
+                    });
+
+                    edit.addEventListener("click", e => {
+                        if (!replying && !editing) {
+                            editing = e.target.parentNode.parentNode.id;
+                            e.target.innerText = "Cancel";
+                        } else if (e.target.parentNode.parentNode.id === editing) {
+                            editing = false;
+                            e.target.innerText = "Edit";
+                        } else {
+                            displayError("Already Editing.");
+                        }
+                    });
+
+                    del.addEventListener("click", e => {
+                        socket.emit("delete_message", e.target.parentNode.parentNode.id);
+                    });
+
+                    messageactions.appendChild(del);
+                    messageactions.appendChild(reply);
+                    messageactions.appendChild(edit);
+
+                    messageactions.classList.add("message-actions");
+
+                    message.appendChild(messageactions);
+
+                    message.appendChild(content);
+                    message.appendChild(attachments);
+                    messageObject.embeds.forEach(e => {
+                       message.appendChild(createEmbed(e)); 
+                    });
+                    message.appendChild(document.createElement('p'));
+                    message.classList.add('message');
+                    message.id = messageObject.id;
+                    message.style.position = "relative";
+
+                    for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                        observer.observe(emojiImage);
+                    }
+
+                    return message;
+                }
+
+                function addMessage(m, prepend = true) {
+                    var message = createMessage(m);
+                    var atBottom = isInViewport(messagediv.lastChild);
+
+                    prepend ? messagediv.prepend(message) : messagediv.append(message);
+
+
+                    if (!prepend && atBottom && messagediv.lastChild) {
+                        messagediv.lastChild.scrollIntoView(false);
+                    }
+
+                    /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                        observer.observe(emojiImage);
+                    }*/
+                    /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                        observer.observe(emojiImage);
+                    }
+
+                    for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
+                        preloadImage(emojiImage);
+                    }*/
+                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                    emojify.run(messagediv);
+                    loadMentions();
+
+                    return message;
+                }
+
+                socket.once('connect', function() {
+                    socket.emit('join', {userID: userID, serverID: serverID, channelID: channelinput.value});
                 });
 
-                error.appendChild(close);
+                socket.once('connection_success', function() {
+                    socket.emit('request_channel_data', {channelID: channelinput.value, before: null});
 
-                document.querySelector("body > .error-container").appendChild(error);
-            }
+                    var loading = document.createElement('em');
+                    loading.innerText = "Loading messages. . .";
+                    loading.style.color = "purple";
+                    messagediv.appendChild(loading);
+                });
 
-            
-            socket.on("disconnect", () => {
-                displayError("WebSocket is disconnected. As a result, you cannot send or recieve messages. Please refresh the page to reconnect.")
-            });
+                function loadMentions() {
+                    const mentions = document.querySelectorAll('.d-mention');
+                    Array.from(mentions).forEach((m, index) => {
+                        // if(!isInViewport(m)) return;
 
-            // displayError("hi")
+                        var user = /^<@!?([0-9]*)>/.exec(m.innerText);
+                        var channel = /^<#([0-9]*)>/.exec(m.innerText);
+                        var role = /^<@&([0-9]*)>/.exec(m.innerText);
 
-            socket.on("error", m => {
-                replying = false;
-                editing = false;
-                displayError(m);
-            });
+                        if(user) {
+                            socket.emit('fetch_mention_data', {type: 'user', id: user[1]});
+                        } else if(channel) {
+                            socket.emit('fetch_mention_data', {type: 'channel', id: channel[1]});
+                        } if(role) {
+                            socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
+                        }
+                    });
+                }
 
-            window.addEventListener('error', (event) => {
-                displayError(event.message);
-            });
+                socket.on("request_rate_limit", () => {
+                    if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
+                    requestDebounce = false
+                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                    emojify.run(messagediv);
+                    loadMentions();
+                });
+
+                socket.on("channel_history", data => {
+                    // console.log(data);
+                    if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
+
+                    data.forEach(m => {
+                        // console.log(JSON.parse(m));
+                        addMessage(m);
+                    });
+
+
+                    if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
+                    else if(messagediv.lastChild) messagediv.lastChild.scrollIntoView(true);
+
+                    //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                    //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
+
+                    requestDebounce = false;
+                    if (data.length < 10) endOfChannel();
+                    else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
+
+                    //lastMessage.scrollIntoView(true, {behavior: "smooth"});
+
+                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                    emojify.run(messagediv);
+                    loadMentions();
+                });
+
+                messagediv.addEventListener('scroll', () => {
+                    loadMessages();
+                    loadMentions();
+                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                    emojify.run(messagediv);
+                });
+
+                function loadMessages() {
+                    if (isInViewport(messagediv.firstChild) && !requestDebounce && !channelEnd) {
+                        requestDebounce = true;
+                        socket.emit('request_channel_data', {channelID: channelinput.value, before: messagediv.firstChild.id});
+                        var loading = document.createElement('em');
+                        loading.innerText = "Loading messages. . .";
+                        loading.style.color = "purple";
+                        messagediv.prepend(loading);
+                        console.log("Loading more messages");
+                    } /*else if (!isInViewport(messagediv.firstChild)) console.log("bug detected")*/
+
+                    /*const mentions = document.querySelectorAll('.d-mention');
+                    Array.from(mentions).forEach((m, index) => {
+                        // if(!isInViewport(m)) return;
+
+                        var user = /^<@!?([0-9]*)>/.exec(m.innerText);
+                        var channel = /^<#([0-9]*)>/.exec(m.innerText);
+                        var role = /^<@&([0-9]*)>/.exec(m.innerText);
+
+                        if(user) {
+                            socket.emit('fetch_mention_data', {type: 'user', id: user[1]});
+                        } else if(channel) {
+                            socket.emit('fetch_mention_data', {type: 'channel', id: channel[1]});
+                        } if(role) {
+                            socket.emit('fetch_mention_data', {type: 'role', id: role[1]});
+                        }
+                    });*/                
+                }
+
+                function endOfChannel() {
+                    console.log("End of channel");
+                    if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
+                    channelEnd = true;
+                    var notice = document.createElement('em');
+                    notice.style.color = "purple";
+                    notice.innerText = "This is the start of the channel!";
+                    messagediv.prepend(notice);
+                }
+
+                socket.on("mention_data", (data) => {
+                    // console.log(data);
+
+                    const mentions = document.querySelectorAll('.d-mention');
+                    const mentions_filtered = Array.from(mentions).filter(m => m.id === data.id);
+
+                    // console.log(mentions_filtered);
+                    mentions_filtered.forEach(m => m.innerText = data.data);
+                });
+
+                socket.on("reply_JSON", (data) => {
+                    const replies = document.querySelectorAll('.d-reply-container');
+                    const replies_filtered = Array.from(replies).filter(r => r.id === data.messageID);
+
+                    replies_filtered.forEach(r => {
+                        var tooltip = r.querySelector("span");
+
+                        if (!tooltip) return;
+
+                        tooltip.innerHTML = '';
+
+                        var notice = document.createElement('em');
+                        notice.style.color = "purple";
+                        notice.innerText = "Message was deleted or could not be loaded.";
+
+                        var message = data.JSON ? createMessage(data.JSON) : null;
+
+                        tooltip.appendChild(message || notice);
+                    });
+
+                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                    emojify.run(messagediv);
+                    loadMentions();
+                });
+
+                socket.on("new_message", (data) => {
+                    // console.log(data);
+                    addMessage(data, false);
+
+                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                    emojify.run(messagediv);
+                    loadMentions();
+                });
+
+                socket.on("message_edit", data => {
+                    // console.log(data);
+                    var oldMessage = document.getElementById(data.id);
+                    if(!oldMessage) return;
+
+                    if (editing === data.id) {
+                        editing = false;
+                        // oldMessage.querySelector(".message-actions > button:nth-child(3)").innerText = "Edit";
+                    }
+
+                    var newMessage = createMessage(data.message);
+
+                    oldMessage.parentNode.replaceChild(newMessage, oldMessage);
+
+                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                    emojify.run(messagediv);
+                    loadMentions();
+                });
+
+                socket.on("message_delete", id => {
+                    var message = document.getElementById(id);
+                    if(!message) return;
+
+                    message.remove();
+                });
+
+                socket.on("reply_success", mid => {
+                    replying = false;
+                    var message = document.getElementById(mid);
+                    if(!message) return;
+
+                    console.log(message)
+
+                    message.querySelector(".message-actions > button:nth-child(2)").innerText = "Reply";
+                });
+
+                function displayError(m) {
+                    var error = document.createElement("div");
+                    var close = document.createElement("span");
+
+                    error.appendChild(close);
+                    error.innerHTML = `<strong>${m}</strong>`;
+
+                    error.classList.add("error");
+                    close.classList.add("errorclose");
+
+                    close.innerText = "×";
+
+                    close.addEventListener("click", e => {
+                        e.target.parentNode.remove();
+                    });
+
+                    error.appendChild(close);
+
+                    document.querySelector("body > .error-container").appendChild(error);
+                }
+
+
+                socket.on("disconnect", () => {
+                    displayError("WebSocket is disconnected. As a result, you cannot send or recieve messages. Please refresh the page to reconnect.")
+                });
+
+                // displayError("hi")
+
+                socket.on("error", m => {
+                    replying = false;
+                    editing = false;
+                    displayError(m);
+                });
+
+                window.addEventListener('error', (event) => {
+                    displayError(event.message);
+                });
             })();
