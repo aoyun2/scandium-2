@@ -393,6 +393,7 @@ html
                                     for (var e of matchingDefaults) {
                                         var li = document.createElement('li');
                                         li.id = ":"+e+":";
+                                        li.textContent = li.id;
                                         li.style.userSelect = "none";
                                         suggestions.appendChild(li);
                                     }
