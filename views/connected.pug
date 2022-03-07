@@ -220,7 +220,8 @@ html
         link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css")
         script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js")
         script(src="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/js/emojify.min.js")
-        
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/emoji-js/3.7.0/emoji.min.js" integrity="sha512-SbZSdl5Ib/BMHgdyRHnCmWY3Ws1qb29d+s8jAQFi0B5FmHvadRW8Rdj9peEoSuQX0K63Lu4FggqI7VX5/ahHEA==" crossorigin="anonymous" referrerpolicy="no-referrer")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emoji-js/3.7.0/emoji.css" integrity="sha512-ggBoQQv5GMu+MQjv9LZjIujwfFHLsTdJ6vpkYB3lj/PyOG2xPF3exHYyeXZPVP9jCLyf4J7SJzrMdeL/fi91ZA==" crossorigin="anonymous" referrerpolicy="no-referrer")
     body
         div(class="error-container")
         div(id="container")
@@ -246,6 +247,8 @@ html
             const messageinput = document.querySelector("#input_messages");
             const userID = "#{userID}";
             const serverID = "#{server}";
+            
+            var emoji = new EmojiConvertor();
 
             var e = document.createElement("div"); 
             e.innerHTML = "#{emojis}";
@@ -399,8 +402,9 @@ html
                                     }
                                 }
                                 
-                                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                                emojify.run(suggestions);
+                                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                                //emojify.run(suggestions);
+                                emoji.replace_colons(suggestions);
 
                                 suggestions.addEventListener("click", function(e) {
                                     if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
@@ -916,8 +920,9 @@ html
                 for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
                     preloadImage(emojiImage);
                 }*/
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
+                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                //emojify.run(messagediv);
+                emoji.replace_colons(suggestions);
                 loadMentions();
 
                 return message;
@@ -958,8 +963,9 @@ html
             socket.on("request_rate_limit", () => {
                 if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
                 requestDebounce = false
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
+                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                //emojify.run(messagediv);
+                emoji.replace_colons(suggestions);
                 loadMentions();
             });
 
@@ -985,8 +991,9 @@ html
 
                 //lastMessage.scrollIntoView(true, {behavior: "smooth"});
 
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
+                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                //emojify.run(messagediv);
+                emoji.replace_colons(suggestions);
                 loadMentions();
             });
 
@@ -995,6 +1002,7 @@ html
                 loadMentions();
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
+                emoji.replace_colons(suggestions);
             });
 
             function loadMessages() {
@@ -1066,8 +1074,9 @@ html
                     tooltip.appendChild(message || notice);
                 });
 
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
+                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                //emojify.run(messagediv);
+                emoji.replace_colons(suggestions);
                 loadMentions();
             });
 
@@ -1075,8 +1084,9 @@ html
                 // console.log(data);
                 addMessage(data, false);
 
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
+                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                //emojify.run(messagediv);
+                emoji.replace_colons(suggestions);
                 loadMentions();
             });
 
@@ -1094,8 +1104,9 @@ html
 
                 oldMessage.parentNode.replaceChild(newMessage, oldMessage);
 
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
+                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                //emojify.run(messagediv);
+                emoji.replace_colons(suggestions);
                 loadMentions();
             });
 
