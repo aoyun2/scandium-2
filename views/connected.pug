@@ -241,6 +241,8 @@ html
             textarea(id="input_messages" onkeyup="handleMessageSending(event)" placeholder="Add to the discussion!")
             span(class="tooltiptext" tabindex="-1")
         script.
+            (async () => {
+
             const defaultEmojiList = await fetch('https://api.github.com/emojis')
                 .then(response => response.json())
             
@@ -1157,3 +1159,4 @@ html
             window.addEventListener('error', (event) => {
                 displayError(event.message);
             });
+            })();
