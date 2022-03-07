@@ -400,7 +400,7 @@ html
                                 
                                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                                 //emojify.run(suggestions);
-                                twemoji.parse(suggestions);
+                                twemoji.parse(document.body);
 
                                 suggestions.addEventListener("click", function(e) {
                                     if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG")) {
