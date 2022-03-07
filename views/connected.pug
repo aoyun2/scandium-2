@@ -219,7 +219,6 @@ html
         script(src="/socket.io/socket.io.js")
         link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css")
         script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js")
-        script(src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous")
 
     body
         div(class="error-container")
@@ -326,7 +325,6 @@ html
 
             // register the config object with an instance
             // of intersectionObserver
-            alert("hi");
             const defaultEmojiList = await fetch("https://api.npoint.io/4a109762abd9ad271d6f")
                 .then(response => response.json())
 
