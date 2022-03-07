@@ -464,7 +464,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
 			.setColor('#A3A6E8')
-			.addField("\u200b", `\`\`\`${id}\nhttp://scandium-2.herokuapp.com\`\`\``);
+			.setDescription(`\`\`\`${id}\nhttp://scandium-2.herokuapp.com\`\`\``);
 		
 		var ms = await webhook.send({
 			content: data,
