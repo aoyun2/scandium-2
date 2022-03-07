@@ -327,9 +327,8 @@ html
             // register the config object with an instance
             // of intersectionObserver
             const defaultEmojiList = await fetch("https://api.npoint.io/4a109762abd9ad271d6f")
-                .then(response => response.json())
-            displayError(defaultEmojiList.toString());
-
+                .then(response => response.text())
+            alert(defaultEmojiList);
 
             async function handleMessageSending(event) {
                 try {
