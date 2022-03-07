@@ -350,7 +350,7 @@ html
 
                         if (lastWord.charAt(0) === ":") {
                             var matchingEmojis = emojis.filter(e => e.name.toLowerCase().startsWith(lastWord));
-                            var matchingDefaults = Object.keys(defaultEmojiList).filter(k => k.toLowerCase().startsWith(lastWord));
+                            var matchingDefaults = Object.keys(defaultEmojiList).filter(k => (":"+k.toLowerCase()).startsWith(lastWord));
                             console.log(Object.keys(defaultEmojiList))
                             console.log(matchingDefaults)
 
