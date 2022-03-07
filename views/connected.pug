@@ -389,16 +389,20 @@ html
                                     suggestions.appendChild(li);
                                 }
 
-                                for (var e of matchingDefaults) {
-                                    var li = document.createElement('li');
-                                    li.textContent = ":"+e+":";
-                                    li.id = "default";
-                                    li.style.userSelect = "none";
+                                if (lastword.length > 1) {
+                                    for (var e of matchingDefaults) {
+                                        var li = document.createElement('li');
+                                        li.textContent = ":"+e+":";
+                                        li.id = "default";
+                                        li.style.userSelect = "none";
 
-                                    suggestions.appendChild(li);
-                                    emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                                    emojify.run(suggestions);
+                                        suggestions.appendChild(li);
+
+                                    }
                                 }
+                                
+                                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                                emojify.run(suggestions);
 
                                 suggestions.addEventListener("click", function(e) {
                                     if(e.target && (e.target.nodeName == "LI" || e.target.nodeName == "IMG") && !e.target.id === "default") {
@@ -997,8 +1001,8 @@ html
             messagediv.addEventListener('scroll', () => {
                 loadMessages();
                 loadMentions();
-                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
-                emojify.run(messagediv);
+                //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                //emojify.run(messagediv);
             });
 
             function loadMessages() {
