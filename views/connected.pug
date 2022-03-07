@@ -899,6 +899,8 @@ html
                 for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
                     preloadImage(emojiImage);
                 }*/
+                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                emojify.run(messagediv);
                 loadMentions();
                 
                 return message;
@@ -939,6 +941,8 @@ html
             socket.on("request_rate_limit", () => {
                 if (document.querySelector("#messages > em")) document.querySelector("#messages > em").remove();
                 requestDebounce = false
+                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                emojify.run(messagediv);
                 loadMentions();
             });
 
@@ -963,7 +967,9 @@ html
                 else if (messagediv.clientHeight <= messagediv.scrollHeight) loadMessages();
                 
                 //lastMessage.scrollIntoView(true, {behavior: "smooth"});
-
+                
+                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                emojify.run(messagediv);
                 loadMentions();
             });
             
@@ -1043,12 +1049,17 @@ html
                     tooltip.appendChild(message || notice);
                 });
                 
+                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                emojify.run(messagediv);
                 loadMentions();
             });
 
             socket.on("new_message", (data) => {
                 // console.log(data);
                 addMessage(data, false);
+                
+                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                emojify.run(messagediv);
                 loadMentions();
             });
 
@@ -1065,6 +1076,9 @@ html
                 var newMessage = createMessage(data.message);
 
                 oldMessage.parentNode.replaceChild(newMessage, oldMessage);
+                
+                emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
+                emojify.run(messagediv);
                 loadMentions();
             });
 
