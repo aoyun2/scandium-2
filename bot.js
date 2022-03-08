@@ -464,7 +464,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
 			.setColor('#A3A6E8')
-			.setDescription(`\`\`\`${id} \`\`\``);
+			.setDescription(`\`\`\`${id}\n \`\`\``);
 		
 		var ms = await webhook.send({
 			content: data,
