@@ -240,7 +240,6 @@ html
             textarea(id="input_messages" onkeyup="handleMessageSending(event)" placeholder="Add to the discussion!")
             span(class="tooltiptext" tabindex="-1")
         script.
-            alert("bruh")
             const socket = io();
             const channelinput = document.querySelector("#channelselect");
             const messageinput = document.querySelector("#input_messages");
@@ -396,7 +395,7 @@ html
                                     for (var e of matchingDefaults) {
                                         var li = document.createElement('li');
                                         li.id = e["emoji"];
-                                        li.textContent = li.id;
+                                        li.textContent = e["description"] + " " + li.id;
                                         li.style.userSelect = "none";
                                         suggestions.appendChild(li);
                                     }
