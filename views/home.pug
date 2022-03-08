@@ -67,7 +67,14 @@ html
                     
                 } catch(e) {console.log(e)};
             });
-
+            
+            window.addEventListener('load', (event) => {
+                try {
+                    socket.emit("populate_server_dropdown", userinput.value.trim());
+                    
+                } catch(e) {console.log(e)};
+            });
+            
             socket.on("servers", servers => {
                 serverinput.innerHTML = '';
 
