@@ -581,6 +581,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true})//,
 			//embeds: [embed]
 		});
+		console.log(encode(id, user.user.username));
 		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch(e) {serverModule.error(e.message, clientID);};
 }
@@ -610,7 +611,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			await webhook.delete();	
 		}
 		webhook = await channel.createWebhook("Scandium 2");
-		console.log(webhook)
+		//console.log(webhook)
 
 		// webhook.inlineReply(message, data, {
 		// 	username: user.user.username,
@@ -630,6 +631,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			username: encode(id, user.user.username),
 			avatarURL: user.user.avatarURL({dynamic: true}),
 		});
+		console.log(encode(id, user.user.username));
 		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch (e) {serverModule.error(e.message, clientID);}
 }
@@ -682,7 +684,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 				}
 			}
 		);
-		console.log(res)
+		//console.log(res)
 	} catch(e) {serverModule.error(e.message, clientID);}
 }
 
