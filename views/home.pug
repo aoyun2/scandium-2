@@ -60,14 +60,8 @@ html
             const socket = io();
             const userinput = document.querySelector("#userinput");
             const serverinput = document.querySelector("#serverselect");
-            
-            serverinput.onload = function() {
-                try {
-                    socket.emit("populate_server_dropdown", userinput.value);
-                } catch(e) {console.log(e)};
-            }
-            
-            userinput.addEventListener('change', (event) => {
+
+            userinput.addEventListener('input', (event) => {
                 try {
                     socket.emit("populate_server_dropdown", userinput.value.trim());
                     
