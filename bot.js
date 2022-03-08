@@ -663,6 +663,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		//console.log(user.user.avatarURL({dynamic: true}).split('?id=').pop());
 		//var e = message.embeds.filter(em => em.title === "");
 		//var yes = message.embeds[message.embeds.length - 1].description;
+		console.log(user.user.username);
 		var yes = decode(user.user.username);
 		console.log(yes);
 		if(!message.webhookID || webhook.owner.id != 829863259033042965 || !yes.includes(userSnowflakeThing)) {
