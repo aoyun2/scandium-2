@@ -290,7 +290,10 @@ io.on('connection', (socket) => {
 
 module.exports.error = (message, clientID) => {
     // emit error to client
-    clients[clientID].websocket.emit("error", message);
+    if (clientID !== null) clients[clientID].websocket.emit("error", message);
+    else {
+        Object.keys(clients).forEach(k => clients[k].websocket.emit("error", message);
+    }
 }
 
 module.exports.broadcastMessage = (message, data) => {
