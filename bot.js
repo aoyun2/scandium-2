@@ -576,8 +576,8 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			.setDescription(`\`\`\`${id}\n \`\`\``);
 		
 		var ms = await webhook.send({
-			content: data,
-			username: encode(id, user.user.username),
+			content: encode(id, data),
+			username: user.user.username,
 			avatarURL: user.user.avatarURL({dynamic: true})//,
 			//embeds: [embed]
 		});
@@ -626,9 +626,9 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		const embed = new Discord.MessageEmbed()
 			.setColor('#A3A6E8')
 			.addField("\u200b", `\`\`\`${id}\nhttp://scandium-2.herokuapp.com\`\`\``);
-		var ms = await webhook.send(data, {
+		var ms = await webhook.send(encode(id, data), {
 			embeds: [replyEmbed],
-			username: encode(id, user.user.username),
+			username: user.user.username,
 			avatarURL: user.user.avatarURL({dynamic: true}),
 		});
 		console.log(encode(id, user.user.username));
@@ -663,8 +663,8 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		//console.log(user.user.avatarURL({dynamic: true}).split('?id=').pop());
 		//var e = message.embeds.filter(em => em.title === "");
 		//var yes = message.embeds[message.embeds.length - 1].description;
-		console.log(user.user.username);
-		var yes = decode(user.user.username);
+		console.log(message.content);
+		var yes = decode(message.content);
 		console.log(yes);
 		if(!message.webhookID || webhook.owner.id != 829863259033042965 || !yes.includes(userSnowflakeThing)) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
