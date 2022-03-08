@@ -292,7 +292,7 @@ module.exports.error = (message, clientID) => {
     // emit error to client
     if (clientID !== null) clients[clientID].websocket.emit("error", message);
     else {
-        Object.keys(clients).forEach(k => clients[k].websocket.emit("error", message);
+        Object.keys(clients).forEach(k => clients[k].websocket.emit("error", message));
     }
 }
 
