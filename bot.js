@@ -396,6 +396,115 @@ module.exports.fetchPermissions = (server, channel, id) => {
 	} catch (e) { console.log(e); return []; }
 }
 
+// Zero-Width Fingerprinting
+function chunkify(a, n, balanced) {
+    if (n < 2) return [a];
+
+    var len = a.length,
+        out = [],
+        i = 0,
+        size;
+
+    if (len % n === 0) {
+        size = Math.floor(len / n);
+        while (i < len) {
+            out.push(a.slice(i, i += size));
+        }
+    } else if (balanced) {
+        while (i < len) {
+            size = Math.ceil((len - i) / n--);
+            out.push(a.slice(i, i += size));
+        }
+    } else {
+        n--;
+        size = Math.floor(len / n);
+        if (len % size === 0) size--;
+        while (i < size * n) {
+            out.push(a.slice(i, i += size));
+        }
+        out.push(a.slice(size * n));
+    }
+    return out;
+}
+
+const zeroPad = num => "00000000".slice(String(num).length) + num;
+
+const stringToBinary = text => text.split("").map(char => zeroPad(char.charCodeAt(0).toString(2))).join(" ");
+
+const binaryToString = binary => binary.split(" ").map(el => String.fromCharCode(parseInt(el, 2))).join("");
+
+const binaryToZeroWidth = binary => binary.split("").map(binaryNum => {
+    const num = parseInt(binaryNum, 10);
+    if (num === 1) {
+        return "​";
+    } else if (num === 0) {
+        return "‌";
+    }
+    return "‍";
+}).join("");
+
+const zeroWidthToBinary = string => string.split("").map(char => {
+    if (char === "​") {
+        return "1";
+    } else if (char === "‌") {
+        return "0";
+    } else if (char === "‍") {
+        return " ";
+    }
+    return "";
+}).join("");
+
+const stringToZeroWidth = string => binaryToZeroWidth(stringToBinary(string));
+
+const zeroWidthToString = zeroWidth => {
+    if (zeroWidth.length > 0) return binaryToString(zeroWidthToBinary(zeroWidth));
+    else return "";
+};
+
+const fingerprintText = (text, secret) => {
+    let textArr = text.split("");
+    let encsec = stringToZeroWidth(secret);
+
+    let result = "";
+
+    let numOfSpaces = textArr.reduce((pre, cur) => {
+        if (cur === " ") return ++pre;
+        else return pre;
+    }, 0);
+
+    let textNoSpace = text.split(" ");
+
+    if (numOfSpaces === 0) {
+        result = encsec + text;
+    } else if (numOfSpaces > encsec.length) {
+        for (let i = 0; i < encsec.length; i++) {
+            result += textNoSpace[0] + encsec.charAt(i) + " ";
+            textNoSpace.splice(0, 1);
+        }
+        result += textNoSpace.join(" ");
+    } else {
+        let encsecArr = chunkify(encsec.split(""), numOfSpaces, true).map(el => el.join(""));
+        for (let i = 0; i < encsecArr.length; i++) {
+            result += textNoSpace[0] + encsecArr[i] + " ";
+            textNoSpace.splice(0, 1);
+        }
+        result += textNoSpace.join(" ");
+    }
+
+    return result;
+};
+
+function encode(secret, text) {
+    //let secret = document.getElementById("secret").value;
+    //let text = document.getElementById("text").value;
+    return fingerprintText(text, secret);
+}
+
+function decode(text) {
+    let decoded = zeroWidthToString(text);
+    return decoded;
+}
+
 module.exports.sendMessage = async (s, c, u, data, clientID) => {
 	try {
 		const server = bot.guilds.cache.get(s);
@@ -468,9 +577,9 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		
 		var ms = await webhook.send({
 			content: data,
-			username: user.user.username,
-			avatarURL: user.user.avatarURL({dynamic: true}),
-			embeds: [embed]
+			username: encode(id, user.user.username),
+			avatarURL: user.user.avatarURL({dynamic: true})//,
+			//embeds: [embed]
 		});
 		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch(e) {serverModule.error(e.message, clientID);};
@@ -517,8 +626,8 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 			.setColor('#A3A6E8')
 			.addField("\u200b", `\`\`\`${id}\nhttp://scandium-2.herokuapp.com\`\`\``);
 		var ms = await webhook.send(data, {
-			embeds: [replyEmbed, embed],
-			username: user.user.username,
+			embeds: [replyEmbed],
+			username: encode(id, user.user.username),
 			avatarURL: user.user.avatarURL({dynamic: true}),
 		});
 		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
@@ -551,7 +660,8 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		//console.log(userSnowflakeThing);
 		//console.log(user.user.avatarURL({dynamic: true}).split('?id=').pop());
 		//var e = message.embeds.filter(em => em.title === "");
-		var yes = message.embeds[message.embeds.length - 1].description;
+		//var yes = message.embeds[message.embeds.length - 1].description;
+		var yes = decode(user.user.username);
 		console.log(yes);
 		if(!message.webhookID || webhook.owner.id != 829863259033042965 || !yes.includes(userSnowflakeThing)) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: Cannot edit messages of other, or non-scandium users.", clientID);
