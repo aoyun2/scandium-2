@@ -464,7 +464,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		let id = (user.id | 85926).toString(36);
 		const embed = new Discord.MessageEmbed()
 			.setColor('#A3A6E8')
-			.setDescription(`\`\`\`${id}\nhttp://scandium-2.herokuapp.com\`\`\``);
+			.setDescription(`\`\`\`${id} \`\`\``);
 		
 		var ms = await webhook.send({
 			content: data,
@@ -472,7 +472,6 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
-		ms.suppressEmbeds();
 		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch(e) {serverModule.error(e.message, clientID);};
 }
