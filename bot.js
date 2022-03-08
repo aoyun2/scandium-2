@@ -132,6 +132,11 @@ bot.on("messageDelete", async (message) => {
 	serverModule.broadcastMessageDelete(message.id, { server: message.guild.id, channel: message.channel.id });
 });
 
+bot.on('rateLimit', (info) => {
+  	console.log(`Rate limit hit ${info.timeDifference ? info.timeDifference : info.timeout ? info.timeout: 'Unknown timeout '}`)
+	serverModule.error("RATE_LIMIT_EXCEEDED: Discord's internal rate limit has been hit. Message sending may be slow.", null);
+})
+
 bot.login(botSettings.token);
 
 // mentions
