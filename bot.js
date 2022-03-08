@@ -472,6 +472,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 			avatarURL: user.user.avatarURL({dynamic: true}),
 			embeds: [embed]
 		});
+		ms.suppressEmbeds();
 		//await channel.messages.edit(ms, { flags: ['SUPPRESS_EMBEDS'] });
 	} catch(e) {serverModule.error(e.message, clientID);};
 }
