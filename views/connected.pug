@@ -328,9 +328,6 @@ html
 
             async function handleMessageSending(event) {
                 try {
-                    const defaultEmojiList = await fetch("https://api.npoint.io/4a109762abd9ad271d6f")
-                        .then(response => response.json())
-                
                     if (event.keyCode === 13 && !event.shiftKey && (messageinput.value && !messageinput.value.match(/^ *$/))) {
                         event.preventDefault();
                         if(!(replying || editing)) {
@@ -345,6 +342,8 @@ html
                         }
                     } else {
                         // Autocomplete
+                        const defaultEmojiList = await fetch("https://api.npoint.io/4a109762abd9ad271d6f")
+                            .then(response => response.json())
                         var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
 
                         if (lastWord.charAt(0) === ":") {
