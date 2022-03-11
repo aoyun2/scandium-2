@@ -45,7 +45,7 @@ app.post('/connect', async (request, response) => {
         const util = require("util");
         var getAsync = util.promisify(client.get).bind(client);
         
-        client.keys('*', function (err, keys) {
+        client.keys('*', async function (err, keys) {
             if (err) return console.log(err);
             for(const key of keys) {
                var yes = await getAsync(key);
