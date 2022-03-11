@@ -47,11 +47,9 @@ app.post('/connect', async (request, response) => {
         
         client.keys('*', function (err, keys) {
             if (err) return console.log(err);
-            if(keys){
-                keys.forEach(key => {
-                   var yes = client.get(key);
-                   console.log(yes);
-                });
+            for(const key of keys) {
+               var yes = await getAsync(key);
+               console.log(yes);
             }
         });
                 
