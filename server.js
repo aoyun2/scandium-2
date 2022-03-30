@@ -10,6 +10,10 @@ const serverhttp = require('http').createServer(app).listen(process.env.PORT || 
     console.log(`server is listening on port ${process.env.PORT || 3001}`);
 })
 
+setInterval(function() {
+    require("http").get("http://scandium-2.herokuapp.com/");
+}, 300000); // every 5 minutes (300000)
+
 const io = require('socket.io')(serverhttp);
 const { v4: uuidv4 } = require('uuid');
 const { Channel, User } = require("discord.js");
