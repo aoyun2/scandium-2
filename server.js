@@ -30,7 +30,6 @@ app.get("/", (request, response) => {
     response.render('home');
     // console.log("pinged :)");
 });
-
 app.post('/connect', async (request, response) => {
     // console.log(request.body);
     const server = request.body.server;
