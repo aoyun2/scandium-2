@@ -127,8 +127,8 @@ io.on('connection', (socket) => {
             if (!clients[clientID].info.channel.permissions.includes("READ_MESSAGE_HISTORY")) {
                 // // error
                 // // console.log(clients[clientID].info.channel.permissions, "can't read")
-                // socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
-                // return;
+                socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
+                return;
             }
 
             var client = clients[clientID];
@@ -189,11 +189,11 @@ io.on('connection', (socket) => {
     socket.on('client_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-            //     // error
-            //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-            //     return;
-            // }
+            if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+                // error
+                socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+                return;
+            }
 
             var s = clients[clientID].info.server;
             var c = clients[clientID].info.channel.id;
@@ -211,11 +211,11 @@ io.on('connection', (socket) => {
     socket.on('reply_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-            //     // error
-            //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-            //     return;
-            // }
+            if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+                // error
+                socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+                return;
+            }
 
             var s = clients[clientID].info.server;
             var c = clients[clientID].info.channel.id;
@@ -234,11 +234,11 @@ io.on('connection', (socket) => {
     socket.on('edit_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            // if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
-            //     // error
-            //     socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
-            //     return;
-            // }
+            if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+                // error
+                socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
+                return;
+            }
 
             var s = clients[clientID].info.server;
             var c = clients[clientID].info.channel.id;
@@ -256,11 +256,11 @@ io.on('connection', (socket) => {
     socket.on('delete_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            // if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
-            //     // error
-            //     socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
-            //     return;
-            // }
+            if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
+                // error
+                socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
+                return;
+            }
 
             var s = clients[clientID].info.server;
             var c = clients[clientID].info.channel.id;
