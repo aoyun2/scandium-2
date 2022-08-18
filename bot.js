@@ -203,7 +203,7 @@ module.exports.fetchRoles = (sid) => {
 
 
 async function processMessage(m) {
-	//console.log("hi")
+	console.log(m.content, m.channel.name)
 	// process emojis on the client-side
 	var files = [];
 	//console.log(m.attachments.array());
