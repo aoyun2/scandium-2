@@ -208,7 +208,7 @@ async function processMessage(m) {
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
 		var res = await fetch(a.url);
-		console.log(res.headers.get("Content-Size"));
+		console.log(res.headers.get("Content-Length"));
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		await new Promise((resolve, reject) => {
 			const dest = fs.createWriteStream("./tmp.txt");
