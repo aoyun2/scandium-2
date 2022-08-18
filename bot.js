@@ -212,7 +212,7 @@ async function processMessage(m) {
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		console.log(res.headers.get("Content-Disposition"), name);
 		await new Promise((resolve, reject) => {
-			const dest = fs.createWriteStream("./tmp.txt", { highWaterMark: 32000 });
+			const dest = fs.createWriteStream("./tmp.txt", { highWaterMark: 10 });
 			res.body.pipe(dest);
 			res.body.on("end", () => resolve("yes"));
 			dest.on("error", reject);
@@ -238,7 +238,7 @@ async function processMessage(m) {
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 			console.log(res.headers.get("Content-Disposition"), name, "hi");
 			await new Promise((resolve, reject) => {
-				const dest = fs.createWriteStream("./tmp.txt", { highWaterMark: 32000 });
+				const dest = fs.createWriteStream("./tmp.txt", { highWaterMark: 10 });
 				res.body.pipe(dest);
 				res.body.on("end", () => resolve("yes"));
 				dest.on("error", reject);
