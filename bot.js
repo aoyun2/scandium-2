@@ -209,15 +209,17 @@ async function processMessage(m) {
 	for (const a of m.attachments.array()) {
 		var res = await fetch(a.url);
 		
-		var b = await new Promise(resolve => {
-		      const buffers = []
-		      res.body.on('data', chunk => buffers.push(chunk))
-		      res.body.on('close', () => resolve(Buffer.concat(buffers).toString()))
-		})
+		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
+		console.log(name);
+		const fileStream = fs.createWriteStream(`./${name}`);
+		await new Promise((resolve, reject) => {
+			res.body.pipe(fileStream);
+			res.body.on("error", reject);
+			fileStream.on("finish", resolve);
+		});
 		//console.log(b)
 		//var b64 = (await (res).buffer()).toString('base64')
 		//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
-		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
 
 		// console.log(res.headers.get("Content-Disposition"));
 		files.push({
@@ -233,11 +235,14 @@ async function processMessage(m) {
 		for (a of e.files) {
 			var res = await fetch(a.url);
 			
-			var b = await new Promise(resolve => {
-			      const buffers = []
-			      res.body.on('data', chunk => buffers.push(chunk))
-			      res.body.on('close', () => resolve(Buffer.concat(buffers).toString()))
-			})
+			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
+			console.log(name);
+			const fileStream = fs.createWriteStream(`./${name}`);
+			await new Promise((resolve, reject) => {
+				res.body.pipe(fileStream);
+				res.body.on("error", reject);
+				fileStream.on("finish", resolve);
+			});
 			//var b64 = (await (res).buffer()).toString('base64')
 			//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
