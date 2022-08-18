@@ -1,1 +1,1 @@
-worker: node --expose-gc bot.js
+worker: node bot.js
