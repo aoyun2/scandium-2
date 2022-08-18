@@ -212,11 +212,8 @@ async function processMessage(m) {
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		console.log(res.headers.get("Content-Disposition"), name);
 		const fileStream = fs.createWriteStream(`${__dirname}/${name}`, {"flags":"w"});
-		await new Promise((resolve, reject) => {
-			res.body.pipe(fileStream);
-			res.body.on("error", reject);
-			fileStream.on("finish", resolve);
-		});
+		res.body.pipe(fileStream);
+
 		//console.log(b)
 		//var b64 = (await (res).buffer()).toString('base64')
 		//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
@@ -238,11 +235,8 @@ async function processMessage(m) {
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 			console.log(res.headers.get("Content-Disposition"), name);
 			const fileStream = fs.createWriteStream(`${__dirname}/${name}`, {"flags":"w"});
-			await new Promise((resolve, reject) => {
-				res.body.pipe(fileStream);
-				res.body.on("error", reject);
-				fileStream.on("finish", resolve);
-			});
+			res.body.pipe(fileStream);
+
 			//var b64 = (await (res).buffer()).toString('base64')
 			//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 			
