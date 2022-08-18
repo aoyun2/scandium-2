@@ -212,13 +212,13 @@ async function processMessage(m) {
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
 		console.log(a.url)
-		//var b64 = (await (res).buffer()).toString('base64')
-		//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+		var b64 = (await (res).buffer()).toString('base64')
+		var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 		// console.log(res.headers.get("Content-Disposition"));
 		files.push({
 			name: name,
-			url: "",//url,
+			url: url,
 			spoiler: a.spoiler
 		});
 	}
@@ -231,12 +231,12 @@ async function processMessage(m) {
 			
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 
-			//var b64 = (await (res).buffer()).toString('base64')
-			//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			var b64 = (await (res).buffer()).toString('base64')
+			var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 			
 			efiles.push({
 				name: name,
-				url: "",//url,
+				url: url,
 				spoiler: a.spoiler
 			});
 		}
