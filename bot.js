@@ -209,7 +209,7 @@ async function processMessage(m) {
 	for (const a of m.attachments.array()) {
 		var res = await fetch(a.url);
 		
-		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
+		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		console.log(res.headers.get("Content-Disposition"), name);
 		const fileStream = fs.createWriteStream(`${__dirname}/${name}`, {"flags":"w"});
 		await new Promise((resolve, reject) => {
@@ -235,7 +235,7 @@ async function processMessage(m) {
 		for (a of e.files) {
 			var res = await fetch(a.url);
 			
-			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
+			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 			console.log(res.headers.get("Content-Disposition"), name);
 			const fileStream = fs.createWriteStream(`${__dirname}/${name}`, {"flags":"w"});
 			await new Promise((resolve, reject) => {
@@ -245,8 +245,7 @@ async function processMessage(m) {
 			});
 			//var b64 = (await (res).buffer()).toString('base64')
 			//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
-			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
-
+			
 			efiles.push({
 				name: name,
 				url: "",//url,
