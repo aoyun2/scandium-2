@@ -236,7 +236,7 @@ async function processMessage(m) {
 			var res = await fetch(a.url, {headers: {"Access-Control-Expose-Headers" : "Content-Disposition"}});
 			
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
-			console.log(res.headers.get("Content-Disposition"), name);
+			console.log(res.headers.get("Content-Disposition"), name, "hi");
 			await new Promise((resolve, reject) => {
 				const dest = fs.createWriteStream("./tmp.txt");
 				res.body.pipe(dest);
