@@ -232,13 +232,19 @@ async function processMessage(m) {
 		var efiles = [];
 		for (a of e.files) {
 			var res = await fetch(a.url);
-			var b64 = (await (res).buffer()).toString('base64')
-			var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			
+			var b = await new Promise(resolve => {
+			      const buffers = []
+			      res.body.on('data', chunk => buffers.push(chunk))
+			      res.body.on('close', () => resolve(Buffer.concat(buffers).toString()))
+			})
+			//var b64 = (await (res).buffer()).toString('base64')
+			//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
 
 			efiles.push({
 				name: name,
-				url: url,
+				url: "",//url,
 				spoiler: a.spoiler
 			});
 		}
