@@ -207,7 +207,7 @@ async function processMessage(m) {
 	var files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		var res = await fetch(a.url);
+		var res = await fetch(a.url, {headers: {"Access-Control-Expose-Headers" : "Content-Disposition"}});
 		
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		console.log(res.headers.get("Content-Disposition"), name);
@@ -233,7 +233,7 @@ async function processMessage(m) {
 	for (const e of m.embeds) {
 		var efiles = [];
 		for (a of e.files) {
-			var res = await fetch(a.url);
+			var res = await fetch(a.url, {headers: {"Access-Control-Expose-Headers" : "Content-Disposition"}});
 			
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 			console.log(res.headers.get("Content-Disposition"), name);
