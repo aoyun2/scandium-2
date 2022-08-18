@@ -212,7 +212,7 @@ async function processMessage(m) {
 		var b = await new Promise(resolve => {
 		      const buffers = []
 		      res.body.on('data', chunk => buffers.push(chunk))
-		      dest.on('close', () => resolve(Buffer.concat(buffers).toString()))
+		      res.body.on('close', () => resolve(Buffer.concat(buffers).toString()))
 		})
 		console.log(b)
 		//var b64 = (await (res).buffer()).toString('base64')
