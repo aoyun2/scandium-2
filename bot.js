@@ -207,19 +207,30 @@ async function processMessage(m) {
 	var files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		// console.log(a.url)
-
 		var res = await fetch(a.url);
-		var b64 = (await (res).buffer()).toString('base64')
-		var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
-		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
+		try {
 
-		// console.log(res.headers.get("Content-Disposition"));
-		files.push({
-			name: name,
-			url: url,
-			spoiler: a.spoiler
-		});
+			// console.log(a.url)
+
+			var b64 = (await (res).buffer()).toString('base64')
+			var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
+
+			// console.log(res.headers.get("Content-Disposition"));
+			files.push({
+				name: name,
+				url: url,
+				spoiler: a.spoiler
+			});
+		} catch(e) {
+			console.log(e);
+			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
+			files.push({
+				name: `File too big to load: ${name}`,
+				url: "https://c.tenor.com/29uIgs7UvSoAAAAC/epic-embed-fail-epic-fail.gif",
+				spoiler: a.spoiler
+			});
+		}
 	}
 
 	var embeds = [];
