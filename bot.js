@@ -208,7 +208,7 @@ async function processMessage(m) {
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
 		var res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
-		console.log(res.headers.get("Content-Length"));
+		/*console.log(res.headers.get("Content-Length"));
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
 		console.log(a.url)
@@ -220,7 +220,7 @@ async function processMessage(m) {
 			name: name,
 			url: url,
 			spoiler: a.spoiler
-		});
+		});*/
 	}
 
 	var embeds = [];
