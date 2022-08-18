@@ -211,7 +211,7 @@ async function processMessage(m) {
 		console.log(res.headers.get("Content-Length"));
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
-		//console.log(b)
+		console.log(a.url)
 		//var b64 = (await (res).buffer()).toString('base64')
 		//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
