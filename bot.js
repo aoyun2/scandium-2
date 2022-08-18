@@ -210,13 +210,7 @@ async function processMessage(m) {
 		var res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		console.log(res.headers.get("Content-Length"));
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
-		console.log(name);
-		await new Promise((resolve, reject) => {
-			const dest = fs.createWriteStream("./tmp.txt");
-			res.body.pipe(dest);
-			res.body.on("end", () => resolve("yes"));
-			dest.on("error", reject);
-		});
+		
 		//console.log(b)
 		//var b64 = (await (res).buffer()).toString('base64')
 		//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
@@ -236,12 +230,6 @@ async function processMessage(m) {
 			var res = await fetch(a.url);
 			
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
-			await new Promise((resolve, reject) => {
-				const dest = fs.createWriteStream("./tmp.txt");
-				res.body.pipe(dest);
-				res.body.on("end", () => resolve("yes"));
-				dest.on("error", reject);
-			});
 
 			//var b64 = (await (res).buffer()).toString('base64')
 			//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
