@@ -209,6 +209,7 @@ async function processMessage(m) {
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
 		var res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+		global.gc();
 		//console.log(res.headers.get("Content-Length"));
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
