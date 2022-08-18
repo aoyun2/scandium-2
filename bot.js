@@ -203,7 +203,7 @@ module.exports.fetchRoles = (sid) => {
 
 
 async function processMessage(m) {
-	console.log(m.content, m.channel.name)
+	//console.log(m.content, m.channel.name)
 	// process emojis on the client-side
 	let files = [];
 	//console.log(m.attachments.array());
@@ -212,7 +212,7 @@ async function processMessage(m) {
 		//console.log(res.headers.get("Content-Length"));
 		let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
-		console.log(a.url)
+		//console.log(a.url)
 		let b64 = (await (res).buffer()).toString('base64')
 		let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
