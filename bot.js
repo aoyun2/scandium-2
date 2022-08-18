@@ -214,15 +214,15 @@ async function processMessage(m) {
 		      res.body.on('data', chunk => buffers.push(chunk))
 		      res.body.on('close', () => resolve(Buffer.concat(buffers).toString()))
 		})
-		console.log(b)
+		//console.log(b)
 		//var b64 = (await (res).buffer()).toString('base64')
-		var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+		//var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
 
 		// console.log(res.headers.get("Content-Disposition"));
 		files.push({
 			name: name,
-			url: url,
+			url: "",//url,
 			spoiler: a.spoiler
 		});
 	}
