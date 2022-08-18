@@ -222,6 +222,8 @@ async function processMessage(m) {
 			url: url,
 			spoiler: a.spoiler
 		});
+		
+		global.gc();
 	}
 
 	var embeds = [];
