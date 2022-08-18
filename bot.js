@@ -208,29 +208,23 @@ async function processMessage(m) {
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
 		var res = await fetch(a.url);
-		try {
+		
+		var b = await new Promise(resolve => {
+		      const buffers = []
+		      res.body.on('data', chunk => buffers.push(chunk))
+		      dest.on('close', () => resolve(Buffer.concat(buffers).toString())
+		})
+		console.log(b)
+		//var b64 = (await (res).buffer()).toString('base64')
+		var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
 
-			// console.log(a.url)
-
-			var b64 = (await (res).buffer()).toString('base64')
-			var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
-			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
-
-			// console.log(res.headers.get("Content-Disposition"));
-			files.push({
-				name: name,
-				url: url,
-				spoiler: a.spoiler
-			});
-		} catch(e) {
-			console.log(e);
-			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
-			files.push({
-				name: `File too big to load: ${name}`,
-				url: "https://c.tenor.com/29uIgs7UvSoAAAAC/epic-embed-fail-epic-fail.gif",
-				spoiler: a.spoiler
-			});
-		}
+		// console.log(res.headers.get("Content-Disposition"));
+		files.push({
+			name: name,
+			url: url,
+			spoiler: a.spoiler
+		});
 	}
 
 	var embeds = [];
