@@ -211,7 +211,7 @@ async function processMessage(m) {
 		
 		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
 		console.log(res.headers.get("Content-Disposition"), name);
-		const fileStream = fs.createWriteStream(`./${name}`, {"flags":"a"});
+		const fileStream = fs.createWriteStream(`${__dirname}/${name}`, {"flags":"w"});
 		await new Promise((resolve, reject) => {
 			res.body.pipe(fileStream);
 			res.body.on("error", reject);
@@ -237,7 +237,7 @@ async function processMessage(m) {
 			
 			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'N/A';
 			console.log(res.headers.get("Content-Disposition"), name);
-			const fileStream = fs.createWriteStream(`./${name}`, {"flags":"a"});
+			const fileStream = fs.createWriteStream(`${__dirname}/${name}`, {"flags":"w"});
 			await new Promise((resolve, reject) => {
 				res.body.pipe(fileStream);
 				res.body.on("error", reject);
