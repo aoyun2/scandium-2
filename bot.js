@@ -205,17 +205,16 @@ module.exports.fetchRoles = (sid) => {
 async function processMessage(m) {
 	console.log(m.content, m.channel.name)
 	// process emojis on the client-side
-	var files = [];
+	let files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		var res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
-		global.gc();
+		let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		//console.log(res.headers.get("Content-Length"));
-		var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
+		let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
 		console.log(a.url)
-		var b64 = (await (res).buffer()).toString('base64')
-		var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+		let b64 = (await (res).buffer()).toString('base64')
+		let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 		// console.log(res.headers.get("Content-Disposition"));
 		files.push({
@@ -227,14 +226,14 @@ async function processMessage(m) {
 
 	var embeds = [];
 	for (const e of m.embeds) {
-		var efiles = [];
+		let efiles = [];
 		for (a of e.files) {
-			var res = await fetch(a.url);
+			let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 			
-			var name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
+			let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 
-			var b64 = (await (res).buffer()).toString('base64')
-			var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			let b64 = (await (res).buffer()).toString('base64')
+			let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 			
 			efiles.push({
 				name: name,
@@ -243,7 +242,7 @@ async function processMessage(m) {
 			});
 		}
 
-		var fields = [];
+		let fields = [];
 		for (f of e.fields) {
 			fields.push({
 				name: f.name ? toHTML(f.name) : null,
@@ -251,26 +250,26 @@ async function processMessage(m) {
 			});
 		}
 
-		var b64_image = null, b64_video = null, yt_video = null, b64_thumbnail = null;
+		let b64_image = null, b64_video = null, yt_video = null, b64_thumbnail = null;
 
 		if (e.image) {
-			var res = await fetch(e.image.url);
-			var b64 = (await (res).buffer()).toString('base64')
-			var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			let res = await fetch(e.image.url);
+			let b64 = (await (res).buffer()).toString('base64')
+			let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 			b64_image = url;
 		}
 
 		if (e.video) {
-			var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-			var match = e.video.url.match(regExp);
+			let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+			let match = e.video.url.match(regExp);
 			if (match && match[2].length === 11) {
 				// console.log("match")
 				yt_video = e.video.url;
 			} else {
-				var res = await fetch(e.video.url);
-				var b64 = (await (res).buffer()).toString('base64')
-				var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+				let res = await fetch(e.video.url);
+				let b64 = (await (res).buffer()).toString('base64')
+				let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 				b64_video = url;
             }
@@ -278,9 +277,9 @@ async function processMessage(m) {
 		}
 
 		if (e.thumbnail) {
-			var res = await fetch(e.thumbnail.url);
-			var b64 = (await (res).buffer()).toString('base64')
-			var url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			let res = await fetch(e.thumbnail.url);
+			let b64 = (await (res).buffer()).toString('base64')
+			let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 			b64_thumbnail = url;
 		}
