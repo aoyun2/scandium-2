@@ -10,6 +10,7 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
 const _buffer = require("buffer");
+const cloudinary = require('cloudinary').v2;
 
 // inline reply code ------------------------------ //
 /*const { APIMessage, Webhook, Structures, Client } = require("discord.js");
@@ -272,7 +273,21 @@ async function processMessage(m) {
 				// console.log("match")
 				yt_video = e.video.url;
 			} else {
-				let res = await fetch(e.video.url);
+				//console.log(e.video.url);
+				/*let res = await fetch(e.video.url);
+				const fileStream = fs.createWriteStream("./"+e.video.url);
+				await new Promise((resolve, reject) => {
+					res.body.pipe(fileStream);
+					res.body.on("error", reject);
+					fileStream.on("finish", resolve);
+				});*/
+				
+				b64_video = await new Promise(resolve => {
+				    	cloudinary.v2.uploader.upload(e.video.url, function(error, result) {
+						console.log(result, error)
+						resolve(result.secure_url)
+					});
+				});
 				
 				//b64_video = (await (res).buffer());
 				/*if (res.headers.get("Content-Length") > 1E7) {
