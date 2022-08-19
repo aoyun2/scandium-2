@@ -710,7 +710,7 @@ html
                     
                     var video = document.createElement('video');
                     video.classList.add(`d-video-embed`);
-                    video.src = URL.CreateObjectURL(e.video);
+                    video.src = e.video;
                     video.controls = true;
                     video.autoplay = true;
                     video.muted = true;
