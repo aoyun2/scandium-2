@@ -271,6 +271,7 @@ async function processMessage(m) {
 				yt_video = e.video.url;
 			} else {
 				let res = await fetch(e.video.url);
+				console.log(res.headers.get("Content-Length"));
 				if (res.headers.get("Content-Length") > 10E7) {
 					console.log("oops");
 				}
@@ -280,7 +281,6 @@ async function processMessage(m) {
 				b64_video = url;
             		}
 			// console.log(e.video.url)
-			global.gc();
 		}
 
 		if (e.thumbnail) {
