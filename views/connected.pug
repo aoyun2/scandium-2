@@ -707,9 +707,10 @@ html
                 }
 
                 if (e.video) {
+                    
                     var video = document.createElement('video');
                     video.classList.add(`d-video-embed`);
-                    video.src = e.video;
+                    video.src = URL.CreateObjectURL(e.video);
                     video.controls = true;
                     video.autoplay = true;
                     video.muted = true;
