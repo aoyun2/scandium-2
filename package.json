@@ -21,6 +21,7 @@
     "sync-request": "^6.1.0",
     "tostream": "^1.0.0",
     "uuid": "^8.3.2",
-    "rate-limiter-flexible": "^2.3.1"
+    "rate-limiter-flexible": "^2.3.1",
+    "cloudinary": "^1.30.1"
   }
 }
