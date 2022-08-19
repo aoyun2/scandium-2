@@ -203,13 +203,12 @@ module.exports.fetchRoles = (sid) => {
 
 
 async function processMessage(m) {
-	return;
 	//console.log(m.content, m.channel.name)
 	// process emojis on the client-side
 	let files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+		/*let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		//console.log(res.headers.get("Content-Length"));
 		let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
@@ -222,7 +221,7 @@ async function processMessage(m) {
 			name: name,
 			url: url,
 			spoiler: a.spoiler
-		});
+		});*/
 		
 		//global.gc();
 	}
@@ -231,7 +230,7 @@ async function processMessage(m) {
 	for (const e of m.embeds) {
 		let efiles = [];
 		for (a of e.files) {
-			let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+			/*let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 			
 			let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 
@@ -242,7 +241,7 @@ async function processMessage(m) {
 				name: name,
 				url: url,
 				spoiler: a.spoiler
-			});
+			});*/
 		}
 
 		let fields = [];
