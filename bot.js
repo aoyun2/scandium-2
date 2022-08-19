@@ -283,7 +283,7 @@ async function processMessage(m) {
 				});*/
 				
 				b64_video = await new Promise(resolve => {
-				    	cloudinary.v2.uploader.upload(e.video.url, function(error, result) {
+				    	cloudinary.uploader.upload(e.video.url, function(error, result) {
 						console.log(result, error)
 						resolve(result.secure_url)
 					});
