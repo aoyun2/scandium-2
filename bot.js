@@ -271,14 +271,14 @@ async function processMessage(m) {
 				yt_video = e.video.url;
 			} else {
 				let res = await fetch(e.video.url);
-				console.log(res.headers.get("Content-Length"));
-				if (res.headers.get("Content-Length") > 10E7) {
+				if (res.headers.get("Content-Length") > 1E7) {
 					console.log("oops");
-				}
-				let b64 = (await (res).buffer()).toString('base64');
-				let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+				} else {
+					let b64 = (await (res).buffer()).toString('base64');
+					let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
-				b64_video = url;
+					b64_video = url;
+				}
             		}
 			// console.log(e.video.url)
 		}
