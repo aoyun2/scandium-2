@@ -272,7 +272,8 @@ async function processMessage(m) {
 			} else {
 				let res = await fetch(e.video.url);
 				if (res.headers.get("Content-Length") > 1E7) {
-					console.log("oops");
+					//console.log("oops");
+					
 				} else {
 					let b64 = (await (res).buffer()).toString('base64');
 					let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
