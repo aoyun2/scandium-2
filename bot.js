@@ -9,7 +9,7 @@ const prefix = botSettings.prefix;
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
-import { Blob } from 'buffer';
+import { Blob } from 'node:buffer';
 
 // inline reply code ------------------------------ //
 /*const { APIMessage, Webhook, Structures, Client } = require("discord.js");
