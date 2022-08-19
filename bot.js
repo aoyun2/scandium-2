@@ -244,7 +244,7 @@ async function processMessage(m) {
 			});*/
 		}
 
-		let fields = [];
+		/*let fields = [];
 		for (f of e.fields) {
 			fields.push({
 				name: f.name ? toHTML(f.name) : null,
@@ -264,7 +264,7 @@ async function processMessage(m) {
 
 		if (e.video) {
 			let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-			let match = e.video.url.match(regExp);
+			/*let match = e.video.url.match(regExp);
 			if (match && match[2].length === 11) {
 				// console.log("match")
 				yt_video = e.video.url;
@@ -274,7 +274,7 @@ async function processMessage(m) {
 				let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 				b64_video = url;
-            }
+            		}
 			// console.log(e.video.url)
 		}
 
@@ -310,8 +310,8 @@ async function processMessage(m) {
 			if (embed[i] && embed[i].length !== 0) {
 				embeds.push(embed);
 				break;
-            }
-        }
+            		}
+        	}*/
 	}
 
 	var mObj = {
