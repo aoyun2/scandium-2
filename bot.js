@@ -271,16 +271,20 @@ async function processMessage(m) {
 				yt_video = e.video.url;
 			} else {
 				let res = await fetch(e.video.url);
-				const fileStream = fs.createWriteStream("./buffer");
+				const fileStream = fs.createWriteStream("./tmp");
 				await new Promise((resolve, reject) => {
 					res.body.pipe(fileStream);
 					res.body.on("error", reject);
 					fileStream.on("finish", resolve);
 				});
+				
+				const file_buffer  = fs.readFileSync("./tmp");
+				//encode contents into base64
+				const b64 = file_buffer.toString('base64');
 				//let b64 = (await (res).buffer()).toString('base64')
-				//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+				let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
-				//b64_video = url;
+				b64_video = url;
             		}
 			// console.log(e.video.url)
 		}
