@@ -9,7 +9,7 @@ const prefix = botSettings.prefix;
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
-require("buffer");
+const _buffer = require("buffer");
 
 // inline reply code ------------------------------ //
 /*const { APIMessage, Webhook, Structures, Client } = require("discord.js");
@@ -273,7 +273,7 @@ async function processMessage(m) {
 				yt_video = e.video.url;
 			} else {
 				let res = await fetch(e.video.url);
-				b64_video = new Blob(await (res).buffer());
+				b64_video = new _buffer.Blob(await (res).buffer());
 				/*if (res.headers.get("Content-Length") > 1E7) {
 					//console.log("oops");
 					let buffer = (await (res).buffer());
