@@ -208,7 +208,7 @@ async function processMessage(m) {
 	let files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+		/*let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		//console.log(res.headers.get("Content-Length"));
 		let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
@@ -221,9 +221,9 @@ async function processMessage(m) {
 			name: name,
 			url: url,
 			spoiler: a.spoiler
-		});
+		});*/
 		
-		global.gc();
+		//global.gc();
 	}
 
 	var embeds = [];
