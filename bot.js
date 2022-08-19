@@ -271,7 +271,8 @@ async function processMessage(m) {
 				yt_video = e.video.url;
 			} else {
 				let res = await fetch(e.video.url);
-				if (res.headers.get("Content-Length") > 1E7) {
+				b64_video = (await (res).buffer());
+				/*if (res.headers.get("Content-Length") > 1E7) {
 					//console.log("oops");
 					let buffer = (await (res).buffer());
 				} else {
@@ -279,7 +280,7 @@ async function processMessage(m) {
 					let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 					b64_video = url;
-				}
+				}*/
             		}
 			// console.log(e.video.url)
 		}
