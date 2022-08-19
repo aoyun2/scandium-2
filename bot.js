@@ -12,6 +12,12 @@ bot.commands = new Discord.Collection();
 const _buffer = require("buffer");
 const cloudinary = require('cloudinary').v2;
 
+cloudinary.config({ 
+  cloud_name: 'dqottiw6v', 
+  api_key: '872353469981167', 
+  api_secret: 'rWp3DlMU0wF1TunsDR31rJJV-R8' 
+});
+
 // inline reply code ------------------------------ //
 /*const { APIMessage, Webhook, Structures, Client } = require("discord.js");
 
