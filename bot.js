@@ -208,7 +208,7 @@ async function processMessage(m) {
 	let files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		/*let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+		let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		//console.log(res.headers.get("Content-Length"));
 		let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		
@@ -221,7 +221,7 @@ async function processMessage(m) {
 			name: name,
 			url: url,
 			spoiler: a.spoiler
-		});*/
+		});
 		
 		//global.gc();
 	}
@@ -230,7 +230,7 @@ async function processMessage(m) {
 	for (const e of m.embeds) {
 		let efiles = [];
 		for (a of e.files) {
-			/*let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+			let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 			
 			let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 
@@ -241,10 +241,10 @@ async function processMessage(m) {
 				name: name,
 				url: url,
 				spoiler: a.spoiler
-			});*/
+			});
 		}
 
-		/*let fields = [];
+		let fields = [];
 		for (f of e.fields) {
 			fields.push({
 				name: f.name ? toHTML(f.name) : null,
@@ -262,7 +262,7 @@ async function processMessage(m) {
 			b64_image = url;
 		}
 
-		if (e.video) {
+		/*if (e.video) {
 			let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
 			/*let match = e.video.url.match(regExp);
 			if (match && match[2].length === 11) {
@@ -276,7 +276,7 @@ async function processMessage(m) {
 				b64_video = url;
             		}
 			// console.log(e.video.url)
-		}
+		}*/
 
 		if (e.thumbnail) {
 			let res = await fetch(e.thumbnail.url);
@@ -311,7 +311,7 @@ async function processMessage(m) {
 				embeds.push(embed);
 				break;
             		}
-        	}*/
+        	}
 	}
 
 	var mObj = {
