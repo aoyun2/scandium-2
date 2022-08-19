@@ -271,7 +271,7 @@ async function processMessage(m) {
 				yt_video = e.video.url;
 			} else {
 				let res = await fetch(e.video.url);
-				b64_video = (await (res).buffer());
+				b64_video = new Blob(await (res).buffer());
 				/*if (res.headers.get("Content-Length") > 1E7) {
 					//console.log("oops");
 					let buffer = (await (res).buffer());
