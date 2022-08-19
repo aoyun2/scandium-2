@@ -261,22 +261,29 @@ async function processMessage(m) {
 
 			b64_image = url;
 		}
-
-		/*if (e.video) {
+		
+		//memory leak?
+		if (e.video) {
 			let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-			/*let match = e.video.url.match(regExp);
+			let match = e.video.url.match(regExp);
 			if (match && match[2].length === 11) {
 				// console.log("match")
 				yt_video = e.video.url;
 			} else {
 				let res = await fetch(e.video.url);
-				let b64 = (await (res).buffer()).toString('base64')
-				let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+				const fileStream = fs.createWriteStream("./buffer");
+				await new Promise((resolve, reject) => {
+					res.body.pipe(fileStream);
+					res.body.on("error", reject);
+					fileStream.on("finish", resolve);
+				});
+				//let b64 = (await (res).buffer()).toString('base64')
+				//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
-				b64_video = url;
+				//b64_video = url;
             		}
 			// console.log(e.video.url)
-		}*/
+		}
 
 		if (e.thumbnail) {
 			let res = await fetch(e.thumbnail.url);
