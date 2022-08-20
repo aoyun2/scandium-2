@@ -318,7 +318,8 @@ html
 
                 i.addEventListener("load", function () {
                     if(isInViewport(messagediv.lastChild)) {
-                        messagediv.scrollTop = messagediv.scrollHeight;
+                        //messagediv.scrollTop = messagediv.scrollHeight;
+                        i.scrollIntoView(false);
                     }
                 }, {once: true}, false);
 
