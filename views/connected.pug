@@ -601,7 +601,7 @@ html
                     var rect = element.getBoundingClientRect();
                     var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
                     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-                } catch(e) {console.log(e); return false;}
+                } catch(e) {console.log(e); return true;}
             }
 
             function createAttachments(m_a) {
