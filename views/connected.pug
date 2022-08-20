@@ -580,11 +580,14 @@ html
                 readjustSizeOfMessageBox();
                 //handleMessageSending(e);
             });
-
+            
+            let channelstartload = false;
             channelinput.addEventListener('change', () => {
                 replying = false;
                 editing = false;
                 messagediv.innerHTML = '';
+                
+                channelstartload = true;
 
                 requestDebounce = true;
                 channelEnd = false;
@@ -980,7 +983,11 @@ html
 
 
                 if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
-                else messagediv.scrollTop = messagediv.scrollHeight;
+                
+                if (channelstartload) {
+                    messagediv.scrollTop = messagediv.scrollHeight;
+                    channelstartload = false;
+                }
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
