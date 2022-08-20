@@ -906,7 +906,7 @@ html
 
 
                 if (!prepend && atBottom && messagediv.lastChild) {
-                    objDiv.scrollTop = objDiv.scrollHeight;
+                    messagediv.scrollTop = messagediv.scrollHeight;
                     //messagediv.lastChild.scrollIntoView(false);
                 }
 
@@ -978,7 +978,7 @@ html
 
 
                 if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
-                else if(messagediv.lastChild) objDiv.scrollTop = objDiv.scrollHeight;
+                else if(messagediv.lastChild) messagediv.scrollTop = messagediv.scrollHeight;
 
                 //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
