@@ -316,9 +316,12 @@ html
                 console.log(i.getAttribute('src'))
                 i.setAttribute('src', i.getAttribute("data-src"));
 
-                /*i.addEventListener("load", function () {
-                    i.scrollIntoView(false);
-                }, {once: true}, false);*/
+                i.addEventListener("load", function () {
+                    if (isInViewport(messagediv.lastChild)) {
+                        messagediv.lastChild.scrollIntoView(false);
+                        console.log("adf");
+                    }
+                }, {once: true}, false);
 
                 //observer.unobserve(i);
             }
@@ -979,16 +982,14 @@ html
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
                     addMessage(m);
+                    if (isInViewport(messagediv.lastChild)) {
+                        console.log("scrolled");
+                        messagediv.lastChild.scrollIntoView(false);
+                    }
                 });
 
 
                 if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
-                
-                if (channelstartload) {
-                    console.log("asdf");
-                    messagediv.scrollTop = messagediv.scrollHeight;
-                    channelstartload = false;
-                }
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
