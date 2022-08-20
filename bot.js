@@ -236,7 +236,7 @@ async function processMessage(m) {
 		files.push({
 			name: name,
 			url: url,
-			type: `data:${res.headers.get("Content-Type")`,
+			type: `data:${res.headers.get("Content-Type")}`,
 			spoiler: a.spoiler
 		});
 		
@@ -264,7 +264,7 @@ async function processMessage(m) {
 			efiles.push({
 				name: name,
 				url: url,
-				type: `data:${res.headers.get("Content-Type")`,
+				type: `data:${res.headers.get("Content-Type")}`,
 				spoiler: a.spoiler
 			});
 		}
