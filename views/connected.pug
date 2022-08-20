@@ -607,8 +607,8 @@ html
             function createAttachments(m_a) {
                 var attachments = document.createElement('div');
                 m_a.forEach(a => {
-                    const type = a.url.split('.').slice(-1)[0];
-                    console.log(type);
+                    const type = a.type;
+                    //console.log(type);
                     switch (type) {
                         case "data:image":
                             var image = document.createElement('img');
