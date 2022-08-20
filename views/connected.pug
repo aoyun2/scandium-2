@@ -906,7 +906,7 @@ html
                 prepend ? messagediv.prepend(message) : messagediv.append(message);
 
 
-                if (!prepend) {
+                if (!prepend && atBottom) {
                     //messagediv.scrollTop = messagediv.scrollHeight;
                     console.log("scrolled");
                     message.scrollIntoView(false);
@@ -979,8 +979,8 @@ html
                 });
 
 
-                if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
-                else messagediv.scrollTop = messagediv.scrollHeight;
+                if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.scrollTop = messagediv.scrollHeight;
+                else messagediv.children.item(10).scrollIntoView(true);
 
                 //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
