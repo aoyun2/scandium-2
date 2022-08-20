@@ -317,10 +317,7 @@ html
                 i.setAttribute('src', i.getAttribute("data-src"));
 
                 i.addEventListener("load", function () {
-                    if(isInViewport(messagediv.lastChild)) {
-                        //messagediv.scrollTop = messagediv.scrollHeight;
-                        i.scrollIntoView(false);
-                    }
+                    i.scrollIntoView(false);
                 }, {once: true}, false);
 
                 //observer.unobserve(i);
