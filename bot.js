@@ -287,9 +287,9 @@ async function processMessage(m) {
 					res.body.on("error", reject);
 					fileStream.on("finish", resolve);
 				});*/
-				
+
 				b64_video = await new Promise(resolve => {
-				    	cloudinary.uploader.upload(e.video.url, function(error, result) {
+				    	cloudinary.uploader.upload_large(e.video.url, { resource_type: "video", chunk_size: 6000000 }, function(error, result) {
 						console.log(result, error)
 						resolve(result.secure_url)
 					});
