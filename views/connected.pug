@@ -601,7 +601,7 @@ html
                     var rect = element.getBoundingClientRect();
                     var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
                     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-                } catch(e) {console.log(e); return true;}
+                } catch(e) {console.log(e); return false;}
             }
 
             function createAttachments(m_a) {
@@ -901,11 +901,12 @@ html
             function addMessage(m, prepend = true) {
                 var message = createMessage(m);
                 var atBottom = isInViewport(messagediv.lastChild);
+                if (!messagediv.lastChild) atBottom = true;
 
                 prepend ? messagediv.prepend(message) : messagediv.append(message);
 
 
-                if (!prepend && atBottom && messagediv.lastChild) {
+                if (!prepend && atBottom) {
                     messagediv.scrollTop = messagediv.scrollHeight;
                     //messagediv.lastChild.scrollIntoView(false);
                 }
