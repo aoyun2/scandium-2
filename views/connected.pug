@@ -316,9 +316,11 @@ html
                 console.log(i.getAttribute('src'))
                 i.setAttribute('src', i.getAttribute("data-src"));
 
-                //i.addEventListener("load", function () {
-                //    if(isInViewport(messagediv.lastChild)) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                //}, {once: true}, false);
+                i.addEventListener("load", function () {
+                    if(isInViewport(messagediv.lastChild)) {
+                        messagediv.scrollTop = messagediv.scrollHeight;
+                    }
+                }, {once: true}, false);
 
                 //observer.unobserve(i);
             }
@@ -908,6 +910,7 @@ html
 
                 if (!prepend && atBottom) {
                     messagediv.scrollTop = messagediv.scrollHeight;
+                    console.log("scrolled");
                     //messagediv.lastChild.scrollIntoView(false);
                 }
 
