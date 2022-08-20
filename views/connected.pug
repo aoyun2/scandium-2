@@ -979,11 +979,11 @@ html
                 });
 
 
-                if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.scrollTop = messagediv.scrollHeight;
-                else if(messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
+                //if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.scrollTop = messagediv.scrollHeight;
+                //else if(messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
 
-                //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
-                //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
+                if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
+                else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
