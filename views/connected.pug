@@ -906,7 +906,8 @@ html
 
 
                 if (!prepend && atBottom && messagediv.lastChild) {
-                    messagediv.lastChild.scrollIntoView(false);
+                    objDiv.scrollTop = objDiv.scrollHeight;
+                    //messagediv.lastChild.scrollIntoView(false);
                 }
 
                 /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
@@ -977,7 +978,7 @@ html
 
 
                 if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
-                else if(messagediv.lastChild) messagediv.lastChild.scrollIntoView(true);
+                else if(messagediv.lastChild) objDiv.scrollTop = objDiv.scrollHeight;
 
                 //if (messagediv.childNodes.length === 10) messagediv.lastChild.scrollIntoView(false, {behavior: "smooth"});
                 //else if (messagediv.childNodes.length > 10 && !isInViewport(messagediv.lastChild)) messagediv.children.item(10).scrollIntoView(true, {behavior: "smooth"});
