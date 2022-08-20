@@ -217,7 +217,7 @@ async function processMessage(m) {
 	let files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		//let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+		let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		//console.log(res.headers.get("Content-Length"));
 		//let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 		let name = "";
@@ -236,6 +236,7 @@ async function processMessage(m) {
 		files.push({
 			name: name,
 			url: url,
+			type: `data:${res.headers.get("Content-Type")`,
 			spoiler: a.spoiler
 		});
 		
@@ -246,7 +247,7 @@ async function processMessage(m) {
 	for (const e of m.embeds) {
 		let efiles = [];
 		for (a of e.files) {
-			//let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+			let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 			
 			let name = "";//res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 
@@ -263,6 +264,7 @@ async function processMessage(m) {
 			efiles.push({
 				name: name,
 				url: url,
+				type: `data:${res.headers.get("Content-Type")`,
 				spoiler: a.spoiler
 			});
 		}
