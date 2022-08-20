@@ -640,7 +640,7 @@ html
                             var file = document.createElement('button');
                             file.innerText = `FILE: ${a.name}`;
                             file.onclick = () => {
-                                console.log(a.url)
+                                //console.log(a.url)
                                 if(a.url.includes("application")) {
                                     let mimeType = a.url.split(',')[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0]
                                     window.open(a.url.replace(mimeType, "application/scandiumdownload"));
