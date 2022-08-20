@@ -906,10 +906,10 @@ html
                 prepend ? messagediv.prepend(message) : messagediv.append(message);
 
 
-                if (!prepend && atBottom) {
-                    messagediv.scrollTop = messagediv.scrollHeight;
+                if (!prepend) {
+                    //messagediv.scrollTop = messagediv.scrollHeight;
                     console.log("scrolled");
-                    //messagediv.lastChild.scrollIntoView(false);
+                    message.scrollIntoView(false);
                 }
 
                 /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
