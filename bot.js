@@ -143,7 +143,7 @@ bot.on("messageDelete", async (message) => {
 
 bot.on('rateLimit', (info) => {
   	console.log(`Rate limit hit ${info.timeDifference ? info.timeDifference : info.timeout ? info.timeout: 'Unknown timeout '}`)
-	serverModule.error("RATE_LIMIT_EXCEEDED: Discord's internal rate limit has been hit. Message sending may be slow.", null);
+	serverModule.error("RATE_LIMIT_EXCEEDED: Discord's internal rate limit has been hit. Things may be slow for a while.", null);
 })
 
 bot.login(botSettings.token);
