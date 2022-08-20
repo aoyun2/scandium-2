@@ -217,13 +217,20 @@ async function processMessage(m) {
 	let files = [];
 	//console.log(m.attachments.array());
 	for (const a of m.attachments.array()) {
-		let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+		//let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		//console.log(res.headers.get("Content-Length"));
-		let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
-		
+		//let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
+		let name = "";
 		//console.log(a.url)
-		let b64 = (await (res).buffer()).toString('base64')
-		let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+		//let b64 = (await (res).buffer()).toString('base64')
+		//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+		let url = await new Promise(resolve => {
+			cloudinary.uploader.upload_large(a.url, { resource_type: "auto", chunk_size: 6000000 }, function(error, result) {
+				console.log(result, error)
+				name = result.original_filename;
+				resolve(result.secure_url)
+			});
+		});
 
 		// console.log(res.headers.get("Content-Disposition"));
 		files.push({
@@ -239,12 +246,19 @@ async function processMessage(m) {
 	for (const e of m.embeds) {
 		let efiles = [];
 		for (a of e.files) {
-			let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
+			//let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 			
-			let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
+			let name = "";//res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
 
-			let b64 = (await (res).buffer()).toString('base64')
-			let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			//let b64 = (await (res).buffer()).toString('base64')
+			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			let url = await new Promise(resolve => {
+				cloudinary.uploader.upload_large(a.url, { resource_type: "auto", chunk_size: 6000000 }, function(error, result) {
+					console.log(result, error)
+					name = result.original_filename;
+					resolve(result.secure_url)
+				});
+			});
 			
 			efiles.push({
 				name: name,
@@ -264,11 +278,16 @@ async function processMessage(m) {
 		let b64_image = null, b64_video = null, yt_video = null, b64_thumbnail = null;
 
 		if (e.image) {
-			let res = await fetch(e.image.url);
-			let b64 = (await (res).buffer()).toString('base64')
-			let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			//let res = await fetch(e.image.url);
+			//let b64 = (await (res).buffer()).toString('base64')
+			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
-			b64_image = url;
+			b64_image = await new Promise(resolve => {
+				cloudinary.uploader.upload_large(e.image.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
+					console.log(result, error)
+					resolve(result.secure_url)
+				});
+			});
 		}
 		
 		//memory leak?
@@ -310,11 +329,16 @@ async function processMessage(m) {
 		}
 
 		if (e.thumbnail) {
-			let res = await fetch(e.thumbnail.url);
-			let b64 = (await (res).buffer()).toString('base64')
-			let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			//let res = await fetch(e.thumbnail.url);
+			//let b64 = (await (res).buffer()).toString('base64')
+			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
-			b64_thumbnail = url;
+			b64_thumbnail = await new Promise(resolve => {
+				cloudinary.uploader.upload_large(e.thumbnail.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
+					console.log(result, error)
+					resolve(result.secure_url)
+				});
+			});
 		}
 
 		var embedRules = {
