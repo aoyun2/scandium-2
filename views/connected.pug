@@ -994,7 +994,7 @@ html
 
 
                 //if (!isInViewport(messagediv.lastChild) && messagediv.children.item(10)) messagediv.children.item(10).scrollIntoView(true);
-                if (!isBottom) last.scrollIntoView(true);
+                if (!isBottom) last.scrollIntoView(true, {behavior: "smooth"});
 
                 requestDebounce = false;
                 if (data.length < 10) endOfChannel();
