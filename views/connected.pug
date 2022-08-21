@@ -318,7 +318,10 @@ html
 
                 i.addEventListener("load", function () {
                     //i.scrollIntoView(true);
-                    messagediv.scrollTop += i.clientHeight;
+                    if (i.nodeName == "IMG")
+                        messagediv.scrollTop += i.clientHeight;
+                    else if (i.nodeName == "VIDEO")
+                        messagediv.scrollTop += i.videoHeight;
                 }, {once: true}, false);
 
                 //observer.unobserve(i);
