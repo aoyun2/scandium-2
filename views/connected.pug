@@ -903,16 +903,17 @@ html
 
             function addMessage(m, prepend = true) {
                 var message = createMessage(m);
-                var atBottom = isInViewport(messagediv.lastChild);
+                //var atBottom = isInViewport(messagediv.lastChild);
                 if (!messagediv.lastChild) atBottom = true;
 
                 prepend ? messagediv.prepend(message) : messagediv.append(message);
 
 
-                if (!prepend && atBottom) {
-                    //messagediv.scrollTop = messagediv.scrollHeight;
+                var isBottom = messagediv.scrollTop + messagediv.offsetHeight === messagediv.scrollHeight;
+                    
+                if (!prepend && isBottom) {
                     console.log("scrolled");
-                    message.scrollIntoView(false);
+                    m.scrollIntoView(false);
                 }
 
                 /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
@@ -979,13 +980,6 @@ html
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
                     addMessage(m);
-                    
-                    var isBottom = messagediv.scrollTop + messagediv.offsetHeight === messagediv.scrollHeight;
-                    
-                    if (isBottom) {
-                        console.log("scrolled");
-                        m.scrollIntoView(false);
-                    }
                 });
 
 
