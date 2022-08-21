@@ -305,7 +305,7 @@ html
                 if(entry.isIntersecting) {
                   // custom function that copies the path to the img
                   // from data-src to src
-                  //preloadImage(entry.target);
+                  preloadImage(entry.target);
                   // the image is now in place, stop watching
                   self.unobserve(entry.target);
                 }
@@ -313,12 +313,13 @@ html
             }, config);
 
             function preloadImage(i) {
-                console.log(i.getAttribute('src'))
-                i.setAttribute('src', i.getAttribute("data-src"));
+                //console.log(i.getAttribute('src'))
+                //i.setAttribute('src', i.getAttribute("data-src"));
 
-                /*i.addEventListener("load", function () {
-                    i.scrollIntoView(true);
-                }, {once: true}, false);*/
+                i.addEventListener("load", function () {
+                    //i.scrollIntoView(true);
+                    messagediv.scrollTop += i.clientHeight;
+                }, {once: true}, false);
 
                 //observer.unobserve(i);
             }
@@ -379,7 +380,7 @@ html
                                     image.style.maxWidth = "50px";
                                     li.appendChild(image);
 
-                                    //observer.observe(image);
+                                    observer.observe(image);
 
                                     /*li.addEventListener("click", e_1 => {
                                         var lastWord2 = messageinput.value.trim().split(" ").pop();
@@ -672,7 +673,7 @@ html
                     //thumbnail.src = "lazyloadplaceholder.gif";
                     thumbnail.alt = `Epic embed fail.`;
                     embed.appendChild(thumbnail);
-                    //observer.observe(thumbnail);
+                    observer.observe(thumbnail);
                 }
 
                 var title = document.createElement('h2');
@@ -896,7 +897,7 @@ html
                 message.style.position = "relative";
 
                 for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    //observer.observe(emojiImage);
+                    observer.observe(emojiImage);
                     emojiImage.setAttribute('src', emojiImage.getAttribute("data-src"));
                 }
 
