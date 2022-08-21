@@ -619,6 +619,7 @@ html
                         case "data:image":
                             var image = document.createElement('img');
                             image.classList.add(`d-image-embed`);
+                            image.style.maxWidth = "20%";
                             image.alt = `Epic embed fail.`;
                             //image.setAttribute("data-src", a.url);
                             image.setAttribute("src", a.url);
@@ -629,6 +630,7 @@ html
                         case "data:video":
                             var video = document.createElement('video');
                             video.classList.add(`d-video-embed`);
+                            video.style.maxWidth = "20%";
                             video.src = a.url;
                             video.controls = true;
                             video.autoplay = true;
