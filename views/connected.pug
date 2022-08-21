@@ -912,8 +912,7 @@ html
                     
                 if (isBottom) {
                     console.log("scrolled");
-                    let nearest = Math.floor(messagediv.children.length / 10)
-                    messagediv.children.item(nearest).scrollIntoView(false);
+                    messagediv.scrollTop = messagediv.scrollHeight;
                 }
 
                 /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
