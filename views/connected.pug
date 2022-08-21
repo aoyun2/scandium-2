@@ -912,7 +912,7 @@ html
                     
                 if (isBottom) {
                     console.log("scrolled");
-                    let nearest = floor(messagediv.children.length / 10)
+                    let nearest = Math.floor(messagediv.children.length / 10)
                     messagediv.children.item(nearest).scrollIntoView(false);
                 }
 
