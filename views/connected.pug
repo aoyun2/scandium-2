@@ -912,7 +912,8 @@ html
                     
                 if (isBottom) {
                     console.log("scrolled");
-                    message.scrollIntoView(false);
+                    let nearest = floor(messagediv.children.length / 10)
+                    messagediv.children.item(nearest).scrollIntoView(false);
                 }
 
                 /*for (var emojiImage of messagediv.querySelectorAll(".d-emoji, .d-emoji-animated")) {
