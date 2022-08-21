@@ -631,6 +631,7 @@ html
                             video.muted = true;
                             video.loop = true;
                             attachments.appendChild(video);
+                            observer.observe(video);
                             break;
                         case "data:audio":
                             var audio = document.createElement('audio');
@@ -638,6 +639,7 @@ html
                             audio.src = a.url;
                             audio.controls = true;
                             attachments.appendChild(audio);
+                            observer.observe(audio);
                             break;
                         default:
                             var file = document.createElement('button');
@@ -653,6 +655,7 @@ html
                                 }
                             }
                             attachments.appendChild(file);
+                            observer.observe(file);
                             break;
                     }
                 });
@@ -721,6 +724,7 @@ html
                     video.muted = true;
                     video.loop = true;
                     embed.appendChild(video);
+                    observer.observe(video);
                 }
 
                 if (e.yt_video) {
@@ -730,6 +734,7 @@ html
                     video.frameborder = "0";
                     video.allowfullscreen = true;
                     embed.appendChild(video);
+                    observer.observe(video);
                 }
 
                 var footer = document.createElement('small');
