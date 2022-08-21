@@ -911,7 +911,7 @@ html
 
                 var isBottom = messagediv.scrollTop + messagediv.offsetHeight === messagediv.scrollHeight;
                     
-                if (!prepend && isBottom) {
+                if (isBottom) {
                     console.log("scrolled");
                     m.scrollIntoView(true);
                 }
