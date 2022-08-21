@@ -583,14 +583,11 @@ html
                 readjustSizeOfMessageBox();
                 //handleMessageSending(e);
             });
-            
-            let channelstartload = false;
+
             channelinput.addEventListener('change', () => {
                 replying = false;
                 editing = false;
                 messagediv.innerHTML = '';
-                
-                channelstartload = true;
 
                 requestDebounce = true;
                 channelEnd = false;
@@ -982,9 +979,12 @@ html
                 data.forEach(m => {
                     // console.log(JSON.parse(m));
                     addMessage(m);
-                    if (isInViewport(messagediv.children.item(10))) {
+                    
+                    var isBottom = messagediv.scrollTop + messagediv.offsetHeight === messagediv.scrollHeight;
+                    
+                    if (isBottom) {
                         console.log("scrolled");
-                        messagediv.lastChild.scrollIntoView(false);
+                        m.scrollIntoView(false);
                     }
                 });
 
