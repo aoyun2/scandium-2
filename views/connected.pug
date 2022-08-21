@@ -305,7 +305,7 @@ html
                 if(entry.isIntersecting) {
                   // custom function that copies the path to the img
                   // from data-src to src
-                  preloadImage(entry.target);
+                  //preloadImage(entry.target);
                   // the image is now in place, stop watching
                   self.unobserve(entry.target);
                 }
@@ -317,10 +317,7 @@ html
                 i.setAttribute('src', i.getAttribute("data-src"));
 
                 i.addEventListener("load", function () {
-                    if (isInViewport(messagediv.lastChild)) {
-                        messagediv.lastChild.scrollIntoView(false);
-                        console.log("adf");
-                    }
+                    i.scrollIntoView(true);
                 }, {once: true}, false);
 
                 //observer.unobserve(i);
