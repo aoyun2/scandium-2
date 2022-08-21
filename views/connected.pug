@@ -315,15 +315,15 @@ html
             function preloadImage(i) {
                 //console.log(i.getAttribute('src'))
                 //i.setAttribute('src', i.getAttribute("data-src"));
-
-                i.addEventListener("load", function () {
-                    //i.scrollIntoView(true);
-                    if (i.nodeName == "IMG")
+                if (i.nodeName == "IMG") {
+                    i.addEventListener("load", function () {
                         messagediv.scrollTop += i.clientHeight;
-                    else if (i.nodeName == "VIDEO")
+                    }, {once: true}, false);
+                } else if (i.nodeName == "VIDEO") {
+                    i.addEventListener("loadeddata", function () {
                         messagediv.scrollTop += i.videoHeight;
-                }, {once: true}, false);
-
+                    }, {once: true}, false);
+                }
                 //observer.unobserve(i);
             }
 
