@@ -672,7 +672,7 @@ html
                     //thumbnail.src = "lazyloadplaceholder.gif";
                     thumbnail.alt = `Epic embed fail.`;
                     embed.appendChild(thumbnail);
-                    observer.observe(thumbnail);
+                    //observer.observe(thumbnail);
                 }
 
                 var title = document.createElement('h2');
@@ -896,7 +896,8 @@ html
                 message.style.position = "relative";
 
                 for (var emojiImage of message.querySelectorAll(".d-emoji, .d-emoji-animated")) {
-                    observer.observe(emojiImage);
+                    //observer.observe(emojiImage);
+                    emojiImage.setAttribute('src', emojiImage.getAttribute("data-src"));
                 }
 
                 return message;
