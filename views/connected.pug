@@ -904,12 +904,11 @@ html
             function addMessage(m, prepend = true) {
                 var message = createMessage(m);
                 //var atBottom = isInViewport(messagediv.lastChild);
-                if (!messagediv.lastChild) atBottom = true;
-
-                prepend ? messagediv.prepend(message) : messagediv.append(message);
-
+                if (!messagediv.lastChild) atBottom = true;           
 
                 var isBottom = messagediv.scrollTop + messagediv.offsetHeight === messagediv.scrollHeight;
+
+                prepend ? messagediv.prepend(message) : messagediv.append(message);
                     
                 if (isBottom) {
                     console.log("scrolled");
