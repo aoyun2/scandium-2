@@ -946,7 +946,9 @@ html
                 }*/
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
-                loadMentions();
+                message..addEventListener('load', (event) => {
+                    loadMentions();
+                });
 
                 return message;
             }
@@ -988,7 +990,7 @@ html
                 requestDebounce = false
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
-                loadMentions();
+                //loadMentions();
             });
 
             socket.on("channel_history", data => {
