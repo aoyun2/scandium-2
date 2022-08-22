@@ -352,6 +352,7 @@ html
                         }
                     } else {
                         // Autocomplete
+                        document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                         const defaultEmojiList = await fetch("https://api.npoint.io/4a109762abd9ad271d6f")
                             .then(response => response.json())
                         var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
@@ -427,7 +428,6 @@ html
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
-                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
                                     document.querySelector("#input > .tooltiptext").focus();
@@ -507,7 +507,7 @@ html
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
-                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                                //document.querySelector("#input > .tooltiptext").style.visibility = "visible";
 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
                                     document.querySelector("#input > .tooltiptext").focus();
@@ -562,7 +562,7 @@ html
 
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
                                 document.querySelector("#input > .tooltiptext").appendChild(suggestions);
-                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
+                                //document.querySelector("#input > .tooltiptext").style.visibility = "visible";
 
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseenter", function(e) {
                                     document.querySelector("#input > .tooltiptext").focus();
