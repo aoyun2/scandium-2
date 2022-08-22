@@ -226,9 +226,9 @@ async function processMessage(m) {
 		//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 		let url = await new Promise(resolve => {
 			cloudinary.uploader.upload_large(a.url, { resource_type: "auto", chunk_size: 6000000 }, function(error, result) {
-				console.log(result, error)
+				//console.log(result, error)
 				name = result.original_filename;
-				resolve(result.secure_url)
+				if (!error) resolve(result.secure_url);
 			});
 		});
 
