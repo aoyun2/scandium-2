@@ -46,7 +46,7 @@ class ExtAPIMessage extends APIMessage {
       .then(data => new Webhook(this, { token, ...data })); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
 }
 
-console.log(Client.prototype.fetchWebhook.toString());
+//console.log(Client.prototype.fetchWebhook.toString());
 
 async function inlineReply(message, content, options) {
 	var apiMessage = APIMessage.create(this, content, options).resolveData();
@@ -58,7 +58,7 @@ async function inlineReply(message, content, options) {
         return Promise.all(apiMessage.split().map(this.send.bind(this)));
 	}
 
-	console.log(data, files);
+	//console.log(data, files);
 	
 	return this.client.api.webhooks(this.id, this.token).post({
 			data,
@@ -103,7 +103,7 @@ fs.readdir("./commands/", (err, files) => {
 
 	}
 	
-	console.log(jsFiles);
+	//console.log(jsFiles);
 
 	jsFiles.forEach((f, i) => {
 		var props = require("./commands/" + f);
@@ -127,7 +127,7 @@ bot.on("message", async (message) => {
 	if (args.includes(command)) args = [];
 
 	var cmd = await bot.commands.get(command.replace(prefix, ''));
-	console.log(command, args, cmd);
+	//console.log(command, args, cmd);
 	if (cmd) {
 		await cmd.run(bot, message, args);
 	}
@@ -255,9 +255,9 @@ async function processMessage(m) {
 			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 			let url = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(a.url, { resource_type: "auto", chunk_size: 6000000 }, function(error, result) {
-					console.log(result, error)
+					//console.log(result, error)
 					name = result.original_filename;
-					resolve(result.secure_url)
+					if (!error) resolve(result.secure_url);
 				});
 			});
 			
@@ -286,8 +286,8 @@ async function processMessage(m) {
 
 			b64_image = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(e.image.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
-					console.log(result, error)
-					resolve(result.secure_url)
+					//console.log(result, error)
+					if (!error) resolve(result.secure_url);
 				});
 			});
 		}
@@ -311,8 +311,8 @@ async function processMessage(m) {
 
 				b64_video = await new Promise(resolve => {
 				    	cloudinary.uploader.upload_large(e.video.url, { resource_type: "video", chunk_size: 6000000 }, function(error, result) {
-						console.log(result, error)
-						resolve(result.secure_url)
+						//console.log(result, error)
+						if (!error) resolve(result.secure_url);
 					});
 				});
 				
@@ -337,8 +337,8 @@ async function processMessage(m) {
 
 			b64_thumbnail = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(e.thumbnail.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
-					console.log(result, error)
-					resolve(result.secure_url)
+					//console.log(result, error)
+					if (!error) resolve(result.secure_url);
 				});
 			});
 		}
