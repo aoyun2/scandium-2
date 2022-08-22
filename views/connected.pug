@@ -320,6 +320,8 @@ html
             function preloadImage(i) {
                 //console.log(i.getAttribute('src'))
                 i.setAttribute('src', i.getAttribute("data-src"));
+                if (i.parentElement !== messagediv) return;
+                
                 if (i.nodeName == "IMG") {
                     i.addEventListener("load", function () {
                         messagediv.scrollTop += i.clientHeight;
@@ -329,7 +331,7 @@ html
                         messagediv.scrollTop += i.videoHeight;
                     }, {once: true}, false);
                 }
-                //observer.unobserve(i);
+                observer.unobserve(i);
             }
 
             // register the config object with an instance
