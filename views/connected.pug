@@ -299,7 +299,7 @@ html
 
             const config = {
               rootMargin: '0px 0px 50px 0px',
-              threshold: 0
+              threshold: [0, 1.0]
             };
 
             let observer = new IntersectionObserver(function(entries, self) {
