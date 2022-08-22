@@ -319,7 +319,7 @@ html
 
             function preloadImage(i) {
                 //console.log(i.getAttribute('src'))
-                //i.setAttribute('src', i.getAttribute("data-src"));
+                i.setAttribute('src', i.getAttribute("data-src"));
                 if (i.nodeName == "IMG") {
                     i.addEventListener("load", function () {
                         messagediv.scrollTop += i.clientHeight;
@@ -381,8 +381,8 @@ html
 
                                     var image = document.createElement("img");
                                     image.id = e.string;
-                                    //image.setAttribute("data-src", e.url);
-                                    image.setAttribute("src", e.url);
+                                    image.setAttribute("data-src", e.url);
+                                    //image.setAttribute("src", e.url);
                                     //image.src = "lazyloadplaceholder.gif";
                                     image.style.verticalAlign = "middle";
                                     image.style.maxWidth = "50px";
@@ -625,8 +625,8 @@ html
                             image.classList.add(`d-image-embed`);
                             image.style.maxWidth = "20%";
                             image.alt = `Epic embed fail.`;
-                            //image.setAttribute("data-src", a.url);
-                            image.setAttribute("src", a.url);
+                            image.setAttribute("data-src", a.url);
+                            //image.setAttribute("src", a.url);
                             //image.src = "lazyloadplaceholder.gif";
                             attachments.appendChild(image);
                             observer.observe(image);
@@ -681,8 +681,8 @@ html
                 if (e.thumbnail && !(e.image || e.video || e.yt_video)) {
                     var thumbnail = document.createElement('img');
                     thumbnail.classList.add(`d-embed-thumbnail`);
-                    //thumbnail.setAttribute("data-src", e.thumbnail);
-                    thumbnail.setAttribute("src", e.thumbnail);
+                    thumbnail.setAttribute("data-src", e.thumbnail);
+                    //thumbnail.setAttribute("src", e.thumbnail);
                     //thumbnail.src = "lazyloadplaceholder.gif";
                     thumbnail.alt = `Epic embed fail.`;
                     embed.appendChild(thumbnail);
@@ -716,8 +716,8 @@ html
                 if (e.image) {
                     var image = document.createElement('img');
                     image.classList.add(`d-image-embed`);
-                    //image.setAttribute("data-src", e.image);
-                    image.setAttribute("src", e.image);
+                    image.setAttribute("data-src", e.image);
+                    //image.setAttribute("src", e.image);
                     //image.src = "lazyloadplaceholder.gif";
                     image.alt = `Epic embed fail.`;
                     embed.appendChild(image);
