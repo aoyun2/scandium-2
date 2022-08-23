@@ -950,7 +950,7 @@ html
                 }*/
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
-                loadMentions();
+                //loadMentions();
 
                 return message;
             }
@@ -1019,7 +1019,7 @@ html
 
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
-                loadMentions();
+                //loadMentions();
             });
 
             messagediv.addEventListener('scroll', () => {
@@ -1034,6 +1034,7 @@ html
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
             });
+            setInverval(loadMentions, 1000);
             
             function loadMessages() {
                 if (isInViewport(messagediv.firstChild) && !requestDebounce && !channelEnd) {
@@ -1106,7 +1107,7 @@ html
 
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
-                loadMentions();
+                //loadMentions();
             });
 
             socket.on("new_message", (data) => {
@@ -1134,7 +1135,7 @@ html
 
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
-                loadMentions();
+                //loadMentions();
             });
 
             socket.on("message_delete", id => {
