@@ -971,7 +971,7 @@ html
             function loadMentions() {
                 const mentions = document.querySelectorAll('.d-mention');
                 Array.from(mentions).forEach((m, index) => {
-                    // if(!isInViewport(m)) return;
+                     if(!isInViewport(m)) return;
 
                     var user = /^<@!?([0-9]*)>/.exec(m.innerText);
                     var channel = /^<#([0-9]*)>/.exec(m.innerText);
@@ -1035,8 +1035,6 @@ html
                 //emojify.run(messagediv);
             });
             
-            setInterval(loadMentions(), 1000);
-
             function loadMessages() {
                 if (isInViewport(messagediv.firstChild) && !requestDebounce && !channelEnd) {
                     requestDebounce = true;
@@ -1083,7 +1081,7 @@ html
                 const mentions_filtered = Array.from(mentions).filter(m => m.id === data.id);
 
                 // console.log(mentions_filtered);
-                mentions_filtered.forEach(m => m.innerText = data.data);
+                mentions_filtered.forEach(m => m.textContent = data.data);
             });
 
             socket.on("reply_JSON", (data) => {
