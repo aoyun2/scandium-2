@@ -339,7 +339,9 @@ html
 
             // register the config object with an instance
             // of intersectionObserver
-
+                                    
+            const defaultEmojiList = await fetch("https://api.npoint.io/4a109762abd9ad271d6f")
+                .then(response => response.json())
             async function handleMessageSending(event) {
                 try {
                     if (event.keyCode === 13 && !event.shiftKey && (messageinput.value && !messageinput.value.match(/^ *$/))) {
@@ -356,15 +358,6 @@ html
                         }
                     } else {
                         // Autocomplete
-                        document.querySelector("#input > .tooltiptext").style.visibility = "visible";
-                        var header = document.createElement("em");
-                        header.innerText = "Loading autocomplete data...";
-                        header.style.color = "purple";
-
-                        document.querySelector("#input > .tooltiptext").appendChild(header);
-                        
-                        const defaultEmojiList = await fetch("https://api.npoint.io/4a109762abd9ad271d6f")
-                            .then(response => response.json())
                         var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
 
                         if (lastWord.charAt(0) === ":") {
@@ -446,6 +439,8 @@ html
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
                                     messageinput.focus();
                                 });
+                                                        
+                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                             } else {
                                 document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
@@ -526,6 +521,8 @@ html
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
                                     messageinput.focus();
                                 });
+                                
+                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                             } else {
                                 document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
@@ -581,6 +578,8 @@ html
                                 document.querySelector("#input > .tooltiptext").addEventListener("mouseleave", function(e) {
                                     messageinput.focus();
                                 });
+                                
+                                document.querySelector("#input > .tooltiptext").style.visibility = "visible";
                             } else {
                                 document.querySelector("#input > .tooltiptext").style.visibility = "hidden";
                                 document.querySelector("#input > .tooltiptext").innerHTML = '';
