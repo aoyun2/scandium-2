@@ -242,7 +242,7 @@ html
             div(id="messages")
 
         div(id="input")
-            textarea(id="input_messages" onkeypress="handleMessageSending(event)" placeholder="Say something!")
+            textarea(id="input_messages" onkeyup="handleMessageSending(event)" placeholder="Say something!")
             span(class="tooltiptext" tabindex="-1")
         script.
             const socket = io();
