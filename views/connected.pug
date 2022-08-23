@@ -595,7 +595,9 @@ html
                         }
                     }
                 } catch(e) {console.log(e)};
-            }();
+            }
+            
+            handleMessageSending(null);
 
             messageinput.addEventListener('input', () => {
                 readjustSizeOfMessageBox();
