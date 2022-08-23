@@ -1034,7 +1034,7 @@ html
                 //emojify.setConfig({ignore_emoticons: true, img_dir: "https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/images/basic/"});
                 //emojify.run(messagediv);
             });
-            setInverval(loadMentions, 1000);
+            setInterval(loadMentions, 1000);
             
             function loadMessages() {
                 if (isInViewport(messagediv.firstChild) && !requestDebounce && !channelEnd) {
