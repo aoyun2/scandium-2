@@ -251,6 +251,10 @@ html
             const userID = "#{userID}";
             const serverID = "#{server}";
             
+            window.addEventListener('error', (event) => {
+                displayError(event.message);
+            });
+            
             var e = document.createElement("div"); 
             e.innerHTML = "#{emojis}";
             const emojis = JSON.parse(e.innerText);
@@ -1184,8 +1188,4 @@ html
                 replying = false;
                 editing = false;
                 displayError(m);
-            });
-
-            window.addEventListener('error', (event) => {
-                displayError(event.message);
             });
