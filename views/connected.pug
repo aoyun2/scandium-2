@@ -361,7 +361,7 @@ html
                             socket.emit("edit_message", { messageID: editing, data: messageinput.value });
                             messageinput.value = '';
                         }
-                    } else {
+                    } else if (event) {
                         // Autocomplete
                         var lastWord = messageinput.value.trim().split(" ").pop().toLowerCase();
 
@@ -595,7 +595,7 @@ html
                         }
                     }
                 } catch(e) {console.log(e)};
-            }
+            }();
 
             messageinput.addEventListener('input', () => {
                 readjustSizeOfMessageBox();
