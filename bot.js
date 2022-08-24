@@ -327,7 +327,7 @@ async function processMessage(m) {
 					b64_video = url;
 				}*/
             		}
-			console.log(base64_video);
+			console.log(b64_video);
 
 			// console.log(e.video.url)
 		}
