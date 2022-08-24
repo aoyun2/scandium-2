@@ -283,19 +283,14 @@ async function processMessage(m) {
 			//let res = await fetch(e.image.url);
 			//let b64 = (await (res).buffer()).toString('base64')
 			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
-			var id;
-
 			b64_image = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(e.image.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
 					//console.log(result, error)
 					if (!error) {
-						id = result.public_id
 						resolve(result.secure_url);
 					}
 				});
 			});
-			console.log("deleting");
-			if (id) cloudinary.uploader.destroy(id, function(result) { console.log(result) });
 		}
 		
 		//memory leak?
@@ -322,7 +317,7 @@ async function processMessage(m) {
 						if (!error) resolve(result.secure_url);
 					});
 				});
-				console.log("deleting");
+				console.log(id);
 				if (id) cloudinary.uploader.destroy(id, function(result) { console.log(result) });
 				
 				//b64_video = (await (res).buffer());
