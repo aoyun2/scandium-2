@@ -318,7 +318,7 @@ async function processMessage(m) {
 					});
 				});
 				console.log(id);
-				if (id) cloudinary.uploader.destroy(id, resource_type: 'video', function(result) { console.log(result) });
+				if (id) cloudinary.uploader.destroy(id, {resource_type: 'video'}, function(result) { console.log(result) });
 				
 				//b64_video = (await (res).buffer());
 				/*if (res.headers.get("Content-Length") > 1E7) {
