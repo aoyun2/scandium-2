@@ -323,9 +323,9 @@ html
 
             function preloadImage(i) {
                 //console.log(i.getAttribute('src'))
-                i.setAttribute('src', i.getAttribute("data-src"));
                 
                 if (i.nodeName == "IMG") {
+                    i.setAttribute('src', i.getAttribute("data-src"));
                     i.addEventListener("load", function () {
                         messagediv.scrollTop += i.clientHeight;
                     }, {once: true}, false);
