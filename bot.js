@@ -285,10 +285,16 @@ async function processMessage(m) {
 			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 
 			b64_image = await new Promise(resolve => {
+				var id;
 				cloudinary.uploader.upload_large(e.image.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
 					//console.log(result, error)
-					if (!error) resolve(result.secure_url);
+					if (!error) {
+						resolve(result.secure_url);
+						id = result.public_id
+					}
 				});
+				console.log("deleting");
+				if (id) cloudinary.uploader.destroy(id, function(result) { console.log(result) });
 			});
 		}
 		
