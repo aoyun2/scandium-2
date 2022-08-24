@@ -226,7 +226,7 @@ async function processMessage(m) {
 		//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 		let url = await new Promise(resolve => {
 			cloudinary.uploader.upload_large(a.url, { resource_type: "auto", chunk_size: 6000000 }, function(error, result) {
-				console.log(result, error)
+				//console.log(result, error)
 				name = result.original_filename;
 				if (!error) resolve(result.secure_url);
 			});
@@ -255,7 +255,7 @@ async function processMessage(m) {
 			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
 			let url = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(a.url, { resource_type: "auto", chunk_size: 6000000 }, function(error, result) {
-					console.log(result, error)
+					//console.log(result, error)
 					name = result.original_filename;
 					if (!error) resolve(result.secure_url);
 				});
@@ -286,7 +286,7 @@ async function processMessage(m) {
 
 			b64_image = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(e.image.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
-					console.log(result, error)
+					//console.log(result, error)
 					if (!error) resolve(result.secure_url);
 				});
 			});
@@ -311,7 +311,7 @@ async function processMessage(m) {
 
 				b64_video = await new Promise(resolve => {
 				    	cloudinary.uploader.upload_large(e.video.url, { resource_type: "video", chunk_size: 6000000 }, function(error, result) {
-						console.log(result, error)
+						//console.log(result, error)
 						if (!error) resolve(result.secure_url);
 					});
 				});
@@ -327,6 +327,8 @@ async function processMessage(m) {
 					b64_video = url;
 				}*/
             		}
+			console.log(base64_video);
+
 			// console.log(e.video.url)
 		}
 
@@ -337,7 +339,7 @@ async function processMessage(m) {
 
 			b64_thumbnail = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(e.thumbnail.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
-					console.log(result, error)
+					//console.log(result, error)
 					if (!error) resolve(result.secure_url);
 				});
 			});
