@@ -309,16 +309,14 @@ async function processMessage(m) {
 					res.body.on("error", reject);
 					fileStream.on("finish", resolve);
 				});*/
-				var id;
 				b64_video = await new Promise(resolve => {
 				    	cloudinary.uploader.upload_large(e.video.url, { resource_type: "video", chunk_size: 6000000 }, function(error, result) {
 						//console.log(result, error)
-						id = result.public_id;
 						if (!error) resolve(result.secure_url);
 					});
 				});
-				console.log(id);
-				if (id) cloudinary.uploader.destroy(id, {resource_type: 'video'}, function(result) { console.log(result) });
+				//console.log(id);
+				//if (id) cloudinary.uploader.destroy(id, {resource_type: 'video'}, function(result) { console.log(result) });
 				
 				//b64_video = (await (res).buffer());
 				/*if (res.headers.get("Content-Length") > 1E7) {
@@ -331,7 +329,7 @@ async function processMessage(m) {
 					b64_video = url;
 				}*/
             		}
-			console.log(b64_video);
+			//console.log(b64_video);
 
 			// console.log(e.video.url)
 		}
