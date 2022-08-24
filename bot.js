@@ -283,9 +283,9 @@ async function processMessage(m) {
 			//let res = await fetch(e.image.url);
 			//let b64 = (await (res).buffer()).toString('base64')
 			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
+			var id;
 
 			b64_image = await new Promise(resolve => {
-				var id;
 				cloudinary.uploader.upload_large(e.image.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
 					//console.log(result, error)
 					if (!error) {
@@ -293,9 +293,9 @@ async function processMessage(m) {
 						id = result.public_id
 					}
 				});
-				console.log("deleting");
-				if (id) cloudinary.uploader.destroy(id, function(result) { console.log(result) });
 			});
+			console.log("deleting");
+			if (id) cloudinary.uploader.destroy(id, function(result) { console.log(result) });
 		}
 		
 		//memory leak?
