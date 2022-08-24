@@ -940,7 +940,7 @@ html
                 var message = createMessage(m);
                 //var atBottom = isInViewport(messagediv.lastChild);
 
-                var isBottom = messagediv.scrollHeight - (messagediv.scrollTop + messagediv.offsetHeight) < messagediv.lastChild.clientHeight);
+                var isBottom = (messagediv.scrollHeight - (messagediv.scrollTop + messagediv.offsetHeight)) < messagediv.lastChild.clientHeight);
 
                 prepend ? messagediv.prepend(message) : messagediv.append(message);
                     
