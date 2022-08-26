@@ -18,6 +18,14 @@ const { v4: uuidv4 } = require('uuid');
 const { Channel, User } = require("discord.js");
 const { Client } = require("./node_modules/socket.io/dist/client.js");
 
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+  cloud_name: 'dqottiw6v', 
+  api_key: '872353469981167', 
+  api_secret: 'rWp3DlMU0wF1TunsDR31rJJV-R8' 
+});
+
 app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({
     extended: true
@@ -107,6 +115,7 @@ io.on('connection', (socket) => {
         //console.log("client disconnected!")
 
         if(clients[clientID]) delete clients[clientID];
+        cloudinary.api.delete_resources(true, () => {console.log("deleted")});
         console.log("disconnection", clients);
     });
 
