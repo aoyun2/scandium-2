@@ -115,7 +115,7 @@ io.on('connection', (socket) => {
         //console.log("client disconnected!")
 
         if(clients[clientID]) delete clients[clientID];
-        cloudinary.api.delete_resources(true, () => {console.log("deleted")});
+        //cloudinary.api.delete_resources(true, () => {console.log("deleted")});
         console.log("disconnection", clients);
     });
 
