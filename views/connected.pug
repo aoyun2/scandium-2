@@ -251,6 +251,8 @@ html
             const userID = "#{userID}";
             const serverID = "#{server}";
             
+            let channelmedia = [];
+            
             window.addEventListener('error', (event) => {
                 displayError(event.message);
             });
@@ -630,7 +632,8 @@ html
                     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
                 } catch(e) {console.log(e); return false;}
             }
-
+            
+            const CLOUDINARY_REGEX = /^.+\.cloudinary\.com\/(?:[^\/]+\/)(?:(image|video)\/)?(?:(upload|fetch)\/)?(?:(?:[^_/]+_[^,/]+,?)*\/)?(?:v(\d+|\w{1,2})\/)?([^\.^\s]+)(?:\.(.+))?$/;
             function createAttachments(m_a) {
                 var attachments = document.createElement('div');
                 m_a.forEach(a => {
@@ -646,6 +649,9 @@ html
                             //image.setAttribute("src", a.url);
                             //image.src = "lazyloadplaceholder.gif";
                             attachments.appendChild(image);
+                            const matches = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches[4]);
+                            console.log(matches[4]);
                             observer.observe(image);
                             break;
                         case "data:video":
@@ -658,6 +664,9 @@ html
                             video.muted = true;
                             video.loop = true;
                             attachments.appendChild(video);
+                            const matches = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches[4]);
+                            console.log(matches[4]);
                             observer.observe(video);
                             break;
                         case "data:audio":
@@ -666,6 +675,9 @@ html
                             audio.src = a.url;
                             audio.controls = true;
                             attachments.appendChild(audio);
+                            const matches = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches[4]);
+                            console.log(matches[4]);
                             observer.observe(audio);
                             break;
                         default:
@@ -682,6 +694,9 @@ html
                                 }
                             }
                             attachments.appendChild(file);
+                            const matches = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches[4]);
+                            console.log(matches[4]);
                             observer.observe(file);
                             break;
                     }
@@ -703,6 +718,9 @@ html
                     //thumbnail.src = "lazyloadplaceholder.gif";
                     thumbnail.alt = `Epic embed fail.`;
                     embed.appendChild(thumbnail);
+                    const matches = CLOUDINARY_REGEX.exec(e.thumbnail);
+                    channelmedia.push(matches[4]);
+                    console.log(matches[4]);
                     observer.observe(thumbnail);
                 }
 
@@ -738,6 +756,9 @@ html
                     //image.src = "lazyloadplaceholder.gif";
                     image.alt = `Epic embed fail.`;
                     embed.appendChild(image);
+                    const matches = CLOUDINARY_REGEX.exec(e.image);
+                    channelmedia.push(matches[4]);
+                    console.log(matches[4]);
                     observer.observe(image);
                 }
 
@@ -751,6 +772,9 @@ html
                     video.muted = true;
                     video.loop = true;
                     embed.appendChild(video);
+                    const matches = CLOUDINARY_REGEX.exec(e.video);
+                    channelmedia.push(matches[4]);
+                    console.log(matches[4]);
                     observer.observe(video);
                 }
 
