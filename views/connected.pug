@@ -649,9 +649,9 @@ html
                             //image.setAttribute("src", a.url);
                             //image.src = "lazyloadplaceholder.gif";
                             attachments.appendChild(image);
-                            const matches = CLOUDINARY_REGEX.exec(a.url);
-                            channelmedia.push(matches[4]);
-                            console.log(matches[4]);
+                            const matches1 = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches1[4]);
+                            console.log(matches1[4]);
                             observer.observe(image);
                             break;
                         case "data:video":
@@ -664,9 +664,9 @@ html
                             video.muted = true;
                             video.loop = true;
                             attachments.appendChild(video);
-                            const matches = CLOUDINARY_REGEX.exec(a.url);
-                            channelmedia.push(matches[4]);
-                            console.log(matches[4]);
+                            const matches2 = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches2[4]);
+                            console.log(matches2[4]);
                             observer.observe(video);
                             break;
                         case "data:audio":
@@ -675,9 +675,9 @@ html
                             audio.src = a.url;
                             audio.controls = true;
                             attachments.appendChild(audio);
-                            const matches = CLOUDINARY_REGEX.exec(a.url);
-                            channelmedia.push(matches[4]);
-                            console.log(matches[4]);
+                            const matches3 = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches3[4]);
+                            console.log(matches3[4]);
                             observer.observe(audio);
                             break;
                         default:
@@ -694,9 +694,9 @@ html
                                 }
                             }
                             attachments.appendChild(file);
-                            const matches = CLOUDINARY_REGEX.exec(a.url);
-                            channelmedia.push(matches[4]);
-                            console.log(matches[4]);
+                            const matches4 = CLOUDINARY_REGEX.exec(a.url);
+                            channelmedia.push(matches4[4]);
+                            console.log(matches4[4]);
                             observer.observe(file);
                             break;
                     }
