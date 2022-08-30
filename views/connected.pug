@@ -618,10 +618,10 @@ html
                 requestDebounce = true;
                 channelEnd = false;
                 
-                channelmedia.forEach(a => {
+                /*channelmedia.forEach(a => {
                     console.log(a);
                     socket.emit('cloudinary_delete_media', a);
-                });
+                });*/
                 
                 channelmedia = [];
 
@@ -1227,18 +1227,14 @@ html
 
             socket.on("disconnect", () => {
                 displayError("WebSocket is disconnected. As a result, you cannot send or recieve messages. Please refresh the page to reconnect.")
-                channelmedia.forEach(a => {
-                    console.log(a);
-                    socket.emit('cloudinary_delete_media', a);
-                });
             });
             
-            window.onbeforeunload = function() {
+            /*window.onbeforeunload = function() {
                 channelmedia.forEach(a => {
                     console.log(a);
                     socket.emit('cloudinary_delete_media', a);
                 });
-            }
+            }*/
 
             // displayError("hi")
 
