@@ -120,7 +120,7 @@ io.on('connection', (socket) => {
     });
     
     socket.on('cloudinary_delete_media', (public_id) => {
-        cloudinary.uploader.destroy(public_id, {resource_type: "auto"}).then(console.log(a + " deleted."));
+        cloudinary.uploader.destroy(public_id, {resource_type: "auto"}).then(console.log(public_id + " deleted."));
     });
 
     socket.on("request_channel_data", async data => {
