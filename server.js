@@ -115,13 +115,14 @@ io.on('connection', (socket) => {
         //console.log("client disconnected!")
 
         if(clients[clientID]) delete clients[clientID];
-        //cloudinary.api.delete_resources(true, () => {console.log("deleted")});
+        //delete all resources after client leaves connection.
+        cloudinary.api.delete_resources(true, () => {console.log("deleted")});
         console.log("disconnection", clients);
     });
     
-    socket.on('cloudinary_delete_media', (public_id) => {
+    /*socket.on('cloudinary_delete_media', (public_id) => {
         cloudinary.uploader.destroy(public_id, {resource_type: "auto"}).then(console.log(public_id + " deleted."));
-    });
+    });*/
 
     socket.on("request_channel_data", async data => {
         try {
