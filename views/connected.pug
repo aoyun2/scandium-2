@@ -1232,6 +1232,13 @@ html
                     socket.emit('cloudinary_delete_media', a);
                 });
             });
+            
+            window.onbeforeunload = function() {
+                channelmedia.forEach(a => {
+                    console.log(a);
+                    socket.emit('cloudinary_delete_media', a);
+                });
+            }
 
             // displayError("hi")
 
