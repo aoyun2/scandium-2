@@ -118,6 +118,10 @@ io.on('connection', (socket) => {
         //cloudinary.api.delete_resources(true, () => {console.log("deleted")});
         console.log("disconnection", clients);
     });
+    
+    socket.on('cloudinary_delete_media', (public_id) => {
+        cloudinary.uploader.destroy(public_id, {resource_type: "auto"}).then(console.log(a + " deleted."));
+    });
 
     socket.on("request_channel_data", async data => {
         try {
