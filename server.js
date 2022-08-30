@@ -116,7 +116,10 @@ io.on('connection', (socket) => {
 
         if(clients[clientID]) delete clients[clientID];
         //delete all resources after client leaves connection.
-        cloudinary.api.delete_resources(true, () => {console.log("deleted")});
+        //cloudinary.api.delete_resources(true, () => {console.log("deleted")});
+        cloudinary.api.delete_all_resources({resource_type: 'iamge'}).then(result=>console.log(result));
+        cloudinary.api.delete_all_resources({resource_type: 'video'}).then(result=>console.log(result));
+        cloudinary.api.delete_all_resources({resource_type: 'raw'}).then(result=>console.log(result));
         console.log("disconnection", clients);
     });
     
