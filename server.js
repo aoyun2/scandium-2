@@ -117,11 +117,15 @@ io.on('connection', (socket) => {
         if(clients[clientID]) delete clients[clientID];
         //delete all resources after client leaves connection.
         //cloudinary.api.delete_resources(true, () => {console.log("deleted")});
+        console.log("disconnection", clients);
+    });
+    
+    setInterval(function() {
+        // delete all files in cloudinary every minute
         cloudinary.api.delete_all_resources({resource_type: 'image'}).then(result=>console.log(result));
         cloudinary.api.delete_all_resources({resource_type: 'video'}).then(result=>console.log(result));
         cloudinary.api.delete_all_resources({resource_type: 'raw'}).then(result=>console.log(result));
-        console.log("disconnection", clients);
-    });
+    }, 1 * 60 * 1000);
     
     /*socket.on('cloudinary_delete_media', (public_id) => {
         cloudinary.uploader.destroy(public_id, {resource_type: "auto"}).then(console.log(public_id + " deleted."));
