@@ -120,7 +120,7 @@ io.on('connection', (socket) => {
         console.log("disconnection", clients);
     });
     
-    setInterval(function() {
+    let cloudinaryCleanup = setInterval(function() {
         // delete all files in cloudinary every minute
         cloudinary.api.delete_all_resources({resource_type: 'image'}).then(result=>console.log(result));
         cloudinary.api.delete_all_resources({resource_type: 'video'}).then(result=>console.log(result));
@@ -133,6 +133,7 @@ io.on('connection', (socket) => {
 
     socket.on("request_channel_data", async data => {
         try {
+            clearInterval(cloudinaryCleanup);
             await rateLimiter.consume(socket.id); 
             // console.log(data)
 
@@ -159,6 +160,13 @@ io.on('connection', (socket) => {
             botModule.fetchMessages(clients[clientID].info.userID, s, c, data.before, clientID).then(dat => {
                 if(dat) socket.emit("channel_history", dat);
             });
+            
+            cloudinaryCleanup = setInterval(function() {
+                // delete all files in cloudinary every minute
+                cloudinary.api.delete_all_resources({resource_type: 'image'}).then(result=>console.log(result));
+                cloudinary.api.delete_all_resources({resource_type: 'video'}).then(result=>console.log(result));
+                cloudinary.api.delete_all_resources({resource_type: 'raw'}).then(result=>console.log(result));
+            }, 1 * 60 * 1000);
         } catch(rejRes) {
               // no available points to consume
               // emit error or warning message
@@ -193,12 +201,19 @@ io.on('connection', (socket) => {
 
     socket.on('fetch_reply_JSON', async data => {
         try {
+            clearInterval(cloudinaryCleanup);
             await rateLimiter.consume(socket.id); 
             socket.emit('reply_JSON',
                 {
                     JSON: await botModule.fetchMessage(clients[clientID].info.server, clients[clientID].info.channel.id, data.id),
                     messageID: data.messageID
                 });
+            cloudinaryCleanup = setInterval(function() {
+                // delete all files in cloudinary every minute
+                cloudinary.api.delete_all_resources({resource_type: 'image'}).then(result=>console.log(result));
+                cloudinary.api.delete_all_resources({resource_type: 'video'}).then(result=>console.log(result));
+                cloudinary.api.delete_all_resources({resource_type: 'raw'}).then(result=>console.log(result));
+            }, 1 * 60 * 1000);
         } catch(rejRes) {
               // no available points to consume
               // emit error or warning message
