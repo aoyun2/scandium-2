@@ -17,6 +17,7 @@ cloudinary.config({
   api_key: '872353469981167', 
   api_secret: 'rWp3DlMU0wF1TunsDR31rJJV-R8' 
 });
+const CLOUDINARY_REGEX = /^.+\.cloudinary\.com\/(?:[^\/]+\/)(?:(image|video)\/)?(?:(upload|fetch)\/)?(?:(?:[^_/]+_[^,/]+,?)*\/)?(?:v(\d+|\w{1,2})\/)?([^\.^\s]+)(?:\.(.+))?$/;
 
 // inline reply code ------------------------------ //
 /*const { APIMessage, Webhook, Structures, Client } = require("discord.js");
@@ -231,6 +232,10 @@ async function processMessage(m) {
 				if (!error) resolve(result.secure_url);
 			});
 		});
+		
+		setTimeout(() => {
+			cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(url), function(result) { console.log(result) });
+		}, 1.5 * 60 * 1000);
 
 		// console.log(res.headers.get("Content-Disposition"));
 		files.push({
@@ -260,6 +265,10 @@ async function processMessage(m) {
 					if (!error) resolve(result.secure_url);
 				});
 			});
+			
+			setTimeout(() => {
+				cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(url), function(result) { console.log(result) });
+			}, 1.5 * 60 * 1000);
 			
 			efiles.push({
 				name: name,
@@ -291,6 +300,10 @@ async function processMessage(m) {
 					}
 				});
 			});
+			
+			setTimeout(() => {
+				cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(b64_image), function(result) { console.log(result) });
+			}, 1.5 * 60 * 1000);
 		}
 		
 		//memory leak?
@@ -315,6 +328,10 @@ async function processMessage(m) {
 						if (!error) resolve(result.secure_url);
 					});
 				});
+				
+				setTimeout(() => {
+					cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(b64_video), function(result) { console.log(result) });
+				}, 1.5 * 60 * 1000);
 				//console.log(id);
 				//if (id) cloudinary.uploader.destroy(id, {resource_type: 'video'}, function(result) { console.log(result) });
 				
@@ -345,6 +362,10 @@ async function processMessage(m) {
 					if (!error) resolve(result.secure_url);
 				});
 			});
+			
+			setTimeout(() => {
+				cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(b64_thumbnail), function(result) { console.log(result) });
+			}, 1.5 * 60 * 1000);
 		}
 
 		var embedRules = {
