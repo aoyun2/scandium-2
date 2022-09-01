@@ -329,11 +329,11 @@ html
                 if (i.nodeName == "IMG") {
                     i.setAttribute('src', i.getAttribute("data-src"));
                     i.addEventListener("load", function () {
-                        messagediv.scrollTop += i.parentNode.parentNode.clientHeight;
+                        messagediv.scrollTop += i.closest(".message").clientHeight;
                     }, {once: true}, false);
                 } else if (i.nodeName == "VIDEO") {
                     i.addEventListener("loadeddata", function () {
-                        messagediv.scrollTop += i.parentNode.parentNode.videoHeight;
+                        messagediv.scrollTop += i.closest(".message").clientHeight;
                     }, {once: true}, false);
                 }
                 observer.unobserve(i);
