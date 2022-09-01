@@ -232,7 +232,7 @@ async function processMessage(m) {
 				if (!error) resolve(result.secure_url);
 			});
 		});
-		
+		console.log(CLOUDINARY_REGEX.exec(url));
 		setTimeout(() => {
 			cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(url), function(result) { console.log(result) });
 		}, 1.5 * 60 * 1000);
