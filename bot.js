@@ -234,7 +234,7 @@ async function processMessage(m) {
 		});
 		//console.log(CLOUDINARY_REGEX.exec(url));
 		setTimeout(() => {
-			cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(url)[4], { resource_type: "auto" }, function(result) { console.log(result) });
+			cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(url)[4], { resource_type: name }, function(result) { console.log(result) });
 		}, 1.5 * 60 * 1000);
 
 		// console.log(res.headers.get("Content-Disposition"));
@@ -267,7 +267,7 @@ async function processMessage(m) {
 			});
 			
 			setTimeout(() => {
-				cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(url)[4], { resource_type: "auto" }, function(result) { console.log(result) });
+				cloudinary.uploader.destroy(CLOUDINARY_REGEX.exec(url)[4], { resource_type: name }, function(result) { console.log(result) });
 			}, 1.5 * 60 * 1000);
 			
 			efiles.push({
@@ -292,13 +292,10 @@ async function processMessage(m) {
 			//let res = await fetch(e.image.url);
 			//let b64 = (await (res).buffer()).toString('base64')
 			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
-			let name;
-			
 			b64_image = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(e.image.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
 					//console.log(result, error)
 					if (!error) {
-						name = result.resource_type;
 						resolve(result.secure_url);
 					}
 				});
@@ -325,12 +322,9 @@ async function processMessage(m) {
 					res.body.on("error", reject);
 					fileStream.on("finish", resolve);
 				});*/
-				let name;
 				b64_video = await new Promise(resolve => {
 				    	cloudinary.uploader.upload_large(e.video.url, { resource_type: "video", chunk_size: 6000000 }, function(error, result) {
-						//console.log(result, error)
-						name = result.resource_type;
-						
+						//console.log(result, error)						
 						if (!error) resolve(result.secure_url);
 					});
 				});
@@ -361,12 +355,9 @@ async function processMessage(m) {
 			//let res = await fetch(e.thumbnail.url);
 			//let b64 = (await (res).buffer()).toString('base64')
 			//let url = `data:${res.headers.get("Content-Type")};base64,${b64}`;
-			let name;
 			b64_thumbnail = await new Promise(resolve => {
 				cloudinary.uploader.upload_large(e.thumbnail.url, { resource_type: "image", chunk_size: 6000000 }, function(error, result) {
-					//console.log(result, error)
-					name = result.resource_type;
-					
+					//console.log(result, error)					
 					if (!error) resolve(result.secure_url);
 				});
 			});
