@@ -325,7 +325,7 @@ html
 
             function preloadImage(i) {
                 //console.log(i.getAttribute('src'))
-                
+                if(!i.closest(".message")) return;
                 if (i.nodeName == "IMG") {
                     i.setAttribute('src', i.getAttribute("data-src"));
                     i.addEventListener("load", function () {
