@@ -329,11 +329,11 @@ html
                 if (i.nodeName == "IMG") {
                     i.setAttribute('src', i.getAttribute("data-src"));
                     i.addEventListener("load", function () {
-                        messagediv.scrollTop += i.parentNode.clientHeight;
+                        messagediv.scrollTop += i.parentNode.parentNode.clientHeight;
                     }, {once: true}, false);
                 } else if (i.nodeName == "VIDEO") {
                     i.addEventListener("loadeddata", function () {
-                        messagediv.scrollTop += i.parentNode.videoHeight;
+                        messagediv.scrollTop += i.parentNode.parentNode.videoHeight;
                     }, {once: true}, false);
                 }
                 observer.unobserve(i);
@@ -952,7 +952,7 @@ html
                 message.appendChild(content);
                 message.appendChild(attachments);
                 messageObject.embeds.forEach(e => {
-                   message.appendChild(createEmbed(e)); 
+                   message.appendChild(createEmbed(e));
                 });
                 message.appendChild(document.createElement('p'));
                 message.classList.add('message');
