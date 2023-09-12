@@ -17,7 +17,7 @@ function request() {
 	return new Promise((success, fuckedup) => {   
 		const options = {
 		    host: 'api.tenor.com',
-		    path: '/v1/search?q=headpat&key=TDTPDQSBTRRA',
+		    path: '/v1/search?q=anime+headpat&key=TDTPDQSBTRRA',
 		};
 
 		https.get(options, (resp) => {
