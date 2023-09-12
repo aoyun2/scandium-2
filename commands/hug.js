@@ -56,12 +56,12 @@ module.exports.run = async (bot,message,args) => {
         return await message.channel.send(exampleEmbed2);
     }
   
-    if (args.length != 1) {
+    /*if (args.length != 1) {
         const exampleEmbed2 = new Discord.MessageEmbed()
           .setColor('#ff0000')
           .setTitle(`Invalid command structure.`);
         return await message.channel.send(exampleEmbed2);
-    }
+    }*/
   
     let requestedperson = args.join(" ");
     let person = message.guild.members.cache.find(member => member.displayName.toLowerCase().includes(requestedperson.toLowerCase()));
