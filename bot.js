@@ -115,7 +115,7 @@ fs.readdir("./commands/", (err, files) => {
 })
 
 bot.on("ready", async () => {
-	bot.user.setActivity("with aoyun");
+	bot.user.setActivity("Terraria with aoyun");
 })
 
 bot.on("message", async (message) => {
