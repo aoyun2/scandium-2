@@ -120,7 +120,7 @@ var weightsprefix = [0.05, 0.1, 0.5, 0.2, 0.25, 0.4, 0.6, 0.8, 1];
 
 function randomgame() {
 	var random = Math.random();
-	int index = 0;
+	var index = 0;
 	for (var w of weightsprefix) {
 		if (random <= w) break;
 		index++;
