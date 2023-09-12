@@ -17,7 +17,7 @@ function request() {
 	return new Promise((success, fuckedup) => {   
 		const options = {
 		    host: 'api.tenor.com',
-		    path: '/v1/search?q=slap&key=TDTPDQSBTRRA',
+		    path: '/v1/search?q=anime+slap&key=TDTPDQSBTRRA',
 		};
 
 		https.get(options, (resp) => {
