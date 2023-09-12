@@ -6,6 +6,7 @@ const { toHTML } = require("./ModifiedDiscordParser.js");
 const fetch = require("node-fetch");
 const { Server } = require("https");
 const prefix = botSettings.prefix;
+const token = process.env.token;
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
@@ -114,7 +115,7 @@ fs.readdir("./commands/", (err, files) => {
 })
 
 bot.on("ready", async () => {
-	bot.user.setActivity("Melty Blood Actress Again: Current Code");
+	bot.user.setActivity("with aoyun");
 })
 
 bot.on("message", async (message) => {
@@ -147,7 +148,7 @@ bot.on('rateLimit', (info) => {
 	serverModule.error("RATE_LIMIT_EXCEEDED: Discord's internal rate limit has been hit. Things may be slow for a while.", null);
 })
 
-bot.login(botSettings.token);
+bot.login(token);
 
 // mentions
 
@@ -773,7 +774,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 			},
 			{
 				headers: {
-					Authorization: 'Bot ' + botSettings.token
+					Authorization: 'Bot ' + token
 				}
 			}
 		);
