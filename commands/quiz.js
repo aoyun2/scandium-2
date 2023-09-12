@@ -96,7 +96,7 @@ module.exports.run = async (bot, message, args) => {
             return await message.channel.send(exampleEmbed2);
           }
           //let equation = buildTree(difficulty).toString();
-          let m = await message.reply("Please wait...");
+          let m = await message.reply("Please wait <a:catLoading:1151282729267245057>");
           module.exports.users.push((message.author.id.toString())+':'+(message.channel.id.toString()));
           const browser = await puppeteer.launch({args: [
                 '--no-sandbox',
