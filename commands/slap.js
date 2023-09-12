@@ -64,7 +64,7 @@ module.exports.run = async (bot,message,args) => {
     }*/
   
     let requestedperson = args.join(" ");
-    let person = message.guild.members.cache.find(member => member.displayName.toLowerCase().equals(requestedperson.toLowerCase()));
+    let person = message.guild.members.cache.find(member => member.displayName.toLowerCase() === (requestedperson.toLowerCase()));
     if (!person)
     {   
 	    person = message.guild.members.cache.find(member => member.displayName.toLowerCase().includes(requestedperson.toLowerCase()));
