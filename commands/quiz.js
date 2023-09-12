@@ -96,7 +96,7 @@ module.exports.run = async (bot, message, args) => {
             return await message.channel.send(exampleEmbed2);
           }
           //let equation = buildTree(difficulty).toString();
-          let m = await message.reply("Please wait <a:catLoading:1151282729267245057>");
+          let m = await message.reply("Please wait, fetching problem <a:catLoading:1151282729267245057>");
           module.exports.users.push((message.author.id.toString())+':'+(message.channel.id.toString()));
           const browser = await puppeteer.launch({args: [
                 '--no-sandbox',
@@ -160,7 +160,7 @@ module.exports.run = async (bot, message, args) => {
 
           await joiner('./quizimages/', './quizimages/g.png')
 
-          m.delete(500);
+          m.delete();
            const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor("#A3A6E8")
               .setTitle(`You have ${args[0]} min. to do this problem`)
@@ -251,7 +251,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
 
-    name: "quiz",
+    name: "amc",
     desc: "ggf",
     personalThoughts: "anhh"
 
