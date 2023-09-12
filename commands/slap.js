@@ -63,7 +63,7 @@ module.exports.run = async (bot,message,args) => {
         return await message.channel.send(exampleEmbed2);
     }
   
-    let requestedperson = String(args);
+    let requestedperson = args.join(" ");
     let person = message.guild.members.cache.find(member => member.displayName.toLowerCase().includes(requestedperson.toLowerCase()));
     if (!person)
     {
