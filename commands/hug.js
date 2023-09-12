@@ -81,7 +81,7 @@ module.exports.run = async (bot,message,args) => {
     }
     else if(person.id === message.author.id)
     {
-	    await message.channel.send(`Cannot headpat yourself.`);
+	    await message.channel.send(`Cannot hug yourself.`);
 	    return; 
     }
 
