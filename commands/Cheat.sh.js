@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-        const language = args[0], query = args[1].replace(' ', '+');
+        const language = args.shift(), query = args.join('+');//.replace(' ', '+');
 
         const e = new Discord.MessageEmbed()
             .setColor('#A3A6E8')
