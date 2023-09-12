@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args) => {
         var getAsync = util.promisify(client.get).bind(client);
         
         var data = await getAsync(message.author.id);
-        console.log(data)
+        console.log("Dataregister: " + data)
         if(data) {
             const exampleEmbed2 = new Discord.MessageEmbed()
                     .setColor('#ff0000')
