@@ -148,7 +148,11 @@ bot.on("message", async (message) => {
 	if (!message.content.includes(prefix) /*|| message.author.bot*/) { return; }
 	//console.log(message);
 	var command = message.content.split(/\s+/g)[0];
-	var args = message.content.replace(`${command} `, '').split('|');
+	var args = message.content.replace(`${command} `, '').split(/\s+/g);
+
+	console.log(command);
+	console.log(args);
+	
 	if (args.includes(command)) args = [];
 
 	var cmd = await bot.commands.get(command.replace(prefix, ''));
