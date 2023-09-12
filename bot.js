@@ -114,8 +114,31 @@ fs.readdir("./commands/", (err, files) => {
 	})
 })
 
+var games = ["Terraria", "Guilty Gear -Strive-", "Muse Dash", "Clip Studio Paint", "Honkai: Star Rail", "doing homework", "with aoyun", "sleeping", "eating"];
+//0.05 for games, 0.15 for hw and 0.2 for other
+var weightsprefix = [0.05, 0.1, 0.5, 0.2, 0.25, 0.4, 0.6, 0.8, 1];
+
+function randomgame() {
+	var random = Math.random();
+	int index = 0;
+	for (var w of weightsprefix) {
+		if (random <= w) break;
+		index++;
+	}
+
+	return games[index];
+}
+
 bot.on("ready", async () => {
-	bot.user.setActivity("Terraria with aoyun");
+	bot.user.setActivity(randomgame());
+	
+	(function loop() {
+	    var rand = Math.round(Math.random() * (7.2e6 - 1.8e6)) + 1.8e6;
+	    setTimeout(function() {
+	            bot.user.setActivity(randomgame());
+	            loop();
+	    }, rand);
+	}());
 })
 
 bot.on("message", async (message) => {
