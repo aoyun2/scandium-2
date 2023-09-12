@@ -55,7 +55,7 @@ module.exports.run = async (bot, message, args) => {
             const exampleEmbed2 = new Discord.MessageEmbed()
                     .setColor('#ff0000')
                     .setTitle("Already registered")
-                    .setDescription(`You can login [here](https://scandium-2.herokuapp.com/) with the credentials:\n\n
+                    .setDescription(`You can login [here](https://scandium.onrender.com/) with the credentials:\n\n
             UserID: \`${message.author.id}\`\n
             Password: ||\`${data}\`||`);
     
