@@ -64,17 +64,28 @@ module.exports.run = async (bot,message,args) => {
     }*/
   
     let requestedperson = args.join(" ");
-    let person = message.guild.members.cache.find(member => member.displayName.toLowerCase().includes(requestedperson.toLowerCase()));
+
+    let person = message.guild.members.cache.find(member => member.displayName.toLowerCase().equals(requestedperson.toLowerCase()));
     if (!person)
-    {
-	    await message.channel.send(`Invalid person.`);
-	    return;
+    {   
+	    person = message.guild.members.cache.find(member => member.displayName.toLowerCase().includes(requestedperson.toLowerCase()));
+	    if (!person)
+	    {
+		    await message.channel.send(`Invalid person.`);
+		    return;
+	    }
+	    else if(person.id === message.author.id)
+	    {
+		    await message.channel.send(`Cannot headpat yourself.`);
+		    return; 
+	    }
     }
     else if(person.id === message.author.id)
     {
 	    await message.channel.send(`Cannot headpat yourself.`);
 	    return; 
     }
+
 
     let gif = await rtenor();
 	
