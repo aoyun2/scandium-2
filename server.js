@@ -10,7 +10,7 @@ const serverhttp = require('http').createServer(app).listen(process.env.PORT || 
     console.log(`server is listening on port ${process.env.PORT || 3001}`);
 })
 setInterval(function() {
-    require("http").get("http://scandium-2.herokuapp.com/");
+    require("http").get("http://scandium.onrender.com/");
 }, 300000); // every 5 minutes (300000)
 
 const io = require('socket.io')(serverhttp);
@@ -51,11 +51,13 @@ app.post('/connect', async (request, response) => {
 
         // if (userPass === undefined || uID === undefined) return false;
         // else return true;
-        const client = redis.createClient(process.env.REDIS_URL || "redis://red-ck0861821fec73dpcfrg:6379");
+        const client = redis.createClient("redis://red-ck0861821fec73dpcfrg:6379");
         const util = require("util");
         var getAsync = util.promisify(client.get).bind(client);
                 
         var data = await getAsync(ID);
+
+        console.log("Data: " + data);
 
         client.quit();
 
