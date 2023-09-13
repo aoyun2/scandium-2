@@ -3,12 +3,12 @@ const https = require('https');
 
 module.exports.name = "talk";
 
-async function fetchmessages(channel, limit = 100) {
+async function fetchmessages(channel, limit = 50) {
     const sum_messages = [];
     let last_id;
 
     while (true) {
-	const options = { limit: 100 };
+	const options = { limit: 50 };
 	if (last_id) {
 	    options.before = last_id;
 	}
