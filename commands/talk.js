@@ -20,7 +20,7 @@ module.exports.run = async (bot,message,args) => {
     });
     
     const options = {
-		    host: 'https://api.pawan.krd',
+		    host: 'api.pawan.krd',
 		    path: '/v1/chat/completions',
         headers: {
           "Content-Type": 'application/json',
