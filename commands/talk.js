@@ -21,7 +21,7 @@ module.exports.run = async (bot,message,args) => {
     
     const options = {
 		host: 'api.pawan.krd',
-		path: '/v1/chat/completions',
+		path: '/pai-001-light-beta/v1',
 		headers: {
 			"Content-Type": 'application/json',
 			Authorization: 'Bearer pk-RntcqFvvxYKasPLoSbAkgogyfwMXKgmNDLxcPdrzEVcwtWCJ'
