@@ -8,7 +8,7 @@ async function fetchmessages(channel, limit = 100) {
     let last_id;
 
     while (true) {
-	const options = { limit: 100 };
+	const options = { limit: 10 };
 	if (last_id) {
 	    options.before = last_id;
 	}
@@ -34,7 +34,7 @@ module.exports.run = async (bot,message,args) => {
 	}
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
-	var context = 'Use the following messages as context:\n';
+	var context = '';
 	for(m of msgs) {
 		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
@@ -51,7 +51,7 @@ module.exports.run = async (bot,message,args) => {
 	
 	gpt({
 	    prompt: context,
-	    model: "gpt-3",                         // code or model
+	    model: 6,                         // code or model
 	    type: "json"                            // optional: "json" or "markdown"
 	}, (err, data) => {
 	    if(err != null){
