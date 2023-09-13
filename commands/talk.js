@@ -34,7 +34,7 @@ module.exports.run = async (bot,message,args) => {
 	}
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
-	var context = 'Use these messages as context: \n';
+	var context = 'You are Scandium-chan, a white-haired 16 year old anime girl. Use these messages as context: \n';
 	for(m of msgs) {
 		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
@@ -44,7 +44,7 @@ module.exports.run = async (bot,message,args) => {
 	context += (message.author.username + ": " + args.join(" "));
 
 	const mb = (await message.guild).members.cache.find(member => member.id === message.author.id);
-	context += `\nRespond to ${message.author.username} as if you were an anime girl.`;
+	context += `Scandium: `;
 	console.log(context);
 	
 	const { gpt } = require("gpti");
