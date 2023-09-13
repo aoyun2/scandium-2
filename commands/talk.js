@@ -51,7 +51,7 @@ module.exports.run = async (bot,message,args) => {
 	
 	gpt({
 	    prompt: context,
-	    model: "gpt-3.5-turbo",                         // code or model
+	    model: "gpt-3",                         // code or model
 	    type: "json"                            // optional: "json" or "markdown"
 	}, (err, data) => {
 	    if(err != null){
