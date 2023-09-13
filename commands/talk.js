@@ -3,7 +3,7 @@ const https = require('https');
 
 module.exports.name = "talk";
 
-async function fetchmessages(channel, limit = 300) {
+async function fetchmessages(channel, limit = 100) {
     const sum_messages = [];
     let last_id;
 
