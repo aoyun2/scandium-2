@@ -32,6 +32,8 @@ module.exports.run = async (bot,message,args) => {
 		.setTitle(`Invalid command structure.`);
 		return await message.channel.send(exampleEmbed2);
 	}
+
+	message.channel.startTyping();
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
 
@@ -65,6 +67,7 @@ module.exports.run = async (bot,message,args) => {
 	        console.log(err);
 	    } else {
 	        console.log(data);
+		message.channel.stopTyping();
 		message.channel.send(data.gpt);
 	    }
 	});
