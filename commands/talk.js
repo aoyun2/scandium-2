@@ -46,7 +46,7 @@ The following is a conversation between several users and an anime girl named Sc
 		context += (m.author.username + ": " + c + '\n');
 	}
 
-	Context += "This is the current message to Scandium: \n";
+	context += "This is the current message to Scandium: \n";
 	context += (message.author.username + ": " + args.join(" ")) + "\n";
 
 	const mb = (await message.guild).members.cache.find(member => member.id === message.author.id);
