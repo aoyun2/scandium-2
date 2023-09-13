@@ -20,18 +20,15 @@ module.exports.run = async (bot,message,args) => {
     });
     
     const options = {
-		    host: 'api.pawan.krd',
-		    path: '/v1/chat/completions',
-        headers: {
-          "Content-Type": 'application/json',
-          Authorization: 'Bearer pk-RntcqFvvxYKasPLoSbAkgogyfwMXKgmNDLxcPdrzEVcwtWCJ'
-        }
-		};
+		host: 'api.pawan.krd',
+		path: '/v1/chat/completions',
+		headers: {
+			"Content-Type": 'application/json',
+			Authorization: 'Bearer pk-RntcqFvvxYKasPLoSbAkgogyfwMXKgmNDLxcPdrzEVcwtWCJ'
+		}
+	};
     
     var req = https.request(options, (res) => {
-	console.log('statusCode:', res.statusCode);
-	console.log('headers:', res.headers);
-	
 	var data = "";
 	
 	// this event fires many times, each time collecting another piece of the response
