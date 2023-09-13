@@ -8,7 +8,7 @@ async function fetchmessages(channel, limit = 200) {
     let last_id;
 
     while (true) {
-	const options = { limit: 10 };
+	const options = { limit: 50 };
 	if (last_id) {
 	    options.before = last_id;
 	}
