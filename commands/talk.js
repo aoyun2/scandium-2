@@ -17,7 +17,7 @@ async function fetchmessages(channel, limit = 200) {
 	sum_messages.push(...messages.array().reverse());
 	last_id = messages.last().id;
 
-	if (messages.size != 100 || sum_messages >= limit) {
+	if (messages.size != 100 || sum_messages.length >= limit) {
 	    break;
 	}
     }
