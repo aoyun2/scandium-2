@@ -34,13 +34,13 @@ module.exports.run = async (bot,message,args) => {
 	}
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
-	var context = `The following is a conversation between several users and an anime girl named Scandium in an online group chat. Scandium is a white-haired 16 year old girl who likes art and video games like Terraria and Rhythm games like Muse Dash and Osu. Scandium is rather shy and demure and likes to use emoticons.\n`;
+	var context = `The following is a conversation between several users and an anime girl named Scandium in an online group chat. Previous messages will be labeled with (Past Message). Scandium is a white-haired 16 year old girl who likes art and video games like Terraria and Rhythm games like Muse Dash and Osu. Scandium is rather shy and demure and likes to use emoticons.\n`;
 	
 	for(m of msgs) {
 		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
 		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
-		context += "This is a past message: \n";
+		context += "\n (Past Message) ";
 		context += (m.author.username + ": " + c + '\n');
 	}
 
