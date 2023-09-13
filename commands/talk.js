@@ -41,7 +41,7 @@ The following is a conversation between several users and an anime girl named Sc
 	for(m of msgs) {
 		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
-		var c = (m.content.startswith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
+		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
 		context += "This is a past message: \n";
 		context += (m.author.username + ": " + c + '\n');
 	}
