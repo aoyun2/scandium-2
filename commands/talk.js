@@ -38,13 +38,13 @@ module.exports.run = async (bot,message,args) => {
 	for(m of msgs) {
 		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
-		context += (m.author.name + ": " + m.content + '\n');
+		context += (m.author.username + ": " + m.content + '\n');
 	}
 
-	context += (message.author.name + ": " + args.join(" "));
+	context += (message.author.username + ": " + args.join(" "));
 
 	const mb = (await message.guild).members.cache.find(member => member.id === message.author.id);
-	context += `\nRespond to ${message.author.name} like an anime girl.`;
+	context += `\nRespond to ${message.author.username} like an anime girl.`;
 	console.log(context);
 	
 	const { gpt } = require("gpti");
