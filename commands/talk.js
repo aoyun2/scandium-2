@@ -3,26 +3,45 @@ const https = require('https');
 
 module.exports.name = "talk";
 
+async function fetchmessages(channel, limit = 300) {
+    const sum_messages = [];
+    let last_id;
+
+    while (true) {
+	const options = { limit: 100 };
+	if (last_id) {
+	    options.before = last_id;
+	}
+
+	const messages = await channel.fetchMessages(options);
+	sum_messages.push(...messages.array());
+	last_id = messages.last().id;
+
+	if (messages.size != 100 || sum_messages >= limit) {
+	    break;
+	}
+    }
+
+    return sum_messages;
+}
+
 module.exports.run = async (bot,message,args) => {
    	// import { gpt } from "gpti";
+	var msgs = await fetchmessages(message.channel);
+	var context = '';
+	for(m of msgs) {
+		const member = await m.guild.member(m.author);
+		context += (member.displayName + ": " + m.content + '\n');
+	}
+
+	const mb = await message.guild.member(message.author);
+	context += `Respond to ${mb.displayName} like an anime girl`;
+	console.log(context);
+	
 	const { gpt } = require("gpti");
 	
 	gpt({
-	    prompt: `aoyun: too late now?
-Raindaggers: why was the hw so long bro
-seal stack: bc it is
-aoyun: @EpicLava
-EpicLava: maybe i'll join for like 20 minutes
-aoyun: bet
-triangularnotes22: Do we even need to do the hw correctly
-Raindaggers: no shot she's cehcking it unl;ess she got infinite time glitch
-triangularnotes22: I wish we could just submit random photos
-EpicLava: ms kopatic said every once in a while we will have an in-person homework check
-aoyun: 💀 bro is going through wormholes to grade the stats hw
-aoyun: ill join but im programming the bot rn
-Raindaggers: jaeho
-aoyun: How long is epiclava joining for?
-Respond to aoyun like an anime girl.`,
+	    prompt: context,
 	    model: "gpt-4",                         // code or model
 	    type: "json"                            // optional: "json" or "markdown"
 	}, (err, data) => {
@@ -30,6 +49,7 @@ Respond to aoyun like an anime girl.`,
 	        console.log(err);
 	    } else {
 	        console.log(data);
+		await message.channel.send(data);
 	    }
 	});
 }
