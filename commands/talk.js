@@ -34,7 +34,7 @@ module.exports.run = async (bot,message,args) => {
 	}
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
-	var context = '';
+	var context = 'Use the following messages as context:\n';
 	for(m of msgs) {
 		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
@@ -51,7 +51,7 @@ module.exports.run = async (bot,message,args) => {
 	
 	gpt({
 	    prompt: context,
-	    model: "gpt-4",                         // code or model
+	    model: "gpt-3.5-turbo",                         // code or model
 	    type: "json"                            // optional: "json" or "markdown"
 	}, (err, data) => {
 	    if(err != null){
