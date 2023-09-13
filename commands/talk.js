@@ -8,7 +8,7 @@ async function fetchmessages(channel, limit = 100) {
     let last_id;
 
     while (true) {
-	const options = { limit: 10 };
+	const options = { limit: 100 };
 	if (last_id) {
 	    options.before = last_id;
 	}
@@ -44,7 +44,7 @@ module.exports.run = async (bot,message,args) => {
 	context += (message.author.username + ": " + args.join(" "));
 
 	const mb = (await message.guild).members.cache.find(member => member.id === message.author.id);
-	context += `\nRespond to ${message.author.username} like an anime girl.`;
+	context += `\nRespond to ${message.author.username} as if you were an anime girl.`;
 	console.log(context);
 	
 	const { gpt } = require("gpti");
