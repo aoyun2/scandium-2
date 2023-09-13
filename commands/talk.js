@@ -21,7 +21,8 @@ EpicLava: ms kopatic said every once in a while we will have an in-person homewo
 aoyun: 💀 bro is going through wormholes to grade the stats hw
 aoyun: ill join but im programming the bot rn
 Raindaggers: jaeho
-aoyun: How long is epiclava joining for?`,
+aoyun: How long is epiclava joining for?
+Respond to aoyun's question.`,
 	    model: "gpt-4",                         // code or model
 	    type: "json"                            // optional: "json" or "markdown"
 	}, (err, data) => {
