@@ -31,7 +31,7 @@ module.exports.run = async (bot,message,args) => {
 	var context = '';
 	for(m of msgs) {
 		const member = await m.guild.member(m.author);
-		context += (member.displayName + ": " + m.content + '\n');
+		context += ((member.displayName || m.author.name) + ": " + m.content + '\n');
 	}
 
 	const mb = await message.guild.member(message.author);
