@@ -49,7 +49,7 @@ module.exports.run = async (bot,message,args) => {
 	        console.log(err);
 	    } else {
 	        console.log(data);
-		await message.channel.send(data);
+		message.channel.send(data);
 	    }
 	});
 }
