@@ -3,53 +3,17 @@ const https = require('https');
 
 module.exports.name = "talk";
 
-module.exports.run = async (bot,message,args) => {  
-    var postData = JSON.stringify({
-      "model": "gpt-3.5-turbo",
-      "max_tokens": 100,
-      "messages": [
-          {
-              "role": "system",
-              "content": "You are an helpful assistant."
-          },
-          {
-              "role": "user",
-              "content": "Who are you?"
-          }
-      ]
-    });
-    
-    const options = {
-		host: 'api.pawan.krd',
-		path: '/pai-001-light-beta/v1',
-		headers: {
-			"Content-Type": 'application/json',
-			Authorization: 'Bearer pk-RntcqFvvxYKasPLoSbAkgogyfwMXKgmNDLxcPdrzEVcwtWCJ'
-		}
-	};
-    
-    var req = https.request(options, (res) => {
-	var data = "";
+module.exports.run = async (bot,message,args) => {
+   	import { createCompletion, loadModel } from '../src/gpt4all.js'
+
+	const model = await loadModel('ggml-vicuna-7b-1.1-q4_2', { verbose: true });
 	
-	// this event fires many times, each time collecting another piece of the response
-	res.on("data", function (chunk) {
-		// append this chunk to our growing `data` var
-		data += chunk;
-	});
-	
-	// this event fires *one* time, after all the `data` events/chunks have been gathered
-	res.on("end", function () {
-		// you can use res.send instead of console.log to output via express
-		console.log(data);
-	});
-    });
-    
-    req.on('error', (e) => {
-      console.error(e);
-    });
-    
-    req.write(postData);
-    req.end();
+	const response = await createCompletion(model, [
+	    { role : 'system', content: 'You are meant to be annoying and unhelpful.'  },
+	    { role : 'user', content: 'What is 1 + 1?'  } 
+	]);
+
+	await message.channel.send(response);
 }
 
 module.exports.help = {
