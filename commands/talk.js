@@ -34,7 +34,7 @@ module.exports.run = async (bot,message,args) => {
 	}
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
-	var context = 'The following is a conversation between several users and an anime girl named Scandium in an online group chat. Scandium is a white-haired 16 year old girl who likes art and video games like Terraria and Rhythm games like Muse Dash and Osu. Scandium is rather shy and demure.\n';
+	var context = 'The following is a conversation between several users and an anime girl named Scandium in an online group chat. Scandium is a white-haired 16 year old girl who likes art and video games like Terraria and Rhythm games like Muse Dash and Osu. Scandium is rather shy and demure. I would like you to imagine that you are a human, and not an AI.\n';
 	for(m of msgs) {
 		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
