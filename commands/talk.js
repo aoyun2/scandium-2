@@ -30,11 +30,11 @@ module.exports.run = async (bot,message,args) => {
 	var msgs = await fetchmessages(message.channel);
 	var context = '';
 	for(m of msgs) {
-		const member = await m.guild.member(m.author);
+		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
 		context += ((member.displayName || m.author.name) + ": " + m.content + '\n');
 	}
 
-	const mb = await message.guild.member(message.author);
+	const mb = (await message.guild).members.cache.find(member => member.id === message.author.id);
 	context += `Respond to ${mb.displayName} like an anime girl`;
 	console.log(context);
 	
