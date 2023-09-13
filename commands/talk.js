@@ -4,7 +4,7 @@ const https = require('https');
 module.exports.name = "talk";
 
 module.exports.run = async (bot,message,args) => {
-   	import { createCompletion, loadModel } from '../src/gpt4all.js'
+   	import { createCompletion, loadModel } = require('../src/gpt4all.js');
 
 	const model = await loadModel('ggml-vicuna-7b-1.1-q4_2', { verbose: true });
 	
