@@ -4,16 +4,20 @@ const https = require('https');
 module.exports.name = "talk";
 
 module.exports.run = async (bot,message,args) => {
-   	const { createCompletion, loadModel } = require('../src/gpt4all.js');
-
-	const model = await loadModel('ggml-vicuna-7b-1.1-q4_2', { verbose: true });
+   	// import { gpt } from "gpti";
+	const { gpt } = require("gpti");
 	
-	const response = await createCompletion(model, [
-	    { role : 'system', content: 'You are meant to be annoying and unhelpful.'  },
-	    { role : 'user', content: 'What is 1 + 1?'  } 
-	]);
-
-	await message.channel.send(response);
+	gpt({
+	    prompt: "hello gpt, tell me what your version is?",
+	    model: "gpt-4",                         // code or model
+	    type: "json"                            // optional: "json" or "markdown"
+	}, (err, data) => {
+	    if(err != null){
+	        console.log(err);
+	    } else {
+	        console.log(data);
+	    }
+	});
 }
 
 module.exports.help = {
