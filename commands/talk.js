@@ -29,13 +29,22 @@ module.exports.run = async (bot,message,args) => {
 		};
     
     var req = https.request(options, (res) => {
-      console.log('statusCode:', res.statusCode);
-      console.log('headers:', res.headers);
-    
-      res.on('data', (d) => {
-        console.log(d);
-        //await message.channel.send(`Invalid person.`);
-      });
+	console.log('statusCode:', res.statusCode);
+	console.log('headers:', res.headers);
+	
+	var data = "";
+	
+	// this event fires many times, each time collecting another piece of the response
+	http_res.on("data", function (chunk) {
+		// append this chunk to our growing `data` var
+		data += chunk;
+	});
+	
+	// this event fires *one* time, after all the `data` events/chunks have been gathered
+	http_res.on("end", function () {
+		// you can use res.send instead of console.log to output via express
+		console.log(data);
+	});
     });
     
     req.on('error', (e) => {
