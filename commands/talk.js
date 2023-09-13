@@ -26,16 +26,25 @@ async function fetchmessages(channel, limit = 300) {
 }
 
 module.exports.run = async (bot,message,args) => {
+	if (args.length < 1) {
+		const exampleEmbed2 = new Discord.MessageEmbed()
+		.setColor('#ff0000')
+		.setTitle(`Invalid command structure.`);
+		return await message.channel.send(exampleEmbed2);
+	}
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
 	var context = '';
 	for(m of msgs) {
+		if (m.id === message.id) continue;
 		const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
-		context += ((member.displayName || m.author.name) + ": " + m.content + '\n');
+		context += (m.author.name + ": " + m.content + '\n');
 	}
 
+	context += (message.author.name + ": " + args.join(" "));
+
 	const mb = (await message.guild).members.cache.find(member => member.id === message.author.id);
-	context += `Respond to ${mb.displayName} like an anime girl`;
+	context += `Respond to ${message.author.name} like an anime girl`;
 	console.log(context);
 	
 	const { gpt } = require("gpti");
