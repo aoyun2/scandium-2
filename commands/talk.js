@@ -44,7 +44,7 @@ module.exports.run = async (bot,message,args) => {
 	context += (message.author.name + ": " + args.join(" "));
 
 	const mb = (await message.guild).members.cache.find(member => member.id === message.author.id);
-	context += `Respond to ${message.author.name} like an anime girl`;
+	context += `\nRespond to ${message.author.name} like an anime girl.`;
 	console.log(context);
 	
 	const { gpt } = require("gpti");
@@ -58,7 +58,7 @@ module.exports.run = async (bot,message,args) => {
 	        console.log(err);
 	    } else {
 	        console.log(data);
-		message.channel.send(data);
+		message.channel.send(data.gpt);
 	    }
 	});
 }
