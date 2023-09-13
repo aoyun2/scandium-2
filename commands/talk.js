@@ -55,7 +55,7 @@ module.exports.run = async (bot,message,args) => {
 	//context += "\nThis is the current message to Scandium: \n";
 	context += (message.author.username + ": " + args.join(" ")) + "\n";
 	context += "\nScandium: ";
-	console.log(context);
+	//console.log(context);
 	
 	const { gpt } = require("gpti");
 	
@@ -67,7 +67,7 @@ module.exports.run = async (bot,message,args) => {
 	    if(err != null){
 	        console.log(err);
 	    } else {
-	        console.log(data);
+	        //console.log(data);
 		message.channel.stopTyping();
 		message.channel.send(data.gpt);
 	    }
