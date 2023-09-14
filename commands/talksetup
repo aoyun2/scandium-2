@@ -22,7 +22,7 @@ module.exports.run = async (bot,message,args) => {
         }
     }
   
-    message.channel.setTopic("Chat with Scandium! Don't remove the token below, or set it to another channel, or you will have to reset the talk channel for this server!\n153ea853-d8ff-4117-b55e-10f25c340b97");
+    message.channel.setTopic("Chat with Scandium! Don't remove the token below, or set it to another channel, or you will have to reset the talk channel for this server!\n93a803f0-385d-495c-a5c1-b73c9bff975d");
 }
 
 module.exports.help = {
