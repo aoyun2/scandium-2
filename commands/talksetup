@@ -1,0 +1,34 @@
+const Discord = require("discord.js"); 
+const https = require('https');
+
+module.exports.name = "talksetup";
+
+module.exports.run = async (bot,message,args) => {  
+    if (message.channel instanceof Discord.DMChannel) {
+        const exampleEmbed2 = new Discord.MessageEmbed()
+          .setColor('#ff0000')
+          .setTitle(`This command is not allowed in DMs`);
+        return await message.channel.send(exampleEmbed2);
+    }
+
+    var channels = message.guild.channels.cache.filter(ch => ch.deleted == false && ch.type === 'text' && ch.topic);
+    
+    for (var textChat of channels) {
+        if (textChat.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d") {
+              const exampleEmbed2 = new Discord.MessageEmbed()
+                .setColor('#ff0000')
+                .setTitle(`Scandium chat already set up in ${textChat.toString()}`);
+              return await message.channel.send(exampleEmbed2);
+        }
+    }
+  
+    message.channel.setTopic("Chat with Scandium! Don't remove the token below, or set it to another channel, or you will have to reset the talk channel for this server!\n153ea853-d8ff-4117-b55e-10f25c340b97");
+}
+
+module.exports.help = {
+
+    name:"talksetup",
+    desc: "sets up the talk channel",
+    personalThoughts: "pat"
+
+}
