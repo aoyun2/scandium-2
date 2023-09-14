@@ -147,6 +147,14 @@ bot.on("message", async (message) => {
 
 	if (!message.content.includes(prefix) /*|| message.author.bot*/) { return; }
 	//console.log(message);
+	if (message.channel.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d")) {
+		var cmd = await bot.commands.get("talk");
+		if (cmd) {
+			await cmd.run(bot, message, message.content.split(/\s+/g));
+			return;
+		}
+	}
+	
 	var command = message.content.split(/\s+/g)[0];
 	var args = message.content.replace(`${command} `, '').split(/\s+/g);
 
