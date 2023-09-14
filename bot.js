@@ -153,7 +153,7 @@ bot.on("message", async (message) => {
 		}
 	}
 	
-	if (!message.bot && content.includes(prefix) /*|| message.author.bot*/) { return; }
+	if (content.includes(prefix) /*|| message.author.bot*/) { return; }
 	//console.log(message);
 	
 	var command = message.content.split(/\s+/g)[0];
