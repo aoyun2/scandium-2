@@ -145,7 +145,7 @@ bot.on("message", async (message) => {
 	// console.log(message)
 	if(message.guild) serverModule.broadcastMessage(await processMessage(message), { server: message.guild.id, channel: message.channel.id });
 
-	if (!message.message.channel.topic && message.channel.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d")) {
+	if (!message.bot && message.channel.topic && message.channel.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d")) {
 		var cmd = await bot.commands.get("talk");
 		if (cmd) {
 			await cmd.run(bot, message, message.content.split(/\s+/g));
