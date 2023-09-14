@@ -66,6 +66,7 @@ module.exports.run = async (bot,message,args) => {
 	}, (err, data) => {
 	    if(err != null){
 	        console.log(err);
+		message.channel.stopTyping();
 	    } else {
 	        //console.log(data);
 		message.channel.stopTyping();
