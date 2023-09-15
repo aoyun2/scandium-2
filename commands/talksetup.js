@@ -12,19 +12,19 @@ module.exports.run = async (bot,message,args) => {
     }
 
     var channels = message.guild.channels.cache.filter(c => (c.type === 'text'));
-    
-    for (var textChat of channels) {
-        console.log(textChat.topic);
-        if (textChat && textChat.topic && textChat.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d")) {
+
+    channels.forEach(c => {
+        console.log(c.topic);
+        if (c && c.topic && c.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d")) {
             console.log("already setup");
               const exampleEmbed2 = new Discord.MessageEmbed()
                 .setColor('#ff0000')
-                .setTitle(`Scandium chat already set up in ${textChat.toString()}`);
+                .setTitle(`Scandium chat already set up in ${c.toString()}`);
               return await message.channel.send(exampleEmbed2);
         }
-    }
-  
-    message.channel.setTopic("\nChat with Scandium! Don't remove the token below, or set it to another channel, or you will have to reset the talk channel for this server!\n93a803f0-385d-495c-a5c1-b73c9bff975d");
+    })
+    
+    message.channel.setTopic((message.channel.topic ? message.channel.topic : "") + "\nChat with Scandium! Don't remove the token below, or set it to another channel, or you will have to reset the talk channel for this server!\n93a803f0-385d-495c-a5c1-b73c9bff975d");
     const exampleEmbed21 = new Discord.MessageEmbed()
           .setColor('#00ff7f')
           .setTitle(`Scandium chat has been set to this channel.`);
