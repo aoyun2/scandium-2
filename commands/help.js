@@ -2,6 +2,8 @@ const Discord = module.require("discord.js");
 const botSettings = require("../botsettings.json");
 const prefix = botSettings.prefix;
 
+module.exports.name = "help";
+
 module.exports.run = async (bot, message, args) => {
      const exampleEmbed2 = new Discord.RichEmbed()
         .setColor('#A3A6E8')
