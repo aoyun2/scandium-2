@@ -20,7 +20,7 @@ module.exports.run = async (bot,message,args) => {
               const exampleEmbed2 = new Discord.MessageEmbed()
                 .setColor('#ff0000')
                 .setTitle(`Scandium chat already set up in ${c.toString()}`);
-              return await message.channel.send(exampleEmbed2);
+              return message.channel.send(exampleEmbed2);
         }
     })
     
