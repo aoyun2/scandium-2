@@ -11,14 +11,14 @@ module.exports.name = "latex";
 
 module.exports.run = async (bot, message, args) => {
     if (message.channel instanceof Discord.DMChannel) {
-        const exampleEmbed2 = new Discord.RichEmbed()
+        const exampleEmbed2 = new Discord.MessageEmbed()
           .setColor('#ff0000')
           .setTitle(`This command is not allowed in DMs`);
         return await message.channel.send(exampleEmbed2);
     }
   
     if (!args || args.length > 2 || args.length < 1) {
-      const exampleEmbed2 = new Discord.RichEmbed()
+      const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor('#ff0000')
               .setTitle(`Invalid command structure.`);
       return await message.channel.send(exampleEmbed2); 
@@ -95,7 +95,7 @@ module.exports.run = async (bot, message, args) => {
         const latex = await page.$(`#math > p:nth-child(2) > img`);
         await latex.screenshot({path: `f.png`}); 
         
-        const exampleEmbed2 = new Discord.RichEmbed()
+        const exampleEmbed2 = new Discord.MessageEmbed()
                 //.setTitle(`${message.author.username}:`)
                 .setColor('#A3A6E8')
                 .attachFiles([`f.png`])
@@ -107,7 +107,7 @@ module.exports.run = async (bot, message, args) => {
         //await message.delete(10);
       
     } catch(e) {
-        const exampleEmbed2 = new Discord.RichEmbed()
+        const exampleEmbed2 = new Discord.MessageEmbed()
               .setColor('#ff0000')
               .setTitle(`Aborted.`);
         msg.delete(10);
