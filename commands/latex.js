@@ -7,6 +7,8 @@ function sleep(ms) {
     });
 }
 
+module.exports.name = "latex";
+
 module.exports.run = async (bot, message, args) => {
     if (message.channel instanceof Discord.DMChannel) {
         const exampleEmbed2 = new Discord.RichEmbed()
