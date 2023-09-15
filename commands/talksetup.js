@@ -15,6 +15,7 @@ module.exports.run = async (bot,message,args) => {
     
     for (var textChat of channels) {
         if (textChat && textChat.topic && textChat.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d")) {
+            console.log("already setup");
               const exampleEmbed2 = new Discord.MessageEmbed()
                 .setColor('#ff0000')
                 .setTitle(`Scandium chat already set up in ${textChat.toString()}`);
