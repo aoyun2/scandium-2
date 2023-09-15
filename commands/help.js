@@ -5,7 +5,7 @@ const prefix = botSettings.prefix;
 module.exports.name = "help";
 
 module.exports.run = async (bot, message, args) => {
-     const exampleEmbed2 = new Discord.RichEmbed()
+     const exampleEmbed2 = new Discord.MessageEmbed()
         .setColor('#A3A6E8')
         .setTitle("Command Structure:")
         .setDescription(`\`${prefix}<command name> <parameter 1>|<parameter 2>| ... |<parameter n>\`\n
