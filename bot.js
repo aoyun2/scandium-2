@@ -172,7 +172,7 @@ bot.on("message", async (message) => {
 });
 
 bot.on("messageUpdate", async (m_old, m_new) => {
-	if(!message.guild) return;
+	if(!m_old.guild || !m_new.guild) return;
 	serverModule.broadcastMessageEdit(await processMessage(m_new), { server: m_new.guild.id, channel: m_new.channel.id }, m_old.id);
 });
 
