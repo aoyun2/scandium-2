@@ -172,10 +172,12 @@ bot.on("message", async (message) => {
 });
 
 bot.on("messageUpdate", async (m_old, m_new) => {
+	if(!message.guild) return;
 	serverModule.broadcastMessageEdit(await processMessage(m_new), { server: m_new.guild.id, channel: m_new.channel.id }, m_old.id);
 });
 
 bot.on("messageDelete", async (message) => {
+	if(!message.guild) return;
 	serverModule.broadcastMessageDelete(message.id, { server: message.guild.id, channel: message.channel.id });
 });
 
