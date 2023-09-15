@@ -166,7 +166,11 @@ bot.on("message", async (message) => {
 
 	var cmd = await bot.commands.get(command.replace(prefix, ''));
 	//console.log(command, args, cmd);
-	if (cmd) {
+	if (cmd && cmd === "latex") {
+		let args = message.content.replace(`${command} `, '').split('|');
+  		if (args.includes(command)) args = [];
+	}
+	else if (cmd) {
 		await cmd.run(bot, message, args);
 	}
 });
