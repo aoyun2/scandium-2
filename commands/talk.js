@@ -55,7 +55,7 @@ module.exports.run = async (bot,message,args) => {
 	//context += "\nThis is the current message to Scandium: \n";
 	context += (message.author.username + ": " + args.join(" ")) + "\n";
 	context += "\nScandium: ";
-	console.log(context);
+	//console.log(context);
 	
 	const { gpt } = require("gpti");
 	
