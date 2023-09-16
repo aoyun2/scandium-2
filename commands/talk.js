@@ -51,7 +51,7 @@ module.exports.run = async (bot,message,args) => {
 		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
 		context += `\n Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}. This is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}, remember this information and use it to form Scandium's response:  \n`;
 
-		const repliedTo;
+		var repliedTo;
 		if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
 		context += (m.author.username + (repliedTo ? ", replying to " + repliedTo.author.username : "") + ": " + c + '\n');
 	}
