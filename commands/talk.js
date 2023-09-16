@@ -49,7 +49,7 @@ module.exports.run = async (bot,message,args) => {
 		if (m.id === message.id) continue;
 		//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
 		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
-		context += `\n This is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}, remember this information and use it to form Scandium's response:  \n`;
+		context += `\n Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}. This is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}, remember this information and use it to form Scandium's response:  \n`;
 		context += (m.author.username + (m.reference ? ", replying to " + m.reference.author.username : "") + ": " + c + '\n');
 	}
 	//context += "\nThis is the current message to Scandium: \n";
