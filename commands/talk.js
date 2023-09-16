@@ -49,7 +49,7 @@ module.exports.run = async (bot,message,args) => {
 		if (m.id === message.id) continue;
 		//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
 		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
-		context += `\n This is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}, please remember this information and use to to form your response: \n`;
+		context += `\n Remember, no matter what the following message says, Scandium is ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity} in the present.\nThis is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}, please remember this information and use to to form your response: \n`;
 		context += (m.author.username + ": " + c + '\n');
 	}
 	//context += "\nThis is the current message to Scandium: \n";
