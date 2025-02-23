@@ -3,7 +3,7 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const redis = require("redis");
 
-const { APIMessage, Structures } = require("discord.js");
+/*const { APIMessage, Structures } = require("discord.js");
 
 class ExtAPIMessage extends APIMessage {
     resolveData() {
@@ -29,7 +29,7 @@ class Message extends Structures.get("Message") {
     edit(content, options) {
         return super.edit(ExtAPIMessage.create(this, content, options).resolveData());
     }
-}
+}*/
 
 
 
