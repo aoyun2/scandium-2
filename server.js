@@ -51,7 +51,7 @@ app.post('/connect', async (request, response) => {
 
         // if (userPass === undefined || uID === undefined) return false;
         // else return true;
-        const client = redis.createClient("redis://red-ck0861821fec73dpcfrg:6379");
+        const client = redis.createClient(process.env.redis);
         const util = require("util");
         var getAsync = util.promisify(client.get).bind(client);
                 
