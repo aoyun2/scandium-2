@@ -45,7 +45,7 @@ module.exports.run = async (bot, message, args) => {
     // console.log(usersObj)
     if (message.author.bot) return await message.reply("Bots cannot register for a Scandium account.");
     try {
-        const client = redis.createClient(process.env.REDIS_URL || "redis://red-ck0861821fec73dpcfrg:6379");
+        const client = redis.createClient(process.env.redis || "redis://red-ck0861821fec73dpcfrg:6379");
         const util = require("util");
         var getAsync = util.promisify(client.get).bind(client);
         
