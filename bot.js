@@ -1,13 +1,17 @@
 const botSettings = require("./botsettings.json");
 const serverModule = require("./server.js");
-const Discord = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const fs = require("fs");
 const { toHTML } = require("./ModifiedDiscordParser.js");
 const fetch = require("node-fetch");
 const { Server } = require("https");
 const prefix = botSettings.prefix;
 const token = process.env.token;
-const bot = new Discord.Client();
+const bot = new Client({
+  intents: Object.keys(GatewayIntentBits).map((a)=>{
+    return GatewayIntentBits[a]
+  }),
+});
 bot.commands = new Discord.Collection();
 
 const _buffer = require("buffer");
