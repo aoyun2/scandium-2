@@ -192,6 +192,8 @@ bot.on('rateLimit', (info) => {
 })
 
 bot.login(token);
+print(token);
+print(process.env.redis);
 
 // mentions
 
