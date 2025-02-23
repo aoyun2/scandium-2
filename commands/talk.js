@@ -74,7 +74,6 @@ module.exports.run = async (bot,message,args) => {
 		message.channel.sendTyping();
 	    } else {
 	        //console.log(data);
-		message.channel.stopTyping();
 		message.channel.send(data.gpt);
 	    }
 	});
