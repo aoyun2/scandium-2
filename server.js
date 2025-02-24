@@ -21,9 +21,9 @@ const { Client } = require("./node_modules/socket.io/dist/client.js");
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({ 
-  cloud_name: 'dqottiw6v', 
-  api_key: '872353469981167', 
-  api_secret: 'rWp3DlMU0wF1TunsDR31rJJV-R8' 
+  cloud_name: process.env.cloud_name, 
+  api_key: process.env.cloud_key, 
+  api_secret: process.env.cloud_secret 
 });
 
 app.set('view engine', 'pug');
