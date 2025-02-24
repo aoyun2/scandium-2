@@ -129,6 +129,10 @@ function randomgame() {
 	return games[index];
 }
 
+bot.login(process.env.token);
+console.log(token);
+console.log(process.env.redis);
+
 bot.on("ready", async () => {
 	bot.user.setActivity(randomgame());
 	
@@ -190,10 +194,6 @@ bot.on('rateLimit', (info) => {
   	console.log(`Rate limit hit ${info.timeDifference ? info.timeDifference : info.timeout ? info.timeout: 'Unknown timeout '}`)
 	serverModule.error("RATE_LIMIT_EXCEEDED: Discord's internal rate limit has been hit. Things may be slow for a while.", null);
 })
-
-bot.login(token);
-console.log(token);
-console.log(process.env.redis);
 
 // mentions
 
