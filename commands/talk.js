@@ -33,7 +33,7 @@ module.exports.run = async (bot,message,args) => {
 		return await message.channel.send(exampleEmbed2);
 	}
 
-	message.channel.sendTyping();
+	message.channel.startTyping();
    	// import { gpt } from "gpti";
 	var msgs = await fetchmessages(message.channel);
 
@@ -71,8 +71,10 @@ module.exports.run = async (bot,message,args) => {
 	}, (err, data) => {
 	    if(err != null){
 	        console.log(err);
+		message.channel.stopTyping();
 	    } else {
 	        //console.log(data);
+		message.channel.stopTyping();
 		message.channel.send(data.gpt);
 	    }
 	});
