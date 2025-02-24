@@ -7,11 +7,7 @@ const fetch = require("node-fetch");
 const { Server } = require("https");
 const prefix = botSettings.prefix;
 const token = process.env.token;
-const bot = new Discord.Client({
-  intents: Object.keys(Discord.GatewayIntentBits).map((a)=>{
-    return Discord.GatewayIntentBits[a]
-  }),
-});
+const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
 const _buffer = require("buffer");
