@@ -49,7 +49,7 @@ module.exports.run = async (bot,message,args) => {
 		//if (m.id === message.id) continue;
 		//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
 		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
-		context += `\nThe following text is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:  \n`;
+		context += `\nThe following line is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}  \n`;
 
 		var repliedTo;
 		if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
