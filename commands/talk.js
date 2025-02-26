@@ -29,14 +29,14 @@ async function fetchmessages(channel, limit = 25) {
 
 module.exports.run = async (bot,message,args) => {
 	try {
+		message.channel.sendTyping();
+
 		if (args.length < 1) {
 			const exampleEmbed2 = new Discord.MessageEmbed()
 			.setColor('#ff0000')
 			.setTitle(`Invalid command structure.`);
 			return await message.channel.send(exampleEmbed2);
 		}
-
-		message.channel.sendTyping();
 		// import { gpt } from "gpti";
 		var msgs = await fetchmessages(message.channel);
 
