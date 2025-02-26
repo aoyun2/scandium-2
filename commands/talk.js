@@ -1,6 +1,7 @@
 const Discord = require("discord.js"); 
 const fs = require('fs');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { OrganicResult, search } = require("google-sr");
 
 module.exports.name = "talk";
 
@@ -57,28 +58,36 @@ module.exports.run = async (bot,message,args) => {
 	}
 	//context += "\nThis is the current message to Scandium: \n";
 	//context += (message.author.username + ": " + args.join(" ")) + "\n";
-	context += "\n Write Scandium's response below: \n";
-	context += "\nScandium: ";
 	//console.log(context);
 	
 	try {
 		const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
-		const model = genAI.getGenerativeModel({
-			model: "gemini-2.0-flash",
-			tools: [{ 
-				googleSearch: {
-					dynamicThreshold: 0.06
-				}
-			}],
+		const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
+
+		const s = await model.generateContent("Can you generate a Google search query related to this conversation?\n" + context);
+		console.log(s.response.text());
+		const queryResult = await search({
+			query: s.response.text(),
+			// OrganicResult is the default, however it is recommended to ALWAYS specify the result type
+			resultTypes: [OrganicResult],
+		});
+		// will return a SearchResult[]
+		context += "\n Here is some context for you to generate Scandium's response: \n"
+		queryResult.forEach(a => {
+			context += a.description + '\n';
 		});
 
-		const prompt = context;
+		console.log(context)
 
+		context += "\n Write Scandium's response below: \n";
+		context += "\nScandium: ";
+		const prompt = context;
 		const result = await model.generateContent(prompt);
 		//console.log(result.response.text());
 		message.channel.send(result.response.text());
 	} catch (e) {
 		message.channel.send("[message error]");
+		console.log(e);
 	}
 }
 
