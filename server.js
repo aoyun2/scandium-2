@@ -18,14 +18,6 @@ const { v4: uuidv4 } = require('uuid');
 const { Channel, User } = require("discord.js");
 const { Client } = require("./node_modules/socket.io/dist/client.js");
 
-const cloudinary = require('cloudinary').v2;
-
-cloudinary.config({ 
-  cloud_name: process.env.cloud_name, 
-  api_key: process.env.cloud_key, 
-  api_secret: process.env.cloud_secret 
-});
-
 app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({
     extended: true
@@ -51,11 +43,12 @@ app.post('/connect', async (request, response) => {
 
         // if (userPass === undefined || uID === undefined) return false;
         // else return true;
-        const client = redis.createClient(process.env.redis);
-        const util = require("util");
-        var getAsync = util.promisify(client.get).bind(client);
+        const client = redis.createClient({url: process.env.redis});
+        await client.connect()
+        //const util = require("util");
+        //var getAsync = util.promisify(client.get).bind(client);
                 
-        var data = await getAsync(ID);
+        var data = await client.get(ID);
 
         console.log("Data: " + data);
 
@@ -147,7 +140,7 @@ io.on('connection', (socket) => {
                 }
             }
 
-            if (!clients[clientID].info.channel.permissions.includes("READ_MESSAGE_HISTORY")) {
+            if (!clients[clientID].info.channel.permissions.includes("ReadMessageHistory")) {
                 // // error
                 // // console.log(clients[clientID].info.channel.permissions, "can't read")
                 socket.emit("error", "Could not load messages. You may not have the permission READ_MESSAGE_HISTORY in this channel.");
@@ -212,7 +205,7 @@ io.on('connection', (socket) => {
     socket.on('client_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+            if (!clients[clientID].info.channel.permissions.includes("SendMessages")) {
                 // error
                 socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
                 return;
@@ -234,7 +227,7 @@ io.on('connection', (socket) => {
     socket.on('reply_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+            if (!clients[clientID].info.channel.permissions.includes("SendMessages")) {
                 // error
                 socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
                 return;
@@ -257,7 +250,7 @@ io.on('connection', (socket) => {
     socket.on('edit_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            if (!clients[clientID].info.channel.permissions.includes("SEND_MESSAGES")) {
+            if (!clients[clientID].info.channel.permissions.includes("SendMessages")) {
                 // error
                 socket.emit("error", "Error sending message. You may not have the permission SEND_MESSAGES in this channel.");
                 return;
@@ -279,7 +272,7 @@ io.on('connection', (socket) => {
     socket.on('delete_message', async data => {
         try {
             await rateLimiter.consume(socket.id); 
-            if (!clients[clientID].info.channel.permissions.includes("MANAGE_MESSAGES")) {
+            if (!clients[clientID].info.channel.permissions.includes("ManageMessages")) {
                 // error
                 socket.emit("error", "Could not delete message. You may not have the permission MANAGE_MESSAGES in this channel.");
                 return;

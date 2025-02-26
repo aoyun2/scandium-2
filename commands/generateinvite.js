@@ -8,12 +8,18 @@ module.exports.run = async (bot, message, args) => {
             permissions: [8],
         });
 
-        const e = new Discord.MessageEmbed()
+        const e = new Discord.EmbedBuilder()
             .setColor('#A3A6E8')
             .setTitle("Invite Scandium to your server:")
             .setDescription(link);
-        await message.channel.send(e);
+        await message.channel.send({ embeds: [e] });
     } catch (e) {
         console.log(e.stack);
     }
+}
+
+module.exports.help = {
+    name: "invite",
+    desc: "invite the bot to your server",
+    parameters: "",
 }

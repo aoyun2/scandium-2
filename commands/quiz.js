@@ -47,10 +47,10 @@ const joiner = async(inDir, outFile, bufferBetween=10)=> {
 module.exports.run = async (bot, message, args) => {
     try {
           if (message.channel instanceof Discord.DMChannel) {
-            const exampleEmbed2 = new Discord.MessageEmbed()
+            const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle(`This command is not allowed in DMs`);
-            return await message.channel.send(exampleEmbed2);
+            return await message.channel.send({embeds: [exampleEmbed2]});
           }
 
           let TreeNode = function(left, right, operator) {
@@ -83,20 +83,20 @@ module.exports.run = async (bot, message, args) => {
               return new TreeNode(leftSubTree, rightSubTree, op);
           }
           if (module.exports.users.includes((message.author.id.toString())+':'+(message.channel.id.toString()))) {
-            const exampleEmbed2 = new Discord.MessageEmbed()
+            const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle(`A quiz is in progress already.`);
-            return await message.channel.send(exampleEmbed2);
+            return await message.channel.send({embeds: [exampleEmbed2]});
           }
 
           if (args.length !== 1 || args[0] > 60 || isNaN(parseInt(args[0]))) {
-            const exampleEmbed2 = new Discord.MessageEmbed()
+            const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle(`Invalid command structure.`);
-            return await message.channel.send(exampleEmbed2);
+            return await message.channel.send({embeds: [exampleEmbed2]});
           }
           //let equation = buildTree(difficulty).toString();
-          let m = await message.reply("Please wait, fetching problem <a:catLoading:1151282729267245057>");
+          let m = await message.reply("Please wait <a:loading:1344161904062496829>");
           module.exports.users.push((message.author.id.toString())+':'+(message.channel.id.toString()));
           const browser = await puppeteer.launch({args: [
                 '--no-sandbox',
@@ -105,12 +105,12 @@ module.exports.run = async (bot, message, args) => {
 
           const page = await browser.newPage();
 
-          let years = [2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002]
+          let years = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002]
           let ab = ['A', 'B']
           let year = years[Math.floor(Math.random() * years.length)];
           let letter = ab[Math.floor(Math.random() * 2)];
           let problem = randomNumberRange(1, 25);
-          let randomlink = `https://artofproblemsolving.com/wiki/index.php/${year}_AMC_10${letter}_Problems/Problem_${problem}`;
+          let randomlink = `https://artofproblemsolving.com/wiki/index.php/${year}_AMC_12${letter}_Problems/Problem_${problem}`;
           await page.goto(randomlink, {
                     timeout: 60000
           })
@@ -135,7 +135,7 @@ module.exports.run = async (bot, message, args) => {
               const problemNodes = [];
               problem.forEach((x) => {
                   problemNodes.push(`${x}|${nodeT.indexOf(x, start+1)+1}`);
-                  nodeT.splice(nodeT.indexOf(x, start+1), 1, "gay");
+                  nodeT.splice(nodeT.indexOf(x, start+1), 1, "no");
               });
               return problemNodes;
           });
@@ -161,10 +161,9 @@ module.exports.run = async (bot, message, args) => {
           await joiner('./quizimages/', './quizimages/g.png')
 
           m.delete();
-           const exampleEmbed2 = new Discord.MessageEmbed()
+           const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor("#A3A6E8")
               .setTitle(`You have ${args[0]} min. to do this problem`)
-              .attachFiles([`./quizimages/g.png`])
               .setImage(`attachment://g.png`);
             let answerslink = `https://artofproblemsolving.com/wiki/index.php/${year}_AMC_10${letter}_Answer_Key`
             await page.goto(answerslink, {
@@ -175,7 +174,7 @@ module.exports.run = async (bot, message, args) => {
             const element = await page.$(`#mw-content-text>div>ol>li:nth-child(${problem})`);
             let answer = await (await element.getProperty('textContent')).jsonValue();
 
-            let msg = await message.channel.send(exampleEmbed2);
+            let msg = await message.channel.send({embeds: [exampleEmbed2], files: [`./quizimages/g.png`]});
 
             switch (answer) {
                 case 'A':
@@ -214,45 +213,43 @@ module.exports.run = async (bot, message, args) => {
               .then(collected => {
                   const reaction = collected.first();
                   if (reaction.emoji.name === answer) {
-                      const exampleEmbed2 = new Discord.MessageEmbed()
+                      const exampleEmbed2 = new Discord.EmbedBuilder()
                         .setColor('#A3A6E8')
                         .setTitle("Correct!")
                         .setDescription(`You can find the problem here: ${randomlink}`)
-                      message.channel.send(exampleEmbed2);
+                      message.channel.send({embeds: [exampleEmbed2]});
                       module.exports.users.splice(module.exports.users.indexOf(message.author.id), 1);
                   } else {
-                      const exampleEmbed2 = new Discord.MessageEmbed()
+                      const exampleEmbed2 = new Discord.EmbedBuilder()
                             .setColor('#ff0000')
                             .setTitle(`The correct answer was ${answer}`)
                             .setDescription(`You can find the problem here: ${randomlink}`)
-                      message.channel.send(exampleEmbed2);
+                      message.channel.send({embeds: [exampleEmbed2]});
                       module.exports.users.splice(module.exports.users.indexOf(message.author.id), 1);
                   }
               })
               .catch(collected => {
                     module.exports.users.splice(module.exports.users.indexOf(message.author.id), 1);
-                    const exampleEmbed2 = new Discord.MessageEmbed()
+                    const exampleEmbed2 = new Discord.EmbedBuilder()
                             .setColor('#ff0000')
                             .setTitle(`The correct answer was ${answer}`)
                             .setDescription(`You can find the problem here: ${randomlink}`)
-                    message.channel.send(exampleEmbed2);
+                    message.channel.send({embeds: [exampleEmbed2]});
               });
 
           await browser.close();
     } catch(e) { 
-        const exampleEmbed2 = new Discord.MessageEmbed()
+        const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle(`There was an error, please try again.`)
         module.exports.users.splice(module.exports.users.indexOf(message.author.id), 1);
-        message.channel.send(exampleEmbed2); 
+        message.channel.send({embeds: [exampleEmbed2]}); 
         console.log(e.stack);
     }
 }
 
 module.exports.help = {
-
     name: "amc",
-    desc: "ggf",
-    personalThoughts: "anhh"
-
+    desc: "scrape a random AMC problem from the web",
+    parameters: "`time limit (minutes)`",
 }

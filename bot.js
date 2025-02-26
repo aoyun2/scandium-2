@@ -1,94 +1,49 @@
 const botSettings = require("./botsettings.json");
 const serverModule = require("./server.js");
 const Discord = require("discord.js");
+const { GatewayIntentBits, Partials } = require("discord.js");
 const fs = require("fs");
 const { toHTML } = require("./ModifiedDiscordParser.js");
 const fetch = require("node-fetch");
-const { Server } = require("https");
 const prefix = botSettings.prefix;
 const token = process.env.token;
-const bot = new Discord.Client();
+
+const bot = new Discord.Client({
+    intents: [
+		GatewayIntentBits.AutoModerationExecution,
+		GatewayIntentBits.DirectMessagePolls,
+		GatewayIntentBits.DirectMessageReactions,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.DirectMessageTyping,
+		GatewayIntentBits.GuildBans,
+		GatewayIntentBits.GuildEmojisAndStickers,
+		GatewayIntentBits.GuildExpressions,
+		GatewayIntentBits.GuildIntegrations,
+		GatewayIntentBits.GuildInvites,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildMessagePolls,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageTyping,
+		GatewayIntentBits.GuildModeration,
+		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildScheduledEvents,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.GuildWebhooks,
+		GatewayIntentBits.MessageContent,
+	],
+	partials: [Partials.GatewayIntentBitsUser, Partials.Channel, Partials.Message, Partials.GuildMember, Partials.ThreadMember],
+});
 bot.commands = new Discord.Collection();
 
-const _buffer = require("buffer");
 const cloudinary = require('cloudinary').v2;
-
 cloudinary.config({ 
-  cloud_name: process.env.cloud_name, 
-  api_key: process.env.cloud_key, 
-  api_secret: process.env.cloud_secret 
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.cloud_key,
+  api_secret: process.env.cloud_secret
 });
 const CLOUDINARY_REGEX = /^.+\.cloudinary\.com\/(?:[^\/]+\/)(?:(image|video)\/)?(?:(upload|fetch)\/)?(?:(?:[^_/]+_[^,/]+,?)*\/)?(?:v(\d+|\w{1,2})\/)?([^\.^\s]+)(?:\.(.+))?$/;
-
-// inline reply code ------------------------------ //
-/*const { APIMessage, Webhook, Structures, Client } = require("discord.js");
-
-class ExtAPIMessage extends APIMessage {
-    resolveData() {
-        if (this.data) return this;
-        super.resolveData();
-        if ((this.options.allowedMentions || {}).repliedUser !== undefined) {
-            if (this.data.allowed_mentions === undefined) this.data.allowed_mentions = {};
-            Object.assign(this.data.allowed_mentions, { replied_user: this.options.allowedMentions.repliedUser });
-            delete this.options.allowedMentions.repliedUser;
-        }
-        if (this.options.replyTo !== undefined) {
-            Object.assign(this.data, { message_reference: { message_id: this.options.replyTo.id } });
-        }
-        return this;
-    }
-}
-
-//console.log(Client.prototype.fetchWebhook.toString());
-
-/*Client.prototype.fetchWebhook = function (id, token) {
-    return this.api
-      .webhooks(id, token)
-      .get()
-      .then(data => new Webhook(this, { token, ...data })); // THESE PARAMS SHOULD BE LIKE THIS DISCORD WHAT THE FUCK
-}
-
-//console.log(Client.prototype.fetchWebhook.toString());
-
-async function inlineReply(message, content, options) {
-	var apiMessage = APIMessage.create(this, content, options).resolveData();
-
-	const { data, files } = await apiMessage.resolveFiles();
-	Object.assign(data, { message_reference: { message_id: message.id } });
-
-	if (Array.isArray(apiMessage.data.content)) {
-        return Promise.all(apiMessage.split().map(this.send.bind(this)));
-	}
-
-	//console.log(data, files);
-	
-	return this.client.api.webhooks(this.id, this.token).post({
-			data,
-			files,
-			query: { wait: true },
-			auth: false
-		}).then(d => {
-			const channel = this.client.channels ? this.client.channels.cache.get(d.channel_id) : undefined;
-			if (!channel) return d;
-			return channel.messages.add(d, false);
-		});
-}
-
-class Message extends Structures.get("Message") {
-    inlineReply(content, options) {
-		return this.channel.send(ExtAPIMessage.create(this, content, options, { replyTo: this }).resolveData());
-    }
-
-    edit(content, options) {
-        return super.edit(ExtAPIMessage.create(this, content, options).resolveData());
-    }
-}
-// ------------------------------------------------ //
-
-Structures.extend("Message", () => Message); */
-
-// Webhook replies sadly do not work
-// Webhook.prototype.inlineReply = inlineReply;
 
 fs.readdir("./commands/", (err, files) => {
 
@@ -114,7 +69,7 @@ fs.readdir("./commands/", (err, files) => {
 	})
 })
 
-var games = ["Terraria", "Guilty Gear -Strive-", "Muse Dash", "Street Fighter 6", "Honkai: Star Rail", "doing homework", "with aoyun", "sleeping", "eating"];
+var games = ["Terraria", "Street Fighter 6", "Honkai: Star Rail", "VALORANT", "doing homework", "sleeping", "eating"];
 //0.05 for games, 0.15 for hw and 0.2 for other
 var weightsprefix = [0.05, 0.1, 0.5, 0.2, 0.25, 0.4, 0.6, 0.8, 1];
 
@@ -141,8 +96,7 @@ bot.on("ready", async () => {
 	}());
 })
 
-bot.on("message", async (message) => {
-	// console.log(message)
+bot.on("messageCreate", async (message) => {
 	if(message.guild) serverModule.broadcastMessage(await processMessage(message), { server: message.guild.id, channel: message.channel.id });
 
 	if ((message.author.id !== bot.user.id) && message.channel.topic && message.channel.topic.includes("93a803f0-385d-495c-a5c1-b73c9bff975d")) {
@@ -263,7 +217,8 @@ async function processMessage(m) {
 	// process emojis on the client-side
 	let files = [];
 	//console.log(m.attachments.array());
-	for (const a of m.attachments.array()) {
+	m.attachments.each(async a => {
+		console.log(a);
 		let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 		//console.log(res.headers.get("Content-Length"));
 		//let name = res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
@@ -292,12 +247,12 @@ async function processMessage(m) {
 		});
 		
 		//global.gc();
-	}
+	});
 
 	var embeds = [];
 	for (const e of m.embeds) {
 		let efiles = [];
-		for (a of e.files) {
+		/*for (a of e.files) {
 			let res = await fetch(a.url, {headers: {'Access-Control-Expose-Headers': '*'}});
 			
 			let name;//res.headers.get("Content-Disposition") ? res.headers.get("Content-Disposition").split('=')[1] : 'nil';
@@ -322,7 +277,7 @@ async function processMessage(m) {
 				type: `data:${res.headers.get("Content-Type")}`,
 				spoiler: a.spoiler
 			});
-		}
+		}*/
 
 		let fields = [];
 		for (f of e.fields) {
@@ -464,7 +419,7 @@ module.exports.fetchMessages = async (userID, server, channel, before, clientID)
 		const c = s.channels.cache.get(channel);
 		const u = s.members.cache.get(userID);
 
-		if(!c.permissionsFor(u).toArray().includes("READ_MESSAGE_HISTORY")) {
+		if(!c.permissionsFor(u).toArray().includes("ReadMessageHistory")) {
 			serverModule.error("SCANDIUM_LOAD_ERROR: You may not have the permission READ_MESSAGE_HISTORY in this channel.", clientID);
 			return undefined;
 		}
@@ -502,18 +457,18 @@ module.exports.fetchChannels = (server, id) => {
 
 		// change this to only load channels that are visible to the user
 		allChannels = allChannels.filter(c => {
-			return (c.type === "text") && c.permissionsFor(u).toArray().includes("VIEW_CHANNEL");
+			return (c.type===Discord.ChannelType.GuildText) && c.permissionsFor(u).toArray().includes("ViewChannel");
 		}).map(c => [c.name, c.id]);
 
-		if (allChannels.length === 0) return ["No visible channels.", null];
+		if (allChannels.length === 0) return [["No visible channels.", null]];
 
 		return allChannels;
-	} catch (e) { console.log(e); return ["Error fetching channels.", null]; }
+	} catch (e) { console.log(e); return [["Error fetching channels.", null]]; }
 }
 
 module.exports.fetchGuilds = (id) => {
 	try {
-		var allServers = bot.guilds.cache.filter(g => g.member(id)).map(g => [g.name, g.id]);
+		var allServers = bot.guilds.cache.filter(g => g.members.fetch(id)).map(g => [g.name, g.id]);
 
 		console.log(allServers);
 		if (!allServers.length) return [["You don't seem to be in any servers.", null]];
@@ -649,7 +604,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		const channel = server.channels.cache.get(c);
 		const user = server.members.cache.get(u);
 
-		if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
+		if(!channel.permissionsFor(user).toArray().includes("SendMessages")) {
 			serverModule.error("SCANDIUM_SEND_ERROR: You may not have the permission SEND_MESSAGES in this channel.", clientID);
 			return;
 		}
@@ -665,7 +620,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 		if (webhook) {
 			await webhook.delete();	
 		}
-		webhook = await channel.createWebhook("Scandium 2");
+		webhook = await channel.createWebhook({name: "Scandium"});
 		console.log(webhook)
 		// var message = data;
 
@@ -709,7 +664,7 @@ module.exports.sendMessage = async (s, c, u, data, clientID) => {
 
 		 
 		let id = (user.id | 85926).toString(36);
-		const embed = new Discord.MessageEmbed()
+		const embed = new Discord.EmbedBuilder()
 			.setColor('#A3A6E8')
 			.setDescription(`\`\`\`${id}\n \`\`\``);
 		
@@ -730,7 +685,7 @@ module.exports.replyToMessage = async (s, c, mid, u, data, clientID) => {
 		const channel = server.channels.cache.get(c);
 		const user = server.members.cache.get(u);
 
-		if(!channel.permissionsFor(user).toArray().includes("SEND_MESSAGES")) {
+		if(!channel.permissionsFor(user).toArray().includes("SendMessages")) {
 			serverModule.error("SCANDIUM_REPLY_ERROR: You may not have the permission SEND_MESSAGES in this channel.", clientID);
 			return;
 		}
@@ -780,7 +735,7 @@ module.exports.editMessage = async (s, c, mid, u, data, clientID) => {
 		const channel = server.channels.cache.get(c);
 		const user = server.members.cache.get(u);
 
-		if(!channel.permissionsFor(user).toArray().includes("MANAGE_MESSAGES")) {
+		if(!channel.permissionsFor(user).toArray().includes("ManageMessages")) {
 			serverModule.error("SCANDIUM_EDIT_ERROR: You may not have the permission MANAGE_MESSAGES in this channel.", clientID);
 			return;
 		}
@@ -833,7 +788,7 @@ module.exports.deleteMessage = async (s, c, u, mid, clientID) => {
 		const channel = server.channels.cache.get(c);
 		const user = server.members.cache.get(u);
 
-		if(!channel.permissionsFor(user).toArray().includes("MANAGE_MESSAGES")) {
+		if(!channel.permissionsFor(user).toArray().includes("ManageMessages")) {
 			serverModule.error("SCANDIUM_DELETE_ERROR: You may not have the permission MANAGE_MESSAGES in this channel.", clientID);
 			return;
 		}

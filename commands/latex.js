@@ -11,20 +11,20 @@ module.exports.name = "latex";
 
 module.exports.run = async (bot, message, args) => {
     if (message.channel instanceof Discord.DMChannel) {
-        const exampleEmbed2 = new Discord.MessageEmbed()
+        const exampleEmbed2 = new Discord.EmbedBuilder()
           .setColor('#ff0000')
           .setTitle(`This command is not allowed in DMs`);
-        return await message.channel.send(exampleEmbed2);
+        return await message.channel.send({embeds: [exampleEmbed2]});
     }
   
     if (!args || args.length > 2 || args.length < 1) {
-      const exampleEmbed2 = new Discord.MessageEmbed()
+      const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle(`Invalid command structure.`);
-      return await message.channel.send(exampleEmbed2); 
+      return await message.channel.send({embeds: [exampleEmbed2]}); 
     }
   
-    let msg = await message.reply("Please wait...")
+    let msg = await message.reply("Please wait <a:loading:1344161904062496829>")
     
     try {
       
@@ -95,29 +95,28 @@ module.exports.run = async (bot, message, args) => {
         const latex = await page.$(`#math > p:nth-child(2) > img`);
         await latex.screenshot({path: `f.png`}); 
         
-        const exampleEmbed2 = new Discord.MessageEmbed()
+        const exampleEmbed2 = new Discord.EmbedBuilder()
                 //.setTitle(`${message.author.username}:`)
                 .setColor('#A3A6E8')
-                .attachFiles([`f.png`])
                 .setImage(`attachment://f.png`);
       
-        await message.channel.send(exampleEmbed2);
+        await message.channel.send({embeds: [exampleEmbed2], files: [`f.png`]});
       
         await msg.delete();
         //await message.delete(10);
       
     } catch(e) {
-        const exampleEmbed2 = new Discord.MessageEmbed()
+        const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle(`Aborted.`);
         msg.delete(10);
-        message.channel.send(exampleEmbed2); 
+        message.channel.send({embeds: [exampleEmbed2]}); 
         console.log(e.stack);
     }
 }
 
 module.exports.help = {
     name: "latex",
-    desc: "df",
-    personalThoughts: "asdf"
+    desc: "compile latex code",
+    parameters: "`latex/pastebin link` | `ispastebin?`",
 }
