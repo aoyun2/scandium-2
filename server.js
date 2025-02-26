@@ -89,21 +89,26 @@ io.on('connection', (socket) => {
         // console.log("client connected!")
 
         // add permission data for the user
-        clients[clientID] = {
-            websocket: socket,
-            info: { // update with id, otherwise scan brok
-                userID: data.userID,
-                server: data.serverID,
-                channel: {
-                    id: data.channelID,
-                    permissions: botModule.fetchPermissions(data.serverID, data.channelID, data.userID)
+        try {
+            clients[clientID] = {
+                websocket: socket,
+                info: { // update with id, otherwise scan brok
+                    userID: data.userID,
+                    server: data.serverID,
+                    channel: {
+                        id: data.channelID,
+                        permissions: botModule.fetchPermissions(data.serverID, data.channelID, data.userID)
+                    }
                 }
-            }
-        };
-
-        console.log(clients[clientID].info.userID, clients[clientID].info.server, clients[clientID].info.channel.id, clients[clientID].info.channel.permissions);
-
-        socket.emit("connection_success");
+            };
+    
+            console.log(clients[clientID].info.userID, clients[clientID].info.server, clients[clientID].info.channel.id, clients[clientID].info.channel.permissions);
+    
+            socket.emit("connection_success");
+        } catch (e) {
+            socket.emit("error", e);
+            console.log(e);
+        }
     });
 
     socket.on('disconnect', () => {
