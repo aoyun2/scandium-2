@@ -49,11 +49,11 @@ module.exports.run = async (bot,message,args) => {
 		//if (m.id === message.id) continue;
 		//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
 		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
-		context += `\nThe following text is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
+		context += `\nThe following text is a past message, which was sent by ${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))} at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
 
 		var repliedTo;
 		if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
-		context += '['+(m.author?m.author.username:m.bot.username+']' + (repliedTo ? ", replying to [" + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : "" + ']') + ": " + c + '\n');
+		context += c + '\n';
 	}
 	//context += "\nThis is the current message to Scandium: \n";
 	//context += (message.author.username + ": " + args.join(" ")) + "\n";
