@@ -53,7 +53,7 @@ module.exports.run = async (bot,message,args) => {
 
 		var repliedTo;
 		if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
-		context += '['(m.author?m.author.username:m.bot.username+']' + (repliedTo ? ", replying to [" + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : "" + ']') + ": " + c + '\n');
+		context += '['+(m.author?m.author.username:m.bot.username+']' + (repliedTo ? ", replying to [" + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : "" + ']') + ": " + c + '\n');
 	}
 	//context += "\nThis is the current message to Scandium: \n";
 	//context += (message.author.username + ": " + args.join(" ")) + "\n";
