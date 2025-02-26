@@ -26,6 +26,27 @@ async function fetchmessages(channel, limit = 25) {
     return sum_messages;
 }
 
+async function generateContentWithGrounding(prompt) {
+	const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
+	const model = genAI.getGenerativeModel({
+		model: "gemini-2.0-flash",
+		tools: [{ 
+			googleSearch: {
+				dynamicThreshold: 0.06
+			}
+		}],
+	});
+
+	const request = {
+		contents: [{ role: 'user', parts: [{ text: prompt }] }],
+		tools: groundingConfig.tools,
+	};
+
+	const response = await model.generateContent(request);
+	const result = response.response.candidates[0].content.parts[0].text;
+	return result;
+}
+
 module.exports.run = async (bot,message,args) => {
 	if (args.length < 1) {
 		const exampleEmbed2 = new Discord.MessageEmbed()
@@ -62,17 +83,11 @@ module.exports.run = async (bot,message,args) => {
 	//console.log(context);
 	
 	try {
-		const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
-		const model = genAI.getGenerativeModel({
-			model: "gemini-2.0-flash",
-			tools: [{ googleSearch: {} }],
-		});
-
 		const prompt = context;
 
-		const result = await model.generateContent(prompt);
+		const result = await generateContentWithGrounding(prompt);
 		//console.log(result.response.text());
-		message.channel.send(result.response.text());
+		message.channel.send(result);
 	} catch (e) {
 		message.channel.send("[message error]");
 	}
