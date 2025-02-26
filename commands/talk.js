@@ -77,7 +77,7 @@ module.exports.run = async (bot,message,args) => {
 			context += a.description + '\n';
 		});
 
-		console.log(context)
+		//console.log(context)
 
 		context += "\n Write Scandium's response below: \n";
 		context += "\nScandium: ";
