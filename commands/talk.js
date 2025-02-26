@@ -28,39 +28,39 @@ async function fetchmessages(channel, limit = 25) {
 }
 
 module.exports.run = async (bot,message,args) => {
-	if (args.length < 1) {
-		const exampleEmbed2 = new Discord.MessageEmbed()
-		.setColor('#ff0000')
-		.setTitle(`Invalid command structure.`);
-		return await message.channel.send(exampleEmbed2);
-	}
-
-	message.channel.sendTyping();
-   	// import { gpt } from "gpti";
-	var msgs = await fetchmessages(message.channel);
-
-	var today = new Date();
-	var activity = bot.presence.activities[0].name;
-
-	var context = fs.readFileSync("aicontext.txt");
-	
-	context += `One day, Scandium and several users are chatting in an online group chat. Past messages in the chat will be labeled as such. Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}.`;
-	
-	for(m of msgs) {
-		//if (m.id === message.id) continue;
-		//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
-		var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
-		context += `\nThe following text is a past message, which was sent by ${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))} at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
-
-		var repliedTo;
-		if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
-		context += c + '\n';
-	}
-	//context += "\nThis is the current message to Scandium: \n";
-	//context += (message.author.username + ": " + args.join(" ")) + "\n";
-	//console.log(context);
-	
 	try {
+		if (args.length < 1) {
+			const exampleEmbed2 = new Discord.MessageEmbed()
+			.setColor('#ff0000')
+			.setTitle(`Invalid command structure.`);
+			return await message.channel.send(exampleEmbed2);
+		}
+
+		message.channel.sendTyping();
+		// import { gpt } from "gpti";
+		var msgs = await fetchmessages(message.channel);
+
+		var today = new Date();
+		var activity = bot.presence.activities[0].name;
+
+		var context = fs.readFileSync("aicontext.txt");
+		
+		context += `One day, Scandium and several users are chatting in an online group chat. Past messages in the chat will be labeled as such. Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}.`;
+		
+		for(m of msgs) {
+			//if (m.id === message.id) continue;
+			//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
+			var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
+			context += `\nThe following text is a past message, which was sent by ${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))} at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
+
+			var repliedTo;
+			if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
+			context += c + '\n';
+		}
+		//context += "\nThis is the current message to Scandium: \n";
+		//context += (message.author.username + ": " + args.join(" ")) + "\n";
+		//console.log(context);
+	
 		const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
 		const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
 
