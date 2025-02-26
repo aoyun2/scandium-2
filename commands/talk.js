@@ -50,7 +50,7 @@ module.exports.run = async (bot,message,args) => {
 		for(m of msgs) {
 			//if (m.id === message.id) continue;
 			//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
-			var c = (m.content.startsWith("<>talk")) ? m.content.replace("<>talk", '') : m.content;
+			var c = (m.cleanContent.startsWith("<>talk")) ? m.cleanContent.replace("<>talk", '') : m.cleanContent;
 			context += `\nThe following text is a past message, which was sent by ${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))} at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
 
 			var repliedTo;
