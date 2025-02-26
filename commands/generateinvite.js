@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args) => {
         const e = new Discord.EmbedBuilder()
             .setColor('#A3A6E8')
             .setTitle("Invite Scandium to your server:")
-            .setDescription(link);
+            .setDescription(`[link](${link})`);
         await message.channel.send({ embeds: [e] });
     } catch (e) {
         console.log(e.stack);

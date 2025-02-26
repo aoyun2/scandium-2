@@ -8,7 +8,14 @@ module.exports.name = "register";
 module.exports.run = async (bot, message, args) => {
     if (message.author.bot) return await message.reply("Bots cannot register for a Scandium account.");
     try {
-        const client = redis.createClient({url: process.env.redis});
+        const client = redis.createClient({
+            username: 'default',
+            password: 'gqhS8W5InZvcGRvzEsoXekT5nkB4lUgN',
+            socket: {
+                host: 'redis-14480.c232.us-east-1-2.ec2.redns.redis-cloud.com',
+                port: 14480
+            }
+        });
         await client.connect()
 
         //const util = require("util");
