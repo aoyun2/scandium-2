@@ -61,14 +61,21 @@ module.exports.run = async (bot,message,args) => {
 	context += "\nScandium: ";
 	//console.log(context);
 	
-	const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
-	const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+	try {
+		const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
+		const model = genAI.getGenerativeModel({
+			model: "gemini-2.0-flash",
+			tools: [{ googleSearch: {} }],
+		});
 
-	const prompt = context;
+		const prompt = context;
 
-	const result = await model.generateContent(prompt);
-	//console.log(result.response.text());
-	message.channel.send(result.response.text());
+		const result = await model.generateContent(prompt);
+		//console.log(result.response.text());
+		message.channel.send(result.response.text());
+	} catch (e) {
+		message.channel.send("[message error]");
+	}
 }
 
 module.exports.help = {
