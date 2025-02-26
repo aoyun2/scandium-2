@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args) => {
     try {
         var link = await bot.generateInvite({
             scopes: ['bot', 'applications.commands'],
-            permissions: 8,
+            permissions: Discord.PermissionsBitField.All,
         });
 
         const e = new Discord.EmbedBuilder()
