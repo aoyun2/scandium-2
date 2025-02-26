@@ -29,17 +29,16 @@ async function fetchmessages(channel, limit = 25) {
 async function generateContentWithGrounding(prompt) {
 	const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
 	const model = genAI.getGenerativeModel({
-		model: "gemini-2.0-flash",
+		model: "gemini-2.0-flash"
+	});
+
+	const request = {
+		contents: [{ role: 'user', parts: [{ text: prompt }] }],
 		tools: [{ 
 			googleSearch: {
 				dynamicThreshold: 0.06
 			}
 		}],
-	});
-
-	const request = {
-		contents: [{ role: 'user', parts: [{ text: prompt }] }],
-		tools: groundingConfig.tools,
 	};
 
 	const response = await model.generateContent(request);
@@ -90,6 +89,7 @@ module.exports.run = async (bot,message,args) => {
 		message.channel.send(result);
 	} catch (e) {
 		message.channel.send("[message error]");
+		console.log(e)
 	}
 }
 
