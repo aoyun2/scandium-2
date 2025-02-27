@@ -111,7 +111,7 @@ bot.on("messageCreate", async (message) => {
 	//console.log(message);
 	
 	var command = message.content.split(/\s+/g)[0];
-	var args = message.content.replace(`${command} `, '').split(/\s+/g);
+	var args = message.content.replace(`${command} `, '').split('|');
 
 	console.log(command);
 	console.log(args);
