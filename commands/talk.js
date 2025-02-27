@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const fs = require('fs');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { OrganicResult, search } = require("google-sr");
+const { RateLimiterMemory } = require('rate-limiter-flexible');
 
 module.exports.name = "talk";
 
@@ -27,8 +28,15 @@ async function fetchmessages(channel, limit = 25) {
     return sum_messages;
 }
 
+const rateLimiter = new RateLimiterMemory(
+{
+	points: 2, // 5 points
+	duration: 1, // per second
+});
+
 module.exports.run = async (bot,message,args) => {
 	try {
+		await rateLimiter.consume(message.id); 
 		message.channel.sendTyping();
 
 		if (args.length < 1) {
@@ -88,8 +96,14 @@ module.exports.run = async (bot,message,args) => {
 		//console.log(result.response.text());
 		message.channel.send(result.response.text());
 	} catch (e) {
-		message.channel.send("[message error]");
 		console.log(e);
+		
+		const minSeconds = 5;
+		const maxSeconds = 10;
+		const randomTime = Math.floor(Math.random() * (maxSeconds - minSeconds + 1)) + minSeconds;
+		setTimeout(function() {
+			module.exports.run(bot, message, args);
+		}, randomTime*1000);
 	}
 }
 

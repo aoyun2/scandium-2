@@ -77,10 +77,10 @@ app.post('/connect', async (request, response) => {
 
 var clients = {};
 const rateLimiter = new RateLimiterMemory(
-  {
+{
     points: 2, // 5 points
     duration: 1, // per second
-  });
+});
 
 io.on('connection', (socket) => {
     const clientID = uuidv4();
