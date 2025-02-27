@@ -10,23 +10,22 @@ function sleep(ms) {
 module.exports.name = "latex";
 
 module.exports.run = async (bot, message, args) => {
-    if (message.channel instanceof Discord.DMChannel) {
-        const exampleEmbed2 = new Discord.EmbedBuilder()
-          .setColor('#ff0000')
-          .setTitle(`This command is not allowed in DMs`);
-        return await message.channel.send({embeds: [exampleEmbed2]});
-    }
-  
-    if (!args || args.length > 2 || args.length < 1) {
-      const exampleEmbed2 = new Discord.EmbedBuilder()
-              .setColor('#ff0000')
-              .setTitle(`Invalid command structure.`);
-      return await message.channel.send({embeds: [exampleEmbed2]}); 
-    }
-  
-    let msg = await message.reply("Please wait <a:loading:1344161904062496829>")
-    
     try {
+        if (message.channel instanceof Discord.DMChannel) {
+            const exampleEmbed2 = new Discord.EmbedBuilder()
+            .setColor('#ff0000')
+            .setTitle(`This command is not allowed in DMs`);
+            return await message.channel.send({embeds: [exampleEmbed2]});
+        }
+    
+        if (!args || args.length > 2 || args.length < 1) {
+        const exampleEmbed2 = new Discord.EmbedBuilder()
+                .setColor('#ff0000')
+                .setTitle(`Invalid command structure.`);
+        return await message.channel.send({embeds: [exampleEmbed2]}); 
+        }
+    
+        let msg = await message.reply("Please wait <a:loading:1344161904062496829>")
       
         const browser = await puppeteer.launch({
           args: [
@@ -111,7 +110,7 @@ module.exports.run = async (bot, message, args) => {
               .setTitle(`Aborted.`);
         msg.delete(10);
         message.channel.send({embeds: [exampleEmbed2]}); 
-        console.log(e.stack);
+        console.log(e);
     }
 }
 
