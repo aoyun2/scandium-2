@@ -55,15 +55,16 @@ module.exports.run = async (bot,message,args) => {
 		
 		context += `One day, Scandium and several users are chatting in an online group chat. Past messages in the chat will be labeled as such. Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}.`;
 		
+		var messages = ''
 		for(m of msgs) {
 			//if (m.id === message.id) continue;
 			//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
 			var c = (m.cleanContent.startsWith("<>talk")) ? m.cleanContent.replace("<>talk", '') : m.cleanContent;
-			context += `\nThe following text is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
+			messages += `\nThe following text is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
 
 			var repliedTo;
 			if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
-			context += `${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))}` + c + '\n';
+			messages += `${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))}` + c + '\n';
 		}
 		//context += "\nThis is the current message to Scandium: \n";
 		//context += (message.author.username + ": " + args.join(" ")) + "\n";
@@ -72,7 +73,7 @@ module.exports.run = async (bot,message,args) => {
 		const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
 		const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
 
-		const s = await model.generateContent("Can you generate a Google search query related to this conversation?\n" + context);
+		const s = await model.generateContent("Can you generate a Google search query related to this conversation?\n" + messages);
 		//console.log(s.response.text());
 		const queryResult = await search({
 			query: s.response.text(),
@@ -80,6 +81,8 @@ module.exports.run = async (bot,message,args) => {
 			resultTypes: [OrganicResult],
 		});
 		// will return a SearchResult[]
+		context += messages;
+		
 		var d = "";
 		context += "\n Here is some context for you to generate Scandium's response: \n"
 		queryResult.forEach(a => {
