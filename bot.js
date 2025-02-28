@@ -69,7 +69,7 @@ fs.readdir("./commands/", (err, files) => {
 	})
 })
 
-var games = ["Terraria", "Street Fighter 6", "Honkai: Star Rail", "VALORANT", "drawing", "Listening to Spotify", "doing homework", "sleeping", "eating"];
+var games = ["Terraria", "Street Fighter 6", "Honkai: Star Rail", "VALORANT", "drawing", "Brawl Stars", "doing homework", "sleeping", "eating"];
 //0.05 for games, 0.15 for hw and 0.2 for other
 var weightsprefix = [0.05, 0.1, 0.2, 0.25, 0.4, 0.5, 0.6, 0.8, 1];
 

@@ -100,7 +100,7 @@ module.exports.run = async (bot,message,args) => {
 		context += "\nScandium: ";
 		const prompt = context;
 		const result = await model.generateContent(prompt);
-		//console.log(result.response.text());
+		console.log(result.response.text());
 		message.channel.send(result.response.text());
 	} catch (e) {
 		console.log(e);
