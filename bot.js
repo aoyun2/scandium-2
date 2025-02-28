@@ -90,8 +90,8 @@ bot.on("ready", async () => {
 	(function loop() {
 	    var rand = Math.round(Math.random() * (7.2e6 - 1.8e6)) + 1.8e6;
 	    setTimeout(function() {
-	            bot.user.setActivity(randomgame());
-	            loop();
+			bot.user.setActivity(randomgame());
+			loop();
 	    }, rand);
 	}());
 })

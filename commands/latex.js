@@ -101,14 +101,14 @@ module.exports.run = async (bot, message, args) => {
       
         await message.channel.send({embeds: [exampleEmbed2], files: [`f.png`]});
       
-        await msg.delete();
+        if (msg) await msg.delete();
         //await message.delete(10);
       
     } catch(e) {
         const exampleEmbed2 = new Discord.EmbedBuilder()
               .setColor('#ff0000')
               .setTitle(`Aborted.`);
-        msg.delete(10);
+        if (msg) await msg.delete(10);
         message.channel.send({embeds: [exampleEmbed2]}); 
         console.log(e.stack);
     }

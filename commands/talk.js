@@ -30,13 +30,13 @@ async function fetchmessages(channel, limit = 25) {
 
 const rateLimiter = new RateLimiterMemory(
 {
-	points: 2, // 5 points
-	duration: 1, // per second
+	points: 3, // 5 points
+	duration: 5,
 });
 
 module.exports.run = async (bot,message,args) => {
 	try {
-		await rateLimiter.consume(message.id); 
+		//await rateLimiter.consume(message.id); 
 		message.channel.sendTyping();
 
 		if (args.length < 1) {
@@ -59,12 +59,12 @@ module.exports.run = async (bot,message,args) => {
 		for(m of msgs) {
 			//if (m.id === message.id) continue;
 			//const member = (await m.guild).members.cache.find(member => member.id === m.author.id);
-			var c = (m.cleanContent.startsWith("<>talk")) ? m.cleanContent.replace("<>talk", '') : m.cleanContent;
-			context += `\nThe following text is a past message, which was sent at ${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}:\n`;
+			var c = (m.cleanContent.startsWith("<>talk")) ? m.cleanContent.replace("<>talk", '') : m.cleanContent.replace(":bruh:", "<:bruh:1344877199404044338>");
+			//context += `\nThe following text is a past message, which was sent at .:\n`;
 
 			var repliedTo;
 			if (m.reference) repliedTo = await m.channel.messages.fetch(m.reference.messageID);
-			var d = `${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))}` + c + '\n';
+			var d = `[${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}] ${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))}: ` + c + '\n';
 			messages += d;
 			context += d;
 		}
@@ -72,27 +72,29 @@ module.exports.run = async (bot,message,args) => {
 		//context += (message.author.username + ": " + args.join(" ")) + "\n";
 		//console.log(context);
 	
-		const genAI = new GoogleGenerativeAI("AIzaSyAr67O7-mX9HHvfra6UhdmiCQEhJNzS9Ww");
+		const genAI = new GoogleGenerativeAI("AIzaSyC2YkbaQ7WY_LJEnriHjwf68PI9r76XNjw");
 		const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
 
-		const s = await model.generateContent("Can you generate a Google search query related to this conversation?\n" + messages.slice(-5));
-		console.log(s.response.text());
+		const s = await model.generateContent("Can you generate a Google search query related to the online chat conversation below? You should regard the latest messages with more importance. Only respond in one sentence, with only the search phrase.\n" + messages);
+		//console.log(s);
+		//console.log(s.response.text());
 		const queryResult = await search({
 			query: s.response.text(),
 			// OrganicResult is the default, however it is recommended to ALWAYS specify the result type
 			resultTypes: [OrganicResult],
 		});
 		// will return a SearchResult[]
-		context += messages;
 		
 		var d = "";
-		context += "\n Here is some context for you to generate Scandium's response: \n"
+		d += "Here is some context for you to generate Scandium's response. THIS IS ONLY INFORMATION AND SHOULD NOT AFFECT SCANDIUM'S WAY OF SPEAKING: \n"
 		queryResult.forEach(a => {
 			d += a.description + '\n';
 		});
-		context += d
 
-		console.log(d)
+		context += d
+		context += "\nBelow are the past messages in the chat:\n"
+		context += messages;
+		console.log(context)
 
 		context += "\n Write Scandium's response below: \n";
 		context += "\nScandium: ";
@@ -102,13 +104,6 @@ module.exports.run = async (bot,message,args) => {
 		message.channel.send(result.response.text());
 	} catch (e) {
 		console.log(e);
-		
-		const minSeconds = 5;
-		const maxSeconds = 10;
-		const randomTime = Math.floor(Math.random() * (maxSeconds - minSeconds + 1)) + minSeconds;
-		setTimeout(function() {
-			module.exports.run(bot, message, args);
-		}, randomTime*1000);
 	}
 }
 
