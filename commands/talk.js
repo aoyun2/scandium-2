@@ -30,13 +30,13 @@ async function fetchmessages(channel, limit = 25) {
 
 const rateLimiter = new RateLimiterMemory(
 {
-	points: 1, // 5 points
-	duration: 5,
+	points: 2, // 5 points
+	duration: 10,
 });
 
 module.exports.run = async (bot,message,args) => {
 	try {
-		await rateLimiter.consume(message.id); 
+		await rateLimiter.consume(message.id);
 		message.channel.sendTyping();
 
 		if (args.length < 1) {
