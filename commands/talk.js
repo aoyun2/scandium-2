@@ -30,7 +30,7 @@ async function fetchmessages(channel, limit = 25) {
 
 const rateLimiter = new RateLimiterMemory(
 {
-	points: 3, // 5 points
+	points: 1, // 5 points
 	duration: 5,
 });
 
@@ -53,7 +53,7 @@ module.exports.run = async (bot,message,args) => {
 
 		var context = fs.readFileSync("aicontext.txt");
 		
-		context += `One day, Scandium and several users are chatting in an online group chat. Past messages in the chat will be labeled as such. Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}.`;
+		context += `One day, Scandium and several users are chatting in an online group chat. Past messages in the chat will be labeled as such. Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}.\n`;
 		
 		var messages = ''
 		for(m of msgs) {
@@ -102,6 +102,9 @@ module.exports.run = async (bot,message,args) => {
 		const result = await model.generateContent(prompt);
 		console.log(result.response.text());
 		message.channel.send(result.response.text());
+
+		rateLimiter.duration = Math.floor(Math.random() * (20 - 5 + 1) + 5);
+		rateLimiter.points = Math.random > 0.5?1:2;
 	} catch (e) {
 		console.log(e);
 	}
