@@ -53,7 +53,7 @@ module.exports.run = async (bot,message,args) => {
 
 		var context = fs.readFileSync("aicontext.txt");
 		
-		context += `One day, Scandium and several users are chatting in an online group chat. Past messages in the chat will be labeled as such. Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}.\n`;
+		context += `\nOne day, Scandium and several users are chatting in an online group chat. Past messages in the chat will be labeled as such. Today's date is ${today.toDateString()}, and the time is ${today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}. Right now, Scandium is busy ${(activity === "eating" || activity === "doing homework" || activity === "sleeping") ? activity : " playing " + activity}.\n`;
 		
 		var messages = ''
 		for(m of msgs) {
