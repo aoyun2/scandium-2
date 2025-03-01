@@ -36,7 +36,7 @@ const rateLimiter = new RateLimiterMemory(
 
 module.exports.run = async (bot,message,args) => {
 	try {
-		//await rateLimiter.consume(message.id); 
+		await rateLimiter.consume(message.id); 
 		message.channel.sendTyping();
 
 		if (args.length < 1) {
