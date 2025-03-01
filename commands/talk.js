@@ -104,7 +104,7 @@ module.exports.run = async (bot,message,args) => {
 		message.channel.send(result.response.text());
 
 		rateLimiter.duration = Math.floor(Math.random() * (20 - 5 + 1) + 5);
-		rateLimiter.points = Math.random > 0.5?1:2;
+		//rateLimiter.points = Math.random > 0.5?1:2;
 	} catch (e) {
 		console.log(e);
 	}
