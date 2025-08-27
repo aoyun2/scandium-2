@@ -1,6 +1,6 @@
 const Discord = require("discord.js"); 
 const fs = require('fs');
-import { GoogleGenerativeAI } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 const { OrganicResult, search } = require("google-sr");
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 
@@ -79,7 +79,7 @@ module.exports.run = async (bot,message,args) => {
 		//context += (message.author.username + ": " + args.join(" ")) + "\n";
 		//console.log(context);
 	
-		const genAI = new GoogleGenerativeAI("AIzaSyC2YkbaQ7WY_LJEnriHjwf68PI9r76XNjw");
+		const genAI = new GoogleGenAI("AIzaSyC2YkbaQ7WY_LJEnriHjwf68PI9r76XNjw");
 		const model = genAI.getGenerativeModel({model: "gemini-2.0-flash"});
 
 		const s = await model.generateContent("Can you generate a Google search query related to the online chat conversation below? You should regard the latest messages with more importance. Only respond in one sentence, with only the search phrase.\n" + messages);
