@@ -1,6 +1,6 @@
 const Discord = require("discord.js"); 
 const fs = require('fs');
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/genai';
 const { OrganicResult, search } = require("google-sr");
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 
