@@ -1,6 +1,6 @@
 const Discord = require("discord.js"); 
 const fs = require('fs');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { GoogleGenAI } from '@google/genai';
 const { OrganicResult, search } = require("google-sr");
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 
@@ -67,6 +67,13 @@ module.exports.run = async (bot,message,args) => {
 			var d = `[${m.createdAt.toDateString()} at ${m.createdAt.toLocaleString('en-US', { hour: 'numeric', hour12: true })}] ${(m.author?m.author.username:m.bot.username + (repliedTo ? ", replying to " + (repliedTo.author?repliedTo.author.username:repliedTo.bot.username) : ""))}: ` + c + '\n';
 			messages += d;
 			context += d;
+
+			/*if (message.attachments) {
+		        let attachments = message.attachments;
+		        for (let file of attachments) {
+		            
+		        }
+		    }*/
 		}
 		//context += "\nThis is the current message to Scandium: \n";
 		//context += (message.author.username + ": " + args.join(" ")) + "\n";
