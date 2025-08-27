@@ -1,4 +1,4 @@
-const Discord = require("discord.js"); 
+import Discord from 'discord.js';
 const fs = require('fs');
 import { GoogleGenAI } from '@google/genai';
 const { OrganicResult, search } = require("google-sr");
