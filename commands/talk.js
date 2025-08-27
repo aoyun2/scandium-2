@@ -1,8 +1,8 @@
-import Discord from 'discord.js';
-import fs from 'fs';
-import { GoogleGenAI } from '@google/genai';
-import { OrganicResult, search } from "google-sr";
-import { RateLimiterMemory } from 'rate-limiter-flexible';
+const Discord = require("discord.js"); 
+const fs = require('fs');
+const { GoogleGenAI } = require('@google/genai');
+const { OrganicResult, search } = require("google-sr");
+const { RateLimiterMemory } = require('rate-limiter-flexible');
 
 module.exports.name = "talk";
 
